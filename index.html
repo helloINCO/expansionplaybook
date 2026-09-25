@@ -1,0 +1,2246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Expansion Playbook - INCO Studio</title>
+
+<!--
+  ============================================================
+  DESIGN PLAN (frontend-design.md, two-pass process)
+  ============================================================
+
+  SUBJECT: INCO Studio, Sydney hospitality + retail interior design.
+  Lead magnet page for "The Expansion Playbook". Audience: operators
+  who already run one successful venue and are weighing a second.
+  Primary job: get a qualified email, and route the genuinely-ready
+  ones to a conversation instead of another PDF.
+
+  THE IDEA: the page is built as a DRAWING SET, not a landing page.
+  INCO produces documentation sets for a living - site plans, lease
+  drawings, dimension strings, sheet numbers, revision tables. That
+  vernacular is specific to this studio and this audience (operators
+  read these documents during a fitout), and no previous version of
+  this page used it. Every structural device on the page is borrowed
+  from a drawing sheet and carries real information:
+    - the fixed sheet frame with corner registration ticks
+    - the live sheet readout, bottom-left, which reports which section
+      you are in (wayfinding, not decoration)
+    - dimension lines on the roadmap rows, which extend as a row opens
+    - the grid itself, visible in the gutters
+
+  Why not the previous versions: v1/v2 were a stack of centered
+  full-width bands with near-identical padding, which is the actual
+  reason they read as generated - not the button radius or the label
+  casing. This version composes on a strict 12-column grid with
+  deliberately asymmetric spans (5, 7, 8 columns; content pushed off
+  center) and dramatic spacing contrast (dense annotation clusters
+  against very large voids) instead of one uniform rhythm.
+
+  COLOR: INCO's own palette, brief-mandated, unchanged.
+    slate-black #1c1c1a   stone-grey #cac5bb   stone-dim #bdb7a8
+    olive #666b47         olive-deep #4c5036   terracotta (errors only)
+  Placeholder hexes pending real brand-deck values.
+
+  TYPE: Archivo alone, one family, weights 400/500/700/900, with a
+  scale that actually jumps (13 / 15 / 17 / 21 / 30 / 68 / 190) rather
+  than clustering every headline around 40px like the last version.
+
+  MOTION: one orchestrated page-load moment (the hero), plus motion
+  that answers the user's own input - dragging the strip, opening a
+  roadmap row, answering the assessment. Scroll-linked motion is
+  limited to the hero exit and the sheet readout, both of which report
+  position rather than decorate it. No per-section fade-ups.
+
+  Deliberately avoided (frontend-design.md's tells): cream/terracotta
+  AI palette, single-word italic accents, all-caps micro-labels,
+  eyebrows above every heading, middle-dot meta strings, monospace
+  data labels, arrow glyphs on buttons, decorative 01/02/03 where the
+  content isn't sequential, identical rounded cards with matching
+  shadows.
+
+  ------------------------------------------------------------
+  V4 — CREDIBILITY PASS
+  ------------------------------------------------------------
+  Three additions, chosen because they apply Hormozi/Priestley
+  structure using material INCO already owns, without importing the
+  parts of those playbooks that would breach the studio's own
+  "never overselling" rule.
+
+  1. CONDITIONS (sheet 04) + CASE NOTE (sheet 05). The problem is now
+     told twice, deliberately, in two different grammatical persons.
+
+     Conditions is second person and present tense: three statements
+     the reader recognises as their own situation, with no exit. Then
+     the case note is third person and past tense: the Westfield venue
+     that closed after two years, in Jayson's own words from Chapter 2,
+     as evidence of what the recognition costs.
+
+     That order matters. A cautionary tale on its own lets the reader
+     off the hook, because the person in it is a stranger who made a
+     mistake they'd never make. Recognition first closes that exit.
+
+     Publishing a loss is also the one proof mechanism a competitor's
+     testimonial wall can't copy, and it sits inside the studio's
+     stated humility rather than fighting it.
+
+     Both sit directly under the plate's "It rarely fails loudly", so
+     the abstract warning is cashed out before the roadmap offers any
+     fixes. Problem, then the five questions, then the tools.
+
+  2. PRACTICE (sheet 08). The About section, composed as a drawing
+     title block, sitting immediately before the ask. Credentials are
+     tabulated as facts, not adjectives. Real client marks from page
+     15 of the playbook, presented silently with no "trusted by"
+     banner over them.
+
+  3. RESULT DIAGNOSTIC. The assessment now returns a per-dimension
+     read computed from the four answers, names the weak spot, and
+     passes it to the CRM so the first email can open on the thing
+     they're behind on. Priestley's point is that a scorecard should
+     know fit and readiness by the last question; previously this one
+     scored and then told everyone the same thing.
+
+  NOT added, deliberately: a fabricated cohort average. COHORT_AVG in
+  the script is null and the benchmark line stays hidden until a real
+  number replaces it. Also still absent: manufactured scarcity, value
+  stacking with invented dollar figures, and testimonial carousels.
+  ============================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Palette: INCO brand deck, except where noted. Placeholder hexes,
+       swap for real values.
+
+       --stone is NOT the brand deck's Stone Grey any more. Jayson called
+       #cac5bb beige and specified #F6F6F6, a neutral near-white, so the
+       page's light field is now off-palette on purpose. Worth knowing if
+       this ever gets checked against the deck. --stone-dim is its
+       companion step, derived, not brand-sourced. */
+    --slate:#1c1c1a;
+    --stone:#F6F6F6;
+    --stone-dim:#ECECEC;
+    --olive:#666b47;
+    --olive-deep:#4c5036;
+    --terracotta:#b5533c;      /* error states only */
+    --light:#f5f3ee;           /* foreground on dark only, never a bg field */
+
+    /* Alphas rebalanced for the lighter field: the old .45 meta text
+       landed at ~2.8:1 on #F6F6F6, under AA. These are named for their
+       role rather than their alpha so the names stay true if the values
+       move again. */
+    --ink-70:rgba(28,28,26,.70);
+    --ink-soft:rgba(28,28,26,.62);
+    --rule:rgba(28,28,26,.22);
+    --light-80:rgba(245,243,238,.80);
+    --light-50:rgba(245,243,238,.50);
+    --light-18:rgba(245,243,238,.18);
+
+    /* Spacing with real contrast, not one uniform rhythm */
+    --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:40px;
+    --s6:64px; --s7:104px; --s8:168px; --s9:264px;
+
+    /* Type scale with actual jumps between steps */
+    --t-micro:13px;
+    --t-small:15px;
+    --t-body:17px;
+    --t-lead:21px;
+    --t-h3:30px;
+    --t-h2:clamp(36px,4.6vw,68px);
+    --t-display:clamp(58px,12.5vw,190px);
+
+    --ease:cubic-bezier(.22,1,.36,1);
+    --ease-io:cubic-bezier(.76,0,.24,1);
+    --fast:200ms;
+    --med:520ms;
+
+    --frame:20px;   /* sheet border inset */
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  /* ============================================================
+     SNAP — driven in JS, not CSS. See the SNAP STOPS script.
+
+     CSS scroll-snap only offers start / center / end alignment on the
+     snap element itself, and proximity leaves the decision to the
+     browser. The stops this page needs are specific and mixed: some
+     headings at the top of the screen, one caption at the bottom, one
+     heading a third of the way down. CSS can't express that, so it's
+     a defined list of scroll positions instead.
+     ============================================================ */
+  /* overflow-x lives here as `clip`, NOT as `hidden` on body.
+     This was the bug: overflow-x:hidden on body makes body a scroll
+     container, and once it is one, scroll-snap-type declared on html
+     has nothing left to act on — the snap silently did nothing at all.
+     `clip` does the same visual job without creating a scroller.
+
+     It's also probably unnecessary now: the only thing that ever moved
+     horizontally off-screen was the hero title dispersal, which was
+     removed. Left in as a cheap guard. */
+  /* scroll-behavior is auto on purpose: the glide() in the snap script
+     animates scrollTop itself, and native smooth scrolling would run
+     on top of it and fight. Anchor links route through glide() too, so
+     they still ease. */
+  html{ overflow-x:clip; }
+
+  /* ============================================================
+     BACKGROUND LAYER — one fixed plane behind everything, whose
+     colour is tweened as each section arrives. Sections themselves
+     are transparent now, so instead of hard-cutting between block
+     colours the page bleeds from one into the next.
+
+     This works because of the content fade: copy is already at zero
+     opacity in the gap between pages, so the colour change happens
+     while there's nothing readable on top of it. The two effects
+     cover for each other.
+     ============================================================ */
+  #bgLayer{ position:fixed; inset:0; z-index:-2; background:var(--stone); }
+  /* Ink for the fixed chrome, recomputed from the live background
+     colour on every scroll tick (see paint()). A class toggle can't
+     do this any more: the background is a continuous crossfade now,
+     so a discrete flip would land mid-blend and be wrong on one side
+     of it. --mh-ink tracks the blend instead. */
+  :root{ --mh-ink:var(--slate); }
+  /* Block colours above are the default and stay correct with no JS,
+     a failed script, or reduced motion. They only step aside once the
+     crossfade is actually running, which the script confirms by
+     setting this class. Getting that the wrong way round would leave
+     dark type on a dark plane for anyone the effect didn't reach. */
+  html.bg-xfade section[data-bg]{ background:transparent; }
+  body{
+    font-family:'Archivo',sans-serif;
+    background:var(--stone);
+    color:var(--slate);
+    font-size:var(--t-body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--olive); color:var(--light);}
+  h1,h2,h3{ text-wrap:balance; font-weight:900; letter-spacing:-.03em; line-height:.94; }
+  p{ text-wrap:pretty; }
+  img{ display:block; width:100%; height:100%; object-fit:cover; }
+  a{ color:inherit; }
+
+  /* ============================================================
+     GRID — 12 columns. Content spans asymmetric counts deliberately;
+     nothing on this page is centered in a 900px column.
+     ============================================================ */
+  .grid{
+    display:grid; grid-template-columns:repeat(12,1fr);
+    gap:var(--s4); max-width:1440px; margin:0 auto;
+    padding:0 max(var(--s5), calc(var(--frame) + var(--s4)));
+  }
+
+  /* ============================================================
+     SHEET FRAME — fixed drawing border + corner registration ticks.
+     Structural, not decoration: the ticks mark the sheet edge and the
+     readout (bottom-left) reports which part of the set you're in.
+     ============================================================ */
+  .sheet{ position:fixed; inset:var(--frame); pointer-events:none; z-index:90;
+          border:1px solid var(--rule); mix-blend-mode:multiply; }
+  .sheet::before,.sheet::after{
+    content:""; position:absolute; width:11px; height:11px;
+    border:1px solid var(--rule);
+  }
+  .sheet::before{ top:-1px; left:-1px; border-right:0; border-bottom:0; }
+  .sheet::after{ bottom:-1px; right:-1px; border-left:0; border-top:0; }
+  .sheet-dark{ border-color:var(--light-18); mix-blend-mode:screen; }
+
+  .readout{
+    position:fixed; left:calc(var(--frame) + 14px); bottom:calc(var(--frame) + 12px);
+    z-index:91; font-size:var(--t-micro); color:var(--ink-soft);
+    display:flex; align-items:baseline; gap:10px; pointer-events:none;
+    transition:color var(--fast) linear;
+  }
+  .readout.on-dark{ color:var(--light-50); }
+  .readout .rd-num{ font-weight:700; font-variant-numeric:tabular-nums; }
+  .readout .rd-rule{ width:36px; height:1px; background:currentColor; opacity:.5; }
+
+  /* progress: a dimension string down the right edge, not a top bar */
+  .plumb{
+    position:fixed; right:calc(var(--frame) + 14px); top:var(--s8); bottom:var(--s8);
+    width:1px; background:var(--rule); z-index:91; pointer-events:none;
+  }
+  .plumb-fill{ width:100%; height:100%; background:var(--olive);
+               transform-origin:top; transform:scaleY(0); }
+  .plumb-bead{
+    position:absolute; left:-3px; width:7px; height:7px; background:var(--olive);
+    top:0; transform:translateY(-50%);
+  }
+
+  /* ============================================================
+     MASTHEAD
+     ============================================================ */
+  .masthead{
+    position:fixed; top:calc(var(--frame) + 12px); left:calc(var(--frame) + 14px);
+    right:calc(var(--frame) + 14px); z-index:92;
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:var(--t-micro); color:var(--ink-soft); pointer-events:none;
+    transition:color var(--fast) linear;
+  }
+  /* The wordmark carries the brand, so it's set at reading size rather
+     than as micro-type in the corner, and it inverts against whatever
+     is behind it. */
+  .mh-mark{
+    font-size:var(--t-lead); font-weight:900; letter-spacing:-.035em;
+    color:var(--mh-ink); transition:color 140ms linear;
+  }
+  /* Photography sections cover the colour layer, so the computed ink
+     would be reading a background nobody can see. Those force light. */
+  .masthead.on-dark .mh-mark{ color:var(--light); }
+  .masthead.on-dark{ color:var(--light-50); }
+
+  /* Right side swaps once the cover is behind you: the title label is
+     only telling you what you're looking at, which stops being useful
+     the moment you've started reading. After that the same slot earns
+     its keep as the persistent way to get the thing. */
+  .mh-right{ position:relative; display:flex; align-items:center; height:34px; }
+  .mh-label,.mh-cta{
+    transition:opacity var(--med) var(--ease), transform var(--med) var(--ease);
+  }
+  .mh-label{ position:absolute; right:0; white-space:nowrap; }
+  .mh-cta{
+    pointer-events:none; opacity:0; transform:translateY(6px);
+    background:var(--olive); color:var(--light); border-radius:999px;
+    padding:9px 20px; font-size:var(--t-micro); font-weight:700; letter-spacing:-.005em;
+    text-decoration:none; white-space:nowrap;
+  }
+  .mh-cta:hover{ background:var(--olive-deep); }
+  .masthead.past-cover .mh-label{ opacity:0; transform:translateY(-6px); }
+  .masthead.past-cover .mh-cta{ opacity:1; transform:none; pointer-events:auto; }
+
+  /* ============================================================
+     HERO — title sits low-left against the footage, not centered.
+
+     The background is now INCO's own cover video: the line drawing
+     building over the real venue, which is the same device the whole
+     page is built on. It replaces the WebGL gradient (still in v3/v4
+     if you want it back).
+
+     Poster frame carries the first frame, so a slow connection, a
+     blocked autoplay, or reduced-motion all land on a still image
+     rather than a grey box.
+     ============================================================ */
+  /* The footage is pinned as a background while two screens of text
+     travel up over it, then it releases. Structure is the standard
+     sticky-background pattern: the media layer sticks, and the text
+     panels are pulled back over it with a negative margin so they
+     scroll normally while it holds still.
+
+     That replaces the exit-dispersal the title used to do. The words
+     now simply leave upward with the scroll, which is what was asked
+     for and is also the quieter move: the dispersal was choreography
+     competing with footage that's already animating.
+
+     97 frames is a ceiling, not a choice. The source is 4.04s at
+     24fps, so there is nothing more to extract. */
+  .heroScroll{ position:relative; height:240vh; }
+  .heroBg{
+    position:sticky; top:0; height:100dvh; z-index:0; overflow:hidden;
+  }
+  /* The still is portrait (693x987 native, rendered 1600x2278), so at
+     full-bleed it stands taller than any viewport. That surplus height
+     is the effect: scroll pans down the photograph, from the menu
+     being handed across at the top to the base of the fluted marble.
+     A single 142KB image doing what 3.7MB of frames was doing. */
+  .hero-media{ position:absolute; inset:0; background:#2a2a28; overflow:hidden; }
+  .hero-media img{
+    position:absolute; top:0; left:0;
+    width:100%; height:auto; min-height:100%;
+    object-fit:cover; object-position:center top;
+    will-change:transform;
+  }
+  /* Load-bearing, not decoration. Measured across the clip, the region
+     where type sits runs about 140/255 mean grey, which puts white at
+     roughly 3:1 on its own. Weighted to the left because that's where
+     every text block on these panels sits, which protects the type
+     without flattening the whole frame into grey. Don't lighten it
+     without re-measuring. */
+  .hero-media::after{
+    content:""; position:absolute; inset:0;
+    background:
+      linear-gradient(100deg,rgba(10,10,9,.74) 0%,rgba(10,10,9,.52) 46%,rgba(10,10,9,.16) 100%),
+      linear-gradient(190deg,rgba(10,10,9,.28) 0%,rgba(10,10,9,.12) 45%,rgba(10,10,9,.58) 100%);
+  }
+
+  /* Text layer, pulled up over the sticky media. */
+  .heroPanels{ position:relative; z-index:1; margin-top:-100dvh; }
+  .hpanel{
+    min-height:100dvh; display:flex; align-items:flex-end;
+    /* Top padding clears the masthead. Without it a bottom-aligned
+       panel will happily grow up underneath it. */
+    padding-top:calc(var(--frame) + 76px);
+    padding-bottom:var(--s7); color:var(--light);
+  }
+  .hpanel .grid{ width:100%; align-items:end; }
+  /* Final beat: the completed drawing with nothing over it. This is
+     the point of the whole arrangement, so it gets its own screen. */
+  /* Was 80vh. With the video this was the finished drawing getting a
+     screen to itself; with a still photograph there's nothing being
+     completed, so it was just 720px of image and no reason to keep
+     scrolling. Trimmed to a beat that lets the pan finish. */
+  .hpanel-hold{ min-height:40vh; pointer-events:none; }
+
+  .hero-title{ grid-column:1 / 10; }
+  /* Sized by the SHORTER of width and height. --t-display alone is a
+     width-only clamp, so on a wide-but-short window (a laptop with the
+     browser not full height, an external monitor in landscape) three
+     lines at 190px stacked up into the masthead. Capping against vh
+     makes the type respect the space it actually has. */
+  .hero-title h1{
+    font-size:min(var(--t-display), 19vh);
+    line-height:.86; letter-spacing:-.045em;
+  }
+  .hero-title .ln{ display:block; overflow:visible; }
+  .hero-title .ln > span{ display:inline-block; will-change:transform,opacity; }
+  .hero-title .thin{ font-weight:400; letter-spacing:-.02em; }
+  /* Each line carries its own parallax rate on scroll, set in JS: the
+     three words pull apart vertically as you descend rather than
+     travelling as one block. It rhymes with the fluted marble behind
+     them, which is the same idea - parallel verticals at slightly
+     different depths - and it gives the title somewhere to go now
+     that the sideways dispersal is gone. */
+  .hero-title .ln:nth-child(1){ --rate:-0.34; }
+  .hero-title .ln:nth-child(2){ --rate:-0.20; }
+  .hero-title .ln:nth-child(3){ --rate:-0.07; }
+
+  .hero-meta{ grid-column:10 / 13; align-self:end; padding-bottom:var(--s2); }
+  .hero-meta p{ font-size:var(--t-small); color:var(--light-80); line-height:1.45; }
+  .hero-meta .rule{ width:100%; height:1px; background:var(--light-18); margin-bottom:var(--s3); }
+
+  .hero-cta{ grid-column:1 / 10; margin-top:var(--s6); display:flex; align-items:center; gap:var(--s5); flex-wrap:wrap; }
+
+  /* Conditions rides over the photograph instead of sitting on its
+     own grey ground. Same grid, repainted for a dark backdrop. The
+     premise used to be a separate panel above it; its line is now the
+     lead of this one. */
+  /* Bottom-aligned, matching the hero panel above it, so the two share
+     a baseline and read as one composition scrolling past rather than
+     two separate slides. */
+  /* Top-aligned, unlike the hero panel above it, and that asymmetry
+     is the point. Snap stop 2 brings this page's first line to the top
+     of the screen. While the content was bottom-aligned in its panel,
+     that scroll position landed 138px past the panel's own end, so the
+     next page bled into the bottom of the view. Content anchored to
+     the top means the snap and the layout agree and the panel fills
+     the screen exactly. */
+  .heroPanels .conditions{
+    background:none; color:var(--light);
+    min-height:100dvh; display:flex; align-items:flex-start;
+    padding:calc(var(--frame) + 76px) 0 var(--s7);
+  }
+  /* This is a full page over a photograph now, not a band between two
+     grey sections, so it carries display weight rather than section
+     weight. Capped against viewport height for the same reason the
+     hero title is. */
+  .heroPanels .conditions .head .lede-line{ color:var(--light); }
+  .heroPanels .conditions .turn{ color:var(--light-80); }
+  .heroPanels .conditions .list,
+  .heroPanels .conditions .list p{ border-color:var(--light-18); background-color:transparent; }
+  .heroPanels .conditions .list{ border-top:1px solid var(--light-18); }
+  .heroPanels .conditions .list p{ border-bottom:1px solid var(--light-18); }
+
+  /* The entrance self-clips via clip-path rather than relying on an
+     overflow:hidden ancestor. That matters: an overflow-hidden wrapper
+     here would clip the horizontal scroll-exit dispersal to the title
+     column instead of letting the words travel the full viewport
+     width. That exact bug bit the first build. */
+  @keyframes rise{
+    from{ clip-path:inset(0 0 100% 0); transform:translateY(.12em); }
+    to{ clip-path:inset(0 0 -20% 0); transform:translateY(0); }
+  }
+  @keyframes soft{ to{ opacity:1; transform:none; } }
+  .hero-title .ln > span{ animation:rise .95s var(--ease) both; }
+  .hero-title .ln:nth-child(1) > span{ animation-delay:.10s; }
+  .hero-title .ln:nth-child(2) > span{ animation-delay:.20s; }
+  .hero-title .ln:nth-child(3) > span{ animation-delay:.30s; }
+  .hero-meta,.hero-cta{ opacity:0; transform:translateY(16px); animation:soft var(--med) var(--ease) forwards; }
+  .hero-meta{ animation-delay:.72s; } .hero-cta{ animation-delay:.86s; }
+
+  /* ============================================================
+     BUTTONS — pill. Everything else on the page stays square.
+     ============================================================ */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    background:var(--olive); color:var(--light); border:none; border-radius:999px;
+    padding:17px 34px; font-family:inherit; font-size:var(--t-small); font-weight:700;
+    letter-spacing:-.01em; cursor:pointer; text-decoration:none; white-space:nowrap;
+    transition:background var(--fast) linear, transform 140ms var(--ease);
+  }
+  .btn:hover{ background:var(--olive-deep); }
+  .btn:active{ transform:scale(.975); }
+  /* Hover steps DOWN to the dim tone. It used to step up to --light,
+     which is now within two values of --stone, so the hover would have
+     been invisible after the background change. */
+  .btn-pale{ background:var(--stone); color:var(--slate); }
+  .btn-pale:hover{ background:var(--stone-dim); }
+  .link{
+    font-size:var(--t-small); color:inherit; opacity:.65; text-decoration:none;
+    padding-bottom:3px; border-bottom:1px solid currentColor;
+    transition:opacity var(--fast) linear;
+  }
+  .link:hover{ opacity:1; }
+  :focus-visible{ outline:2px solid var(--olive); outline-offset:3px; }
+  .hero :focus-visible{ outline-color:var(--light); }
+
+
+  /* ============================================================
+     PLATE — full-bleed image, caption hangs into the margin
+     ============================================================ */
+  /* Full viewport. At 78vh this was a band, not a page: 198px of a
+     neighbouring section stayed on screen no matter where the snap
+     put it. */
+  .plate{ position:relative; height:100dvh; min-height:520px; overflow:hidden; background:var(--slate); }
+  /* object-position pulls the crop down the frame. The venue's signage
+     sits along the top edge of this photograph and this section is
+     headed "It rarely fails loudly" - a legible client name next to
+     that line implies something about that business that isn't being
+     claimed. Keeping the crop on the counter avoids the inference at
+     every viewport ratio. */
+  .plate img{
+    object-position:center 78%;
+    filter:grayscale(.28) contrast(1.05) brightness(.86);
+  }
+  .plate picture{ position:absolute; inset:0; display:block; }
+  .plate::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(0deg,rgba(28,28,26,.86) 0%,rgba(28,28,26,.05) 62%);
+  }
+  .plate .cap{
+    position:absolute; left:0; right:0; bottom:var(--s6); z-index:1; color:var(--light);
+  }
+  .plate .cap .grid > div{ grid-column:1 / 8; }
+  /* Optical alignment, not a layout fix. This heading and the
+     belief/proof line both sit at grid column 1, so their boxes
+     already agree - but a capital I is a centred stem carrying about
+     0.08em of sidebearing each side, while the Y's diagonal reaches
+     almost to its edge at 0.015em. At 66px that's a 4.3px difference
+     and the I-line reads as indented. Pulling it back by the
+     difference makes the two look aligned, which is the thing that
+     actually matters. */
+  .plate .cap h2{
+    font-size:var(--t-h2); margin-bottom:var(--s3);
+    margin-left:-0.065em;
+  }
+  .plate .cap p{ font-size:var(--t-body); color:var(--light-80); max-width:52ch; }
+
+  /* ============================================================
+     ROADMAP — dimensioned rows. Click opens; the dimension line
+     extends to the measured width as it does. Real accordion, real
+     user-driven motion, not a scroll effect.
+     ============================================================ */
+  .roadmap{ background:var(--slate); color:var(--light); padding:var(--s8) 0 var(--s7); }
+  /* Widened from cols 1-7 and capped a touch below --t-h2 so the
+     heading lands on exactly two lines. At 68px in a 7-column well it
+     ran to three; dropping the type instead would have put it level
+     with the row names below, which would have flattened the
+     hierarchy. Wider and slightly smaller keeps it above them. */
+  .roadmap .head{ grid-column:1 / 10; margin-bottom:var(--s7); }
+  .roadmap .head h2{ font-size:clamp(32px,4.2vw,62px); }
+  /* Break chosen, not left to chance: the ask, then the timing. */
+  .roadmap .head h2 span{ display:block; }
+  .roadmap .head p{ margin-top:var(--s3); font-size:var(--t-small); color:var(--light-50); max-width:40ch; }
+  .rows{ grid-column:1 / 13; border-top:1px solid var(--light-18); }
+
+  .row{ border-bottom:1px solid var(--light-18); }
+  .row-btn{
+    width:100%; background:none; border:none; color:inherit; font-family:inherit;
+    display:grid; grid-template-columns:52px 1fr minmax(120px,20%) 22px;
+    align-items:center; gap:var(--s4); padding:var(--s5) 0; cursor:pointer; text-align:left;
+  }
+  .row-idx{ font-size:var(--t-micro); color:var(--light-50); font-variant-numeric:tabular-nums; padding-top:6px; align-self:start; }
+  .row-name{ font-size:clamp(28px,3.6vw,52px); font-weight:900; letter-spacing:-.035em; line-height:1;
+             transition:transform var(--med) var(--ease), color var(--fast) linear; }
+  .row-btn:hover .row-name{ transform:translateX(10px); }
+  .row.open .row-name{ color:var(--light); }
+  /* dimension line: ticks at each end, extends on open */
+  .row-dim{ position:relative; height:1px; background:var(--light-18); }
+  .row-dim span{ position:absolute; inset:0; background:var(--light); transform-origin:left; transform:scaleX(0);
+                 transition:transform var(--med) var(--ease); }
+  .row.open .row-dim span{ transform:scaleX(1); }
+  .row-dim::before,.row-dim::after{ content:""; position:absolute; top:-3px; width:1px; height:7px; background:var(--light-18); }
+  .row-dim::before{ left:0; } .row-dim::after{ right:0; }
+  .row-plus{ position:relative; width:22px; height:22px; }
+  .row-plus::before,.row-plus::after{
+    content:""; position:absolute; background:var(--light-50); transition:transform var(--med) var(--ease);
+  }
+  .row-plus::before{ left:0; top:10px; width:22px; height:1px; }
+  .row-plus::after{ left:10px; top:0; width:1px; height:22px; }
+  .row.open .row-plus::after{ transform:rotate(90deg); }
+  .row-body{ display:grid; grid-template-rows:0fr; transition:grid-template-rows var(--med) var(--ease); }
+  .row.open .row-body{ grid-template-rows:1fr; }
+  .row-body > div{ overflow:hidden; }
+  .row-body p{
+    max-width:56ch; font-size:var(--t-body); color:var(--light-80);
+    padding:0 0 var(--s6) calc(52px + var(--s4));
+  }
+
+  /* ============================================================
+     CONDITIONS — the recognition block. Structure borrowed from Laura
+     Higgins' third scroll (reframe headline, a short stack of
+     second-person statements, then a release valve), at INCO's
+     temperature rather than hers: flat and specific, no exclamation
+     marks, no motivational turn.
+
+     Statements are hairline-separated rather than numbered. They're
+     three parallel truths, not a sequence, and numbering them would
+     imply an order that isn't there.
+     ============================================================ */
+  .conditions{ padding:var(--s8) 0; }
+  /* Full width, both of them. The lead line carries display weight;
+     the old heading steps down to a lead-in beneath it so the two read
+     as one statement with a hierarchy rather than two headings
+     competing. Sizes capped against vh because this block plus the
+     three statements now has to clear a single viewport. */
+  .conditions .head{ grid-column:1 / 13; margin-bottom:var(--s5); }
+  .conditions .head .lede-line{
+    font-size:min(clamp(38px,4.6vw,76px), 11vh);
+    font-weight:700; letter-spacing:-.03em; line-height:1.04;
+    margin-bottom:var(--s3);
+  }
+  /* Broken deliberately, not left to wrap: the two halves are a
+     parallel construction and the line break is what makes the
+     parallel visible. Spans rather than <br> so it collapses to
+     natural wrapping on narrow screens. */
+  .conditions .head .lede-line span{ display:block; }
+  .conditions .head h2{
+    font-size:min(var(--t-h3), 4.2vh); font-weight:500;
+    letter-spacing:-.015em; line-height:1.25; color:var(--light-80);
+  }
+  .conditions .list{ grid-column:1 / 11; border-top:1px solid var(--rule); }
+  .conditions .list p{
+    padding:var(--s4) 0; border-bottom:1px solid var(--rule);
+    font-size:min(clamp(19px,2.2vw,29px), 3.6vh); font-weight:500;
+    letter-spacing:-.02em; line-height:1.3; max-width:38ch;
+  }
+  /* No max-width: at 17px this sentence is roughly 710px, so it sits
+     on one line across the full grid and only wraps once the viewport
+     genuinely can't hold it. */
+  .conditions .turn{
+    grid-column:1 / 13; margin-top:var(--s4);
+    font-size:var(--t-body); color:var(--ink-70);
+  }
+
+  /* ============================================================
+     CASE NOTE — the venue that closed. Set as a quiet record entry,
+     not a "case study" with a result badge: the credibility comes
+     from publishing a loss, and dressing it up would undo that.
+     Indented off the left edge so it reads as an annotation on the
+     roadmap above rather than a new pitch.
+     ============================================================ */
+  .casenote{ padding:var(--s8) 0; background:var(--stone); }
+  /* Was indented to cols 4-11 to sit beside a 'From the playbook'
+     label column. That label is gone, so the quote takes the well. */
+  .casenote .body{ grid-column:1 / 10; }
+  .casenote blockquote{ font-size:var(--t-h3); font-weight:500; letter-spacing:-.02em; line-height:1.32; }
+  .casenote .after{ margin-top:var(--s5); font-size:var(--t-body); color:var(--ink-70); max-width:54ch; }
+  .casenote .sign{ margin-top:var(--s5); font-size:var(--t-micro); color:var(--ink-soft); }
+
+  /* ============================================================
+     PRACTICE — the About section, built as a drawing title block.
+     A title block is literally the corner of a sheet where a practice
+     states who it is, so credentials belong here as tabulated facts
+     rather than adjectives. Logos sit silent underneath, no "trusted
+     by" headline over the top.
+     ============================================================ */
+  .practice{ padding:var(--s8) 0 var(--s7); background:var(--stone-dim); }
+  /* Explicit rows so the portrait can stand full height beside the
+     text while the fact table tucks under it. Source is 1536x2048, so
+     it's given its native 3:4 and left to be tall - cropping a
+     portrait into a landscape well would waste the one photograph on
+     the page that has a person in it. */
+  .practice .lead{ grid-column:1 / 7; grid-row:1; }
+  .practice .portrait{ grid-column:8 / 12; grid-row:1 / span 2; align-self:start; }
+  .practice .portrait img{ width:100%; height:auto; aspect-ratio:3/4; object-fit:cover; display:block; }
+  .practice .portrait .cap{
+    margin-top:var(--s3); font-size:var(--t-micro); color:var(--ink-soft);
+  }
+  .practice .lead h2{ font-size:var(--t-h2); margin-bottom:var(--s4); }
+  /* 72ch lands at ~612px, which is where "Who's behind this." ends at
+     full size — so the body and the heading share a right edge instead
+     of the copy stopping 246px short of it. The old 44ch cap was a
+     readability default applied without checking what it was sitting
+     under. Below ~1200px the column itself is narrower than 72ch and
+     takes over, so this never overruns the well. */
+  .practice .lead p{
+    font-size:var(--t-body); color:var(--ink-70);
+    max-width:72ch; margin-bottom:var(--s4);
+  }
+
+  .block{ grid-column:1 / 7; grid-row:2; border-top:1px solid var(--rule); margin-top:var(--s6); }
+  .block dl{ display:grid; grid-template-columns:minmax(88px,32%) 1fr; }
+  .block dt,.block dd{ padding:13px 0; border-bottom:1px solid var(--rule); font-size:var(--t-small); }
+  .block dt{ color:var(--ink-soft); }
+  .block dd{ color:var(--slate); }
+
+  .clients{ grid-column:1 / 13; grid-row:3; margin-top:var(--s7); }
+  .clients .rule{ width:100%; height:1px; background:var(--rule); margin-bottom:var(--s5); }
+  .clients .marks{
+    display:grid; grid-template-columns:repeat(5,1fr); gap:var(--s5) var(--s4); align-items:center;
+  }
+  /* Real client marks. Each asset is pre-processed to a single ink
+     colour on a common 400x140 transparent box, with the mark scaled
+     so every logo carries roughly the same ink area — a wordmark like
+     CLARINS and a stacked lockup like AUTOGRAPH COLLECTION otherwise
+     read at wildly different weights on the same row. Because the
+     padding is baked into the asset, the CSS is just a box: no
+     per-logo exceptions to maintain. */
+  .clients .marks img{
+    display:block; width:100%; max-width:200px; justify-self:center;
+    height:auto; opacity:.60;
+    transition:opacity 260ms var(--ease);
+  }
+  .clients .marks img:hover{ opacity:1; }
+  .clients .cohort{
+    font-size:var(--t-micro); letter-spacing:.06em; text-transform:uppercase;
+    color:var(--ink-soft); margin-bottom:var(--s4);
+  }
+  @media (max-width:900px){
+    .clients .marks{ grid-template-columns:repeat(2,1fr); gap:var(--s4) var(--s3); }
+    .clients .marks img{ max-width:150px; }
+  }
+
+  /* ============================================================
+     CONTENTS — drag-to-pan. Native horizontal scroll underneath (so
+     keyboard, trackpad and touch all work), pointer-drag layered on.
+     ============================================================ */
+  .contents{ padding:var(--s8) 0 var(--s7); background:var(--stone-dim); overflow:hidden; }
+  .contents .head{ grid-column:1 / 9; margin-bottom:var(--s6); }
+  .contents .head h2{ font-size:var(--t-h2); }
+  .contents .head p{ margin-top:var(--s3); font-size:var(--t-small); color:var(--ink-70); max-width:44ch; }
+  .track{
+    display:flex; gap:1px; background:var(--rule); overflow-x:auto; cursor:grab;
+    scrollbar-width:none; padding-left:max(var(--s5),calc(var(--frame) + var(--s4)));
+    scroll-snap-type:x proximity;
+  }
+  .track::-webkit-scrollbar{ display:none; }
+  .track.dragging{ cursor:grabbing; scroll-snap-type:none; }
+  .track.dragging *{ user-select:none; }
+  .card{
+    flex:0 0 auto; width:min(400px,78vw); background:var(--stone-dim);
+    padding:var(--s5) var(--s5) var(--s6); scroll-snap-align:start;
+  }
+  .card:last-child{ margin-right:var(--s5); }
+  .card .ref{ font-size:var(--t-micro); color:var(--ink-soft); margin-bottom:var(--s5); }
+  .card h3{ font-size:var(--t-h3); margin-bottom:var(--s3); letter-spacing:-.025em; }
+  .card p{ font-size:var(--t-small); color:var(--ink-70); }
+  .card-shot{ aspect-ratio:5/3; margin-bottom:var(--s4); background:var(--stone); overflow:hidden; }
+  .card-shot img{ filter:grayscale(.4) contrast(1.05); transition:transform 700ms var(--ease); }
+  .card:hover .card-shot img{ transform:scale(1.04); }
+
+  /* ============================================================
+     ASSESSMENT — the qualifying quiz. Kept intact, restaged on the
+     grid: prompt on the left, answers on the right, so it reads as a
+     form being filled rather than a centered card.
+     ============================================================ */
+  .assess{ background:var(--olive); color:var(--light); padding:var(--s8) 0; }
+  .assess .head{ grid-column:1 / 7; }
+  .assess .head h2{ font-size:var(--t-h2); }
+  .assess .head p{ margin-top:var(--s3); font-size:var(--t-small); color:var(--light-80); max-width:36ch; }
+  .assess .head .count{ margin-top:var(--s6); font-size:var(--t-micro); color:var(--light-50); font-variant-numeric:tabular-nums; }
+  .assess .head .bar{ margin-top:var(--s2); width:120px; height:1px; background:var(--light-18); }
+  .assess .head .bar i{ display:block; height:100%; width:0%; background:var(--light); transition:width var(--med) var(--ease); }
+
+  .assess .panelwrap{ grid-column:7 / 13; min-height:340px; position:relative; }
+  .qp{ opacity:0; visibility:hidden; position:absolute; inset:0;
+       transition:opacity 260ms linear, transform 260ms var(--ease); transform:translateY(10px); }
+  .qp.on{ opacity:1; visibility:visible; position:relative; transform:none; }
+  .qp .q{ font-size:var(--t-lead); font-weight:700; letter-spacing:-.02em; margin-bottom:var(--s5); max-width:34ch; line-height:1.2; }
+  .opt{
+    display:block; width:100%; text-align:left; background:none; color:inherit;
+    font-family:inherit; font-size:var(--t-small); padding:18px 0;
+    border:none; border-bottom:1px solid var(--light-18); cursor:pointer;
+    transition:padding-left var(--fast) var(--ease), border-color var(--fast) linear;
+  }
+  .opt:first-of-type{ border-top:1px solid var(--light-18); }
+  .opt:hover{ padding-left:14px; border-color:var(--light); }
+
+  .result{ display:none; }
+  .result.on{ display:block; }
+  .result .verdict{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s3); }
+  .result h3{ font-size:var(--t-h3); margin-bottom:var(--s3); }
+  .result p{ font-size:var(--t-small); color:var(--light-80); max-width:44ch; margin-bottom:var(--s5); }
+  .result .scale{ display:flex; align-items:center; gap:var(--s3); margin-bottom:var(--s5); }
+  .result .scale .track2{ flex:1; height:1px; background:var(--light-18); position:relative; }
+  .result .scale .track2 i{ position:absolute; left:0; top:0; height:100%; width:0%; background:var(--light);
+                            transition:width 900ms var(--ease); }
+  .result .scale b{ font-size:var(--t-micro); font-variant-numeric:tabular-nums; font-weight:700; }
+  /* Per-dimension diagnostic. Computed from the actual answers, so it
+     tells them something they didn't already type in. */
+  .result .diag{ border-top:1px solid var(--light-18); margin-bottom:var(--s5); }
+  .result .diag div{
+    display:flex; justify-content:space-between; align-items:baseline; gap:var(--s3);
+    padding:11px 0; border-bottom:1px solid var(--light-18); font-size:var(--t-small);
+  }
+  .result .diag .lbl{ color:var(--light-50); }
+  .result .diag .val{ font-weight:700; }
+  .result .diag .val.weak{ color:var(--light); }
+  .result .bench{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s5); display:none; }
+  .result .bench.on{ display:block; }
+  .result .acts{ display:flex; align-items:center; gap:var(--s4); flex-wrap:wrap; }
+  #callCta{ display:none; }
+  #callCta.on{ display:inline-block; }
+
+  /* ============================================================
+     GATE — copy left, form right. Not a centered 400px column.
+     ============================================================ */
+  .gate{ background:var(--slate); color:var(--light); padding:var(--s8) 0; }
+  .gate .pitch{ grid-column:1 / 6; }
+  .gate .pitch h2{ font-size:var(--t-h2); margin-bottom:var(--s4); }
+  .gate .pitch p{ font-size:var(--t-body); color:var(--light-80); max-width:34ch; }
+  .gate .pitch ul{ list-style:none; margin-top:var(--s6); border-top:1px solid var(--light-18); }
+  .gate .pitch li{ padding:14px 0; border-bottom:1px solid var(--light-18); font-size:var(--t-small); color:var(--light-80); }
+  .gate .form{ grid-column:7 / 12; }
+
+  .field{ margin-bottom:var(--s5); position:relative; }
+  .field label{ display:block; font-size:var(--t-micro); color:var(--light-50); margin-bottom:6px; }
+  .field input{
+    width:100%; background:none; border:none; border-bottom:1px solid var(--light-18);
+    color:var(--light); font-family:inherit; font-size:var(--t-lead); padding:8px 0; outline:none;
+    transition:border-color var(--fast) linear;
+  }
+  .field input::placeholder{ color:var(--light-50); }
+  .field input:focus{ border-color:var(--light); }
+  .err{ font-size:var(--t-micro); color:var(--terracotta); margin-top:8px; display:none; }
+  .field.bad .err{ display:block; }
+  .field.bad input{ border-color:var(--terracotta); }
+
+  /* Four fields plus the s8 gutters run the gate sheet to roughly 830px.
+     That clears a 900px viewport but overflows a 768-800px laptop, and
+     this sheet is a snap stop - an overflowing stop scrolls to the wrong
+     place. Tighten the rhythm rather than let the stop drift. */
+  @media (min-width:901px) and (max-height:860px){
+    .gate{ padding:var(--s7) 0; }
+    .field{ margin-bottom:var(--s4); }
+    .gate .pitch ul{ margin-top:var(--s5); }
+  }
+  .submit{ width:100%; margin-top:var(--s3); }
+  .fineprint{ margin-top:var(--s4); font-size:var(--t-micro); color:var(--light-50); }
+
+  .sent{ display:none; }
+  .sent.on{ display:block; }
+  .sent h3{ font-size:var(--t-h3); margin-bottom:var(--s3); }
+  .sent p{ font-size:var(--t-small); color:var(--light-80); margin-bottom:var(--s5); max-width:38ch; }
+
+  /* ============================================================
+     TAILPIECE
+     ============================================================ */
+  .tail{ padding:var(--s8) 0 var(--s7); background:var(--stone); }
+  .tail .msg{ grid-column:1 / 8; }
+  .tail h2{ font-size:var(--t-h2); margin-bottom:var(--s4); }
+  .tail p{ font-size:var(--t-body); color:var(--ink-70); max-width:38ch; margin-bottom:var(--s5); }
+  footer{ padding:var(--s5) 0 var(--s7); }
+  footer .grid > div{ grid-column:1 / 13; display:flex; justify-content:space-between;
+                      border-top:1px solid var(--rule); padding-top:var(--s3);
+                      font-size:var(--t-micro); color:var(--ink-soft); flex-wrap:wrap; gap:var(--s3); }
+
+  /* ============================================================
+     RESPONSIVE — asymmetric spans collapse to single column.
+     ============================================================ */
+  @media (max-width:900px){
+    :root{ --frame:12px; }
+    .grid{ gap:var(--s3); padding:0 var(--s4); }
+    .hero-title,.hero-meta,.hero-cta,
+    .conditions .head,.conditions .list,.conditions .turn,
+    .casenote .body,
+    .roadmap .head,.rows,
+    .contents .head,
+    .assess .head,.assess .panelwrap,
+    .practice .lead,.practice .block,.practice .clients,.practice .portrait,
+    .gate .pitch,.gate .form,
+    .tail .msg,
+    .plate .cap .grid > div,
+    footer .grid > div{ grid-column:1 / 13; }
+    .conditions,.casenote,.practice{ padding-top:var(--s7); padding-bottom:var(--s6); }
+    /* Explicit rows are a desktop-only arrangement; let them reflow. */
+    .practice .lead,.practice .portrait,.practice .block,.practice .clients{ grid-row:auto; }
+    .practice .portrait{ max-width:300px; margin-bottom:var(--s5); }
+    .conditions .head{ margin-bottom:var(--s5); }
+    .casenote .body{ margin-top:var(--s4); }
+    .practice .block{ margin-top:var(--s6); }
+    .practice .clients{ margin-top:var(--s6); }
+    .roadmap,.contents,.assess,.gate,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
+    .roadmap .head,.contents .head{ margin-bottom:var(--s5); }
+    .row-btn{ grid-template-columns:38px 1fr 22px; }
+    .row-dim{ display:none; }
+    .row-body p{ padding-left:calc(38px + var(--s3)); }
+    .assess .panelwrap{ margin-top:var(--s6); min-height:0; }
+    .gate .form{ margin-top:var(--s6); }
+    .plumb{ display:none; }
+    .readout{ display:none; }
+    /* No scrub on phones. 3.7MB of frames on mobile data for a
+       background, plus a pinned section fighting the address bar,
+       isn't a trade worth making. Mobile collapses the scroll region
+       and plays the 0.5MB looping cut instead. */
+    .heroScroll{ height:auto; }
+    .heroBg{ position:relative; height:100dvh; }
+    .heroPanels{ margin-top:-100dvh; }
+    .hpanel-hold{ display:none; }
+    /* Only the title panel still sits over the footage here. The two
+       below it scroll past the video entirely, so they carry their own
+       dark ground rather than leaving light type on a light page. */
+    .heroPanels .conditions{
+      min-height:0; display:block; background:var(--slate);
+      padding:var(--s7) 0 var(--s6);
+    }
+  }
+
+  /* ============================================================
+     REDUCED MOTION
+     ============================================================ */
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{
+      animation-duration:.01ms !important; animation-iteration-count:1 !important;
+      transition-duration:.01ms !important; scroll-behavior:auto !important;
+    }
+    /* No snapping and no fading. Content stays fully visible and each
+       section keeps its own colour; the script already skips both
+       effects, this just makes sure nothing is left mid-state. */
+    section[data-fade]{ opacity:1 !important; }
+    .masthead .mh-label,.masthead .mh-cta{ transition:none !important; }
+    .hero-title .ln > span{ transform:none !important; clip-path:none !important; }
+    .hero-meta,.hero-cta{ opacity:1 !important; transform:none !important; }
+    .plumb-fill{ transform:scaleY(1); }
+  }
+</style>
+</head>
+<body>
+
+<div id="bgLayer" aria-hidden="true"></div>
+
+<div class="sheet" id="sheet"></div>
+<div class="plumb"><div class="plumb-fill" id="plumbFill"></div><div class="plumb-bead" id="plumbBead"></div></div>
+
+<div class="masthead" id="masthead">
+  <span class="mh-mark">INCO Studio</span>
+  <span class="mh-right">
+    <span class="mh-label">The Expansion Playbook</span>
+    <a class="mh-cta" href="#s-gate">Get the playbook</a>
+  </span>
+</div>
+
+<div class="readout" id="readout">
+  <span class="rd-num" id="rdNum">01</span>
+  <span class="rd-rule"></span>
+  <span id="rdName">Cover</span>
+</div>
+
+<!-- ============================================================
+     HERO — the title sits low and left against the gradient Jayson
+     tuned himself (speed .14 / grain .01 / warp .85). Kept from the
+     earlier build because it's his call and it works; everything
+     around it is recomposed.
+     ============================================================ -->
+<div class="heroScroll" id="heroScroll">
+
+  <!-- Sticky media layer. One portrait still, taller than the
+       viewport, panned by scroll. Replaces the 97-frame AVIF sequence
+       and the video fallback that went with it; the frames and mp4s
+       are still on disk if you ever want them back. -->
+  <div class="heroBg">
+    <div class="hero-media">
+      <picture>
+        <source media="(max-width:900px)" srcset="media/hero-still-1000.webp" type="image/webp">
+        <source media="(max-width:900px)" srcset="media/hero-still-1000.jpg">
+        <source srcset="media/hero-still-1600.webp" type="image/webp">
+        <img id="heroStill" src="media/hero-still-1600.jpg" alt="" fetchpriority="high" decoding="async">
+      </picture>
+    </div>
+  </div>
+
+  <!-- Text layer, pulled back over the sticky media. These panels
+       scroll normally; the footage underneath does not move. -->
+  <div class="heroPanels">
+
+<section class="hero hpanel" id="s-hero" data-sheet="01" data-name="Cover" data-dark>
+  <div class="grid">
+    <div class="hero-title">
+      <h1>
+        <span class="ln"><span>The</span></span>
+        <span class="ln"><span>Expansion</span></span>
+        <span class="ln"><span class="thin">Playbook</span></span>
+      </h1>
+    </div>
+    <div class="hero-meta">
+      <div class="rule"></div>
+      <p>You're thinking about a second venue. This is what we'd want you to know before you sign.</p>
+    </div>
+    <div class="hero-cta">
+      <a href="#s-assess" class="btn">Take the readiness check</a>
+      <a href="#s-gate" class="link">Skip to the download</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONDITIONS — the recognition block, and the reason the case note
+     below now works harder. A third-person cautionary tale lets the
+     reader off the hook ("that guy picked a bad site, I wouldn't").
+     These three
+     statements are second person, present tense, and offer no exit.
+     Recognition first, then evidence.
+
+     Content is Jayson's selection. All three are true of the audience
+     and two of them (the risk asymmetry, the incentive mismatch) are
+     things nobody else sending these operators an email will say.
+     ============================================================ -->
+<section class="conditions" id="s-conditions" data-sheet="02" data-name="Conditions">
+  <div class="grid">
+    <div class="head">
+      <p class="lede-line"><span>Your first try is built on belief.</span><span>Your second is built on proof.</span></p>
+      <h2>Opening one venue and running two are different businesses.</h2>
+    </div>
+    <div class="list">
+      <p>If the second site doesn't work, it doesn't fail on its own. It takes the first one's cash down with it.</p>
+      <p>Everyone at that table gets paid whether it works or not. The agent, the shopfitter, the lawyer. You're the only one signing the lease.</p>
+      <p>The agents who didn't return your calls three years ago are calling you now. That's flattering enough to be dangerous.</p>
+    </div>
+    <p class="turn">None of this means don't do it. It means doing it deliberately, instead of on momentum.</p>
+  </div>
+</section>
+
+  <!-- Final beat: the finished drawing, alone, nothing over it.
+       This is what "utilise the full extent of the video" buys - the
+       completed linework gets a screen of its own before the pin
+       releases, instead of being covered by type the whole way. -->
+  <div class="hpanel hpanel-hold" aria-hidden="true"></div>
+</div>
+</div>
+
+
+<!-- ============================================================
+     PLATE — real agitation copy from Chapter 1, trimmed.
+     Photography is still a picsum placeholder pending real INCO
+     project images (the book has usable shots).
+     ============================================================ -->
+<section class="plate" id="s-plate" data-bg="slate" data-snap data-sheet="03" data-name="Reality check" data-dark>
+  <picture>
+    <source media="(max-width:900px)" srcset="media/plate-1000.webp" type="image/webp">
+    <source media="(max-width:900px)" srcset="media/plate-1000.jpg">
+    <source srcset="media/plate-1600.webp" type="image/webp">
+    <img src="media/plate-1600.jpg" alt="Interior of a completed INCO hospitality fitout" decoding="async">
+  </picture>
+  <div class="cap">
+    <div class="grid">
+      <div>
+        <h2>It rarely fails loudly.</h2>
+        <p>It creeps. Your ops start straining, your margins thin, and you quietly absorb the difference. By the time it's obvious enough to act on, you've already paid for it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CASE NOTE — the venue that closed. Jayson's own account, from
+     Chapter 2 ("The postcode syndrome"), still in his voice.
+
+     Moved up to sit directly under "It rarely fails loudly" so the
+     pain lands before the roadmap rather than after it: the abstract
+     claim on the plate above is immediately cashed out as a specific
+     business that shut. Spelled out further than the book does, but
+     only with facts the book supplies - seven years, two profitable
+     venues, a premium address, closed in two - because the frightening
+     part is that the operator was experienced, not that he was
+     careless. No invented figures.
+
+     This is also the strongest credibility asset on the page precisely
+     because it's a loss: proof INCO says the inconvenient thing, which
+     no testimonial wall can imitate.
+     ============================================================ -->
+<section class="casenote" id="s-case" data-fade data-bg="stone" data-snap data-sheet="04" data-name="Case note">
+  <div class="grid">
+    <div class="body">
+      <blockquote>A client of mine had two successful venues in the Sydney CBD. After seven years he opened a third, in a premium Westfield food hall. That venue closed after two years.</blockquote>
+      <p class="after">He wasn't guessing. Seven years of trading, two profitable sites, a product people already queued for, and the best address he'd ever signed for. None of that was enough.</p>
+      <p class="after">The tenancy inside the centre was tucked away, and the foot traffic that walked past it was not the traffic his product was built for. The address looked impressive on paper and did nothing at the till. By the time that was obvious, the fitout was spent, two years of trading had gone, and the lease didn't end just because the doors did.</p>
+      <p class="after">Status is not a strategy. Working out why a site is the right one is a cheap question to answer before you sign, and an expensive one afterwards.</p>
+      <p class="sign">Jayson Lee, Director</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ROADMAP — the book's five pressure-test ideas, as dimensioned
+     rows. Opening a row is a user action, so the motion is answering
+     input rather than performing on scroll.
+     ============================================================ -->
+<section class="roadmap" id="s-roadmap" data-fade data-bg="slate" data-snap data-sheet="05" data-name="The roadmap" data-dark>
+  <div class="grid">
+    <div class="head">
+      <h2><span>Five questions worth answering</span><span>before you sign anything.</span></h2>
+      <p>These are the ones we'd put to you before you committed to a site.</p>
+    </div>
+    <div class="rows" id="rows">
+
+      <div class="row open">
+        <button class="row-btn" aria-expanded="true">
+          <span class="row-idx">01</span>
+          <span class="row-name">Brand</span>
+          <span class="row-dim"><span></span></span>
+          <span class="row-plus"></span>
+        </button>
+        <div class="row-body"><div><p>Know where the brand is going before you know where the site is. A clear three or five year direction turns site decisions into assessments instead of reactions to whatever the agent just called about.</p></div></div>
+      </div>
+
+      <div class="row">
+        <button class="row-btn" aria-expanded="false">
+          <span class="row-idx">02</span>
+          <span class="row-name">Systems</span>
+          <span class="row-dim"><span></span></span>
+          <span class="row-plus"></span>
+        </button>
+        <div class="row-body"><div><p>Growth doesn't fix weak systems, it amplifies them. If parts of the business depend on you being physically present, a second site puts pressure on exactly those parts. Build the back end and hire your second-in-charge before you need them.</p></div></div>
+      </div>
+
+      <div class="row">
+        <button class="row-btn" aria-expanded="false">
+          <span class="row-idx">03</span>
+          <span class="row-name">Numbers</span>
+          <span class="row-dim"><span></span></span>
+          <span class="row-plus"></span>
+        </button>
+        <div class="row-body"><div><p>Confidence and instinct get you started. Hard numbers keep you open. Lease cost as a percentage of the revenue you're forecasting, average sale value, and a real payback period, worked out before capital is committed rather than after.</p></div></div>
+      </div>
+
+      <div class="row">
+        <button class="row-btn" aria-expanded="false">
+          <span class="row-idx">04</span>
+          <span class="row-name">Market</span>
+          <span class="row-dim"><span></span></span>
+          <span class="row-plus"></span>
+        </button>
+        <div class="row-body"><div><p>Your offer doesn't automatically travel. Every neighbourhood has its own habits and spending patterns, and a product thriving in the CBD can struggle in the suburbs. The site needs a demographic that fits what you sell, not just an address that sounds impressive.</p></div></div>
+      </div>
+
+      <div class="row">
+        <button class="row-btn" aria-expanded="false">
+          <span class="row-idx">05</span>
+          <span class="row-name">Identity</span>
+          <span class="row-dim"><span></span></span>
+          <span class="row-plus"></span>
+        </button>
+        <div class="row-body"><div><p>Same brand or a fresh one. Repetition builds trust but demands consistency; a separate identity buys flexibility but doubles the work. Decide deliberately which one you're building before the signage goes up.</p></div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTENTS — drag to pan. Native overflow scroll underneath so
+     keyboard, trackpad and touch all work; pointer-drag layered on
+     top as an enhancement.
+     ============================================================ -->
+<section class="contents" id="s-contents" data-fade data-bg="stone-dim" data-snap data-sheet="06" data-name="Contents">
+  <div class="grid">
+    <div class="head">
+      <h2>What's in the set</h2>
+      <p>Not theory. The actual checklists and contacts we work from. Drag to look through.</p>
+    </div>
+  </div>
+  <!-- Cards run in the book's own order (ch2, ch4, bonus 1, bonus 2).
+       They were previously ch4, bonus1, ch2, bonus2, which read as
+       shuffled - and on a page framed as a drawing set, where sheet
+       order is the whole conceit, out-of-sequence references undercut
+       the device. -->
+  <div class="track" id="track">
+    <article class="card">
+      <div class="card-shot"><img src="https://picsum.photos/seed/inco-services-plant/800/480" alt=""></div>
+      <div class="ref">Chapter two</div>
+      <h3>The pitfalls we watch for</h3>
+      <p>Power capacity, exhaust provision and drainage turn a promising site into a money pit faster than any design decision. What to check, and what to make the landlord fix first.</p>
+    </article>
+    <article class="card">
+      <div class="card-shot"><img src="https://picsum.photos/seed/inco-lease-doc/800/480" alt=""></div>
+      <div class="ref">Chapter four</div>
+      <h3>The site-fit checklist</h3>
+      <p>Site and lease, site services, brand and market, operations, interior design. The categories worth ticking off before you sign, including the three that quietly kill fitouts.</p>
+    </article>
+    <article class="card">
+      <div class="card-shot"><img src="https://picsum.photos/seed/inco-team-table/800/480" alt=""></div>
+      <div class="ref">Bonus one</div>
+      <h3>Build your A-team</h3>
+      <p>Tenant rep, commercial lawyer, certifier, kitchen consultant, shopfitter, POS. Who you need, what each one actually does, and when they need to be in the room.</p>
+    </article>
+    <article class="card">
+      <div class="card-shot"><img src="https://picsum.photos/seed/inco-contacts-page/800/480" alt=""></div>
+      <div class="ref">Bonus two</div>
+      <h3>Our go-to team</h3>
+      <p>The people we call ourselves. Borrow the list, so you're not working out mid-project who you should have rung three months ago.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============================================================
+     ASSESSMENT — the qualifying quiz, logic unchanged from the
+     previous build, restaged across the grid. Ready-now scorers get
+     a route to a conversation as well as the download.
+     ============================================================ -->
+<section class="assess" id="s-assess" data-fade data-bg="olive" data-snap data-sheet="07" data-name="Readiness" data-dark>
+  <div class="grid">
+    <div class="head">
+      <h2>Are you actually ready?</h2>
+      <p>Four questions, no email until the end. Answer them honestly — the flattering answer won't help you.</p>
+      <div class="count"><span id="qCount">Question 1 of 4</span></div>
+      <div class="bar"><i id="qBar"></i></div>
+    </div>
+
+    <div class="panelwrap">
+      <div class="qp on" data-q="1">
+        <p class="q">Does your first venue run profitably when you're not physically there?</p>
+        <button class="opt" data-score="2">Yes, it holds up without me</button>
+        <button class="opt" data-score="1">Mostly, with some hands-on days</button>
+        <button class="opt" data-score="0">No, I'm still the glue</button>
+      </div>
+      <div class="qp" data-q="2">
+        <p class="q">Is your brand written down, or does it live in your head?</p>
+        <button class="opt" data-score="2">Documented properly</button>
+        <button class="opt" data-score="1">Partly, some of it</button>
+        <button class="opt" data-score="0">In my head</button>
+      </div>
+      <div class="qp" data-q="3">
+        <p class="q">Have you scoped a real budget for site two, or is it still a guess?</p>
+        <button class="opt" data-score="2">Quoted and scoped</button>
+        <button class="opt" data-score="1">A rough range</button>
+        <button class="opt" data-score="0">Not yet</button>
+      </div>
+      <div class="qp" data-q="4">
+        <p class="q">When would you want the next site open?</p>
+        <button class="opt" data-score="2">Within six months</button>
+        <button class="opt" data-score="1">Six to eighteen months</button>
+        <button class="opt" data-score="0">No fixed timeline</button>
+      </div>
+
+      <div class="result" id="result">
+        <p class="verdict" id="verdict">Result</p>
+        <h3 id="rTitle"></h3>
+        <div class="scale">
+          <div class="track2"><i id="rFill"></i></div>
+          <b id="rScore">0/8</b>
+        </div>
+        <!-- Per-dimension breakdown, built from the four answers. This is
+             the part that makes the result worth reading: it tells them
+             which of the roadmap's dimensions is their weak one, which
+             they didn't explicitly type in. -->
+        <div class="diag" id="rDiag"></div>
+        <!-- Cohort benchmark. Stays hidden until COHORT_AVG is set to a
+             real number in the script below; nothing invented ships. -->
+        <p class="bench" id="rBench"></p>
+        <p id="rDesc"></p>
+        <div class="acts">
+          <a href="#s-gate" class="btn btn-pale">Get my copy</a>
+          <a href="#" onclick="return false;" class="link" id="callCta">Book a call (demo link)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PRACTICE — the About section, as a drawing title block. Sits
+     immediately before the ask, which is where proof does the most
+     work. Credentials are tabulated as facts (founded, based,
+     recognition) rather than written as claims: "two Better Future
+     Australia design awards" carries more than "award-winning", and
+     the studio's own voice rule is specificity over declaration.
+
+     The client marks below are the real supplied logos, flattened to
+     one ink colour and optically size-matched. Labelled
+     "Collaborators" rather than "Trusted by": the first is a
+     statement of fact, the second asks the reader to feel something
+     about it.
+     ============================================================ -->
+<section class="practice" id="s-practice" data-fade data-bg="stone-dim" data-snap data-sheet="08" data-name="Practice">
+  <div class="grid">
+    <div class="portrait">
+      <picture>
+        <source srcset="media/portrait-900.webp" type="image/webp">
+        <img src="media/portrait-900.jpg" alt="Jayson Lee, Director of INCO Studio" loading="lazy" decoding="async">
+      </picture>
+      <p class="cap">Jayson Lee, Director</p>
+    </div>
+
+    <div class="lead">
+      <h2>Who you'd be working with.</h2>
+      <p>Founder and Design Leader of INCO Studio, Jayson draws from his diverse background and years of experience in Europe, Asia and Australia. His projects stretch across multiple sectors.</p>
+      <p>Over the past 15 years, Jayson has honed his craft across Sydney and London, specialising in multi-faceted design disciplines including branding, hospitality, retail, and residential projects.</p>
+      <p>His dedication to understanding the interplay between design and human behaviour has guided his projects towards fostering meaningful connections and creating spaces where individual stories can unfold.</p>
+    </div>
+
+    <div class="block">
+      <dl>
+        <dt>Founded</dt><dd>2019, Sydney</dd>
+        <dt>Practice</dt><dd>Hospitality design, interior architecture, brand strategy, expansion planning</dd>
+        <dt>Recognition</dt><dd>Two-time winner, Better Future Australia Design Awards (Hospitality)</dd>
+        <dt>Director</dt><dd>Jayson Lee</dd>
+      </dl>
+    </div>
+
+    <div class="clients">
+      <div class="rule"></div>
+      <p class="cohort">Collaborators</p>
+      <div class="marks">
+        <img src="media/logos/luxottica.png"  width="400" height="140" alt="Luxottica" loading="lazy" decoding="async">
+        <img src="media/logos/panpacific.png" width="400" height="140" alt="Pan Pacific" loading="lazy" decoding="async">
+        <img src="media/logos/autograph.png"  width="400" height="140" alt="Autograph Collection Hotels" loading="lazy" decoding="async">
+        <img src="media/logos/laderach.png"   width="400" height="140" alt="Läderach Switzerland" loading="lazy" decoding="async">
+        <img src="media/logos/qic.png"        width="400" height="140" alt="QIC" loading="lazy" decoding="async">
+        <img src="media/logos/peninsula.png"  width="400" height="140" alt="The Peninsula Hotels" loading="lazy" decoding="async">
+        <img src="media/logos/scentre.png"    width="400" height="140" alt="Scentre Group" loading="lazy" decoding="async">
+        <img src="media/logos/clarins.png"    width="400" height="140" alt="Clarins" loading="lazy" decoding="async">
+        <img src="media/logos/dulcet.png"     width="400" height="140" alt="Dulcet" loading="lazy" decoding="async">
+        <img src="media/logos/duoduo.png"     width="400" height="140" alt="Duo Duo" loading="lazy" decoding="async">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     GATE — copy left, form right.
+     ============================================================ -->
+<section class="gate" id="s-gate" data-fade data-bg="slate" data-snap data-sheet="09" data-name="Download" data-dark>
+  <div class="grid">
+    <div class="pitch">
+      <h2>Where should we send it?</h2>
+      <p>Sixteen pages, drawn from real projects — including the ones that didn't work.</p>
+      <ul>
+        <li>The five-part expansion roadmap</li>
+        <li>The site-fit checklist</li>
+        <li>The A-team roster and go-to contacts</li>
+      </ul>
+    </div>
+
+    <div class="form">
+      <div id="formWrap">
+        <form id="playbookForm" novalidate>
+          <div class="field" id="fName">
+            <label for="iName">Name</label>
+            <input id="iName" type="text" name="name" placeholder="Your name" required>
+            <div class="err">Enter your name.</div>
+          </div>
+          <div class="field" id="fEmail">
+            <label for="iEmail">Email</label>
+            <input id="iEmail" type="email" name="email" placeholder="you@venue.com" required>
+            <div class="err">Enter a valid email.</div>
+          </div>
+          <div class="field" id="fPhone">
+            <label for="iPhone">Phone</label>
+            <input id="iPhone" type="tel" name="phone" inputmode="tel" autocomplete="tel"
+                   placeholder="04XX XXX XXX" required aria-describedby="ePhone">
+            <div class="err" id="ePhone">Enter a contact number.</div>
+          </div>
+          <div class="field" id="fCo">
+            <label for="iCo">Venue or company</label>
+            <input id="iCo" type="text" name="company" placeholder="Where you operate" required>
+            <div class="err">Enter your venue or company.</div>
+          </div>
+          <button type="submit" class="btn submit" id="submitBtn">Send me the playbook</button>
+          <p class="fineprint">No spam, just the playbook.</p>
+        </form>
+        <!-- Hidden: the quiz result travels with the lead to the CRM.
+             A visitor doesn't need to read their own scoring tag. -->
+        <p style="display:none;">Segment: <strong id="segTag">not-taken</strong></p>
+      </div>
+
+      <div class="sent" id="sent">
+        <h3>Sent.</h3>
+        <p>Check your inbox, The Expansion Playbook is on its way.</p>
+        <a class="btn btn-pale" href="#" onclick="return false;">Download now (demo link)</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TAILPIECE — the other readiness path.
+     ============================================================ -->
+<section class="tail" id="s-tail" data-fade data-bg="stone" data-snap data-sheet="10" data-name="Contact">
+  <div class="grid">
+    <div class="msg">
+      <h2>Already deep in a lease negotiation?</h2>
+      <p>Then skip the download. If you're testing a site this week, it's faster to just talk it through.</p>
+      <a href="#" onclick="return false;" class="btn">Book a call (demo link)</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="grid">
+    <div>
+      <span>INCO Studio, Sydney</span>
+      <span>Prototype for internal review, not for public use</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
+
+<script>
+var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+
+/* ============================================================
+   SHEET READOUT + FRAME INVERSION
+   The frame, masthead and readout invert over dark sections. The
+   readout reports which sheet you're on: wayfinding, not chrome.
+   ============================================================ */
+(function () {
+  var sections = Array.prototype.slice.call(document.querySelectorAll("section[data-sheet]"));
+  var rdNum = document.getElementById("rdNum");
+  var rdName = document.getElementById("rdName");
+  var sheet = document.getElementById("sheet");
+  var masthead = document.getElementById("masthead");
+  var readout = document.getElementById("readout");
+  if (!sections.length || !("IntersectionObserver" in window)) return;
+
+  var current = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      if (current === e.target) return;
+      current = e.target;
+      rdNum.textContent = e.target.dataset.sheet;
+      rdName.textContent = e.target.dataset.name;
+      var dark = e.target.hasAttribute("data-dark");
+      sheet.classList.toggle("sheet-dark", dark);
+      masthead.classList.toggle("on-dark", dark);
+      readout.classList.toggle("on-dark", dark);
+    });
+  }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
+  sections.forEach(function (s) { obs.observe(s); });
+})();
+
+/* ============================================================
+   BACKGROUND CROSSFADE + CONTENT FADE + MASTHEAD SWAP
+
+   Three effects that only work because they run together. The
+   background bleeds from one section's colour to the next over a
+   band of scroll; the content of each section fades up as it arrives
+   and back down as it leaves; and because the copy is at zero in the
+   gap between pages, the colour change and the light/dark text
+   switch both happen while there is nothing readable on top of them.
+   Done separately, any one of the three would show its seams.
+   ============================================================ */
+(function () {
+  if (!window.gsap || !window.ScrollTrigger) return;
+
+  var css = getComputedStyle(document.documentElement);
+  function hex(name) {
+    var h = css.getPropertyValue(name).trim().replace("#", "");
+    if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+  }
+  var COLORS = {
+    "stone": hex("--stone"), "stone-dim": hex("--stone-dim"),
+    "slate": hex("--slate"), "olive": hex("--olive")
+  };
+
+  var bgLayer = document.getElementById("bgLayer");
+
+  /* ------------------------------------------------------------
+     CONTENT FADE
+
+     One trigger per section spanning its whole passage through the
+     viewport, with opacity COMPUTED from progress rather than
+     animated toward a target.
+
+     The earlier version used two tweens per section, a fade-in and a
+     fade-out, both writing opacity on the same element. GSAP records
+     a tween's start value on first render and holds its end value
+     outside its own range, so going down worked and coming back up
+     the fade-out pinned the section at zero and the text vanished.
+     Two animations owning one property is the bug; a single pure
+     function of scroll position cannot have it, because up and down
+     are the same code path.
+     ------------------------------------------------------------ */
+  if (!reduce) {
+    document.querySelectorAll("[data-fade]").forEach(function (sec) {
+      var band = 0, total = 0;
+
+      function measure() {
+        total = window.innerHeight + sec.offsetHeight;
+        band = (window.innerHeight * 0.34) / total;   // fade distance as a fraction
+      }
+
+      function apply(p) {
+        var o;
+        if (p < band) o = p / band;                 // arriving
+        else if (p > 1 - band) o = (1 - p) / band;  // leaving
+        else o = 1;                                 // holding
+        sec.style.opacity = Math.max(0, Math.min(o, 1)).toFixed(3);
+      }
+
+      measure();
+      ScrollTrigger.create({
+        trigger: sec,
+        start: "top bottom",
+        end: "bottom top",
+        onRefresh: function (self) { measure(); apply(self.progress); },
+        onUpdate: function (self) { apply(self.progress); }
+      });
+    });
+
+    // The plate owns a photograph, so only its caption fades.
+    var cap = document.querySelector(".plate .cap");
+    if (cap) {
+      ScrollTrigger.create({
+        trigger: ".plate",
+        start: "top bottom",
+        end: "bottom top",
+        onRefresh: capFade,
+        onUpdate: capFade
+      });
+    }
+    function capFade(self) {
+      var p = self.progress, o;
+      if (p < 0.3) o = p / 0.3; else if (p > 0.85) o = (1 - p) / 0.15; else o = 1;
+      cap.style.opacity = Math.max(0, Math.min(o, 1)).toFixed(3);
+    }
+  }
+
+  /* ------------------------------------------------------------
+     BACKGROUND CROSSFADE
+
+     Same principle: one controller that works out the colour for the
+     current scroll position, instead of eight tweens all writing
+     backgroundColor and fighting over it on the way back up.
+
+     Each coloured section contributes a stop. The layer holds a
+     colour while that section owns the viewport centre, then blends
+     to the next over the last stretch before the handover.
+     ------------------------------------------------------------ */
+  if (bgLayer && !reduce) {
+    document.documentElement.classList.add("bg-xfade");
+
+    var stops = [];
+    function build() {
+      stops = [];
+      document.querySelectorAll("[data-bg]").forEach(function (sec) {
+        var c = COLORS[sec.dataset.bg];
+        if (!c) return;
+        stops.push({ y: sec.getBoundingClientRect().top + window.scrollY, c: c });
+      });
+      stops.sort(function (a, b) { return a.y - b.y; });
+      sizeBand();
+    }
+
+    /* Fixed-length, eased crossfade STRADDLING each boundary.
+
+       Two earlier attempts at this were wrong in instructive ways.
+       First: blending over "the last 45% of the gap between sections"
+       — but the roadmap runs 160vh and the tail 70vh, so the same 45%
+       meant 72vh of blend in one place and 31vh in another, and the
+       short ones read as a snap. Second: a fixed band, but measured
+       only on the approach to the boundary, so the colour reached
+       halfway and then jumped the rest the instant the segment
+       lookup advanced.
+
+       This version centres the band on the boundary: the blend starts
+       half a band before it and finishes half a band after, so the
+       same curve covers both sides and there is no seam at the
+       crossing. Smoothstepped rather than linear, because a linear
+       ramp has hard corners at both ends and the eye catches them.
+
+       The band is also clamped below the shortest gap on the page, so
+       two transitions can never overlap and fight. */
+    var band = 0;
+    function sizeBand() {
+      var vh = window.innerHeight;
+      var smallest = Infinity;
+      for (var i = 0; i < stops.length - 1; i++) {
+        smallest = Math.min(smallest, stops[i + 1].y - stops[i].y);
+      }
+      band = Math.min(vh * 0.9, smallest * 0.9);
+    }
+
+    function smooth(k) { return k * k * (3 - 2 * k); }
+
+    function paint() {
+      if (!stops.length) return;
+      var vh = window.innerHeight;
+      var mid = window.scrollY + vh * 0.5;
+
+      // which segment are we in
+      var i = 0;
+      while (i < stops.length - 1 && mid >= stops[i + 1].y) i++;
+      var col = stops[i].c;
+
+      // still finishing the blend that began before this boundary
+      if (i > 0 && mid - stops[i].y < band * 0.5) {
+        var kIn = (mid - (stops[i].y - band * 0.5)) / band;
+        col = mix(stops[i - 1].c, stops[i].c, smooth(Math.min(Math.max(kIn, 0), 1)));
+      }
+      // beginning the blend toward the next boundary
+      if (i < stops.length - 1 && stops[i + 1].y - mid < band * 0.5) {
+        var kOut = (mid - (stops[i + 1].y - band * 0.5)) / band;
+        col = mix(stops[i].c, stops[i + 1].c, smooth(Math.min(Math.max(kOut, 0), 1)));
+      }
+      rgb(col);
+      ink(col);
+    }
+
+    /* Fixed chrome ink, derived from the background it's actually
+       sitting on rather than from which section we're nominally in.
+
+       The threshold is where white-ish and slate give equal contrast
+       against the background: solving contrast(light, L) ==
+       contrast(slate, L) puts it at relative luminance 0.189. Above
+       that, dark type wins; below it, light type does. Blended over a
+       narrow window either side so the flip isn't a hard snap, but
+       kept narrow deliberately - a wide blend would park the wordmark
+       at mid-grey, which is the one value that reads against nothing. */
+    var INK_DARK = "rgb(28,28,26)", INK_LIGHT = "rgb(245,243,238)";
+    var inkNow = null;
+    function lum(c) {
+      var a = c.map(function (v) {
+        v /= 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+    }
+    function ink(bg) {
+      // Step, not blend. Interpolating the ink was the obvious move and
+      // it was wrong: the ink reached mid-grey at precisely the moment
+      // the background did, and contrast collapsed to 1.1:1 in the
+      // middle of every crossfade. So the value switches outright at
+      // the threshold and the SOFTENING happens in time instead, via
+      // the CSS transition on .mh-mark. Passing through mid-grey for
+      // 140ms is invisible; parking there for 800px of scroll is not.
+      //
+      // 0.179 is where light and slate give equal contrast against the
+      // background, so the switch happens at the least-bad moment and
+      // the worst case either side is about 3.9:1 - fine for type this
+      // size and weight, and only in passing.
+      var next = lum(bg) > 0.179 ? INK_DARK : INK_LIGHT;
+      if (next === inkNow) return;
+      inkNow = next;
+      document.documentElement.style.setProperty("--mh-ink", next);
+    }
+
+    function mix(a, b, k) {
+      return [
+        Math.round(a[0] + (b[0] - a[0]) * k),
+        Math.round(a[1] + (b[1] - a[1]) * k),
+        Math.round(a[2] + (b[2] - a[2]) * k)
+      ];
+    }
+    function rgb(c) { bgLayer.style.backgroundColor = "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")"; }
+
+    build();
+    paint();
+    ScrollTrigger.create({
+      trigger: document.body,
+      start: "top top",
+      end: "bottom bottom",
+      onRefresh: function () { build(); paint(); },
+      onUpdate: paint
+    });
+  }
+
+  /* --- masthead: label becomes a CTA once the cover is behind you --- */
+  var masthead = document.getElementById("masthead");
+  var heroScroll = document.getElementById("heroScroll");
+  if (masthead && heroScroll) {
+    ScrollTrigger.create({
+      trigger: heroScroll,
+      start: "bottom 85%",
+      onEnter: function () { masthead.classList.add("past-cover"); },
+      onLeaveBack: function () { masthead.classList.remove("past-cover"); }
+    });
+  }
+})();
+
+/* ============================================================
+   SNAP STOPS — ten defined scroll positions, driven here rather
+   than by CSS.
+
+   CSS scroll-snap was the wrong tool and was replaced. It aligns a
+   snap element's start, centre or end to the container, and with
+   `proximity` the browser decides whether to act at all. The stops
+   below are specific and mixed: most headings sit at the top of the
+   screen, the plate caption sits at the bottom, and the readiness
+   heading sits a third of the way down. None of that is expressible
+   in scroll-snap-align.
+
+   Behaviour: after scrolling stops for 140ms, glide to the nearest
+   stop — but only if it's within 45% of a viewport. Past that you're
+   deliberately reading something (the roadmap runs taller than a
+   screen), so it leaves you alone. Any wheel, touch or key input
+   during a glide cancels it immediately; the page never fights you.
+   ============================================================ */
+(function () {
+  if (reduce) return;
+  if (window.matchMedia("(max-width:900px)").matches) return;
+
+  var TOP_PAD = 96;     // clears the fixed masthead
+  var BOT_PAD = 104;
+
+  // align: 'top'    element top sits just below the masthead
+  //        'bottom' element bottom sits just above the viewport floor
+  //        'third'  element top sits a third of the way down
+  var SPEC = [
+    { sel: null,                     align: "page" },   //  1 cover
+    { sel: ".conditions .lede-line", align: "top"  },   //  2 belief / proof
+    { sel: ".plate",                 align: "flush"  }, //  3 it rarely fails loudly (caption sits at its base)
+    { sel: ".casenote .body",        align: "top"  },   //  4 case note
+    { sel: ".roadmap .head h2",      align: "top"  },   //  5 five questions
+    { sel: ".contents .head h2",     align: "top"  },   //  6 what's in the set
+    { sel: ".assess .head h2",       align: "third" },  //  7 are you actually ready
+    { sel: ".practice .lead h2",     align: "top"  },   //  8 who's behind this
+    { sel: ".gate .pitch h2",        align: "top"  },   //  9 unlock your copy
+    { sel: ".tail .msg h2",          align: "top"  }    // 10 lease negotiation
+  ];
+
+  var stops = [];
+  function build() {
+    var vh = window.innerHeight;
+    var max = document.documentElement.scrollHeight - vh;
+    stops = [];
+    SPEC.forEach(function (s) {
+      var y;
+      if (s.align === "page") { y = 0; }
+      else {
+        var el = document.querySelector(s.sel);
+        if (!el) return;
+        var r = el.getBoundingClientRect();
+        var top = r.top + window.scrollY;
+        if (s.align === "top")         y = top - TOP_PAD;
+        else if (s.align === "flush")  y = top;
+        else if (s.align === "bottom") y = top + r.height - vh + BOT_PAD;
+        else                           y = top - vh / 3;
+      }
+      stops.push(Math.max(0, Math.min(Math.round(y), max)));
+    });
+    stops.sort(function (a, b) { return a - b; });
+  }
+
+  var gliding = false, raf = null, idle = null;
+
+  function stop() {
+    if (raf) cancelAnimationFrame(raf);
+    raf = null; gliding = false;
+  }
+
+  function glide(to) {
+    var from = window.scrollY, delta = to - from;
+    if (Math.abs(delta) < 2) return;
+    var t0 = performance.now(), dur = Math.min(220 + Math.abs(delta) * 0.35, 720);
+    gliding = true;
+    (function step(now) {
+      if (!gliding) return;
+      var p = Math.min((now - t0) / dur, 1);
+      var e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+      window.scrollTo(0, from + delta * e);
+      if (p < 1) raf = requestAnimationFrame(step);
+      else { raf = null; setTimeout(function () { gliding = false; }, 40); }
+    })(t0);
+  }
+
+  function settle() {
+    if (gliding || !stops.length) return;
+    var y = window.scrollY;
+    // already at the very bottom: leave the footer reachable
+    if (y >= document.documentElement.scrollHeight - window.innerHeight - 2) return;
+
+    var best = null, bestD = Infinity;
+    stops.forEach(function (s) {
+      var d = Math.abs(s - y);
+      if (d < bestD) { bestD = d; best = s; }
+    });
+    if (best === null || bestD < 3) return;
+    if (bestD > window.innerHeight * 0.45) return;   // reading, not between pages
+    glide(best);
+  }
+
+  window.addEventListener("scroll", function () {
+    if (gliding) return;
+    clearTimeout(idle);
+    idle = setTimeout(settle, 140);
+  }, { passive: true });
+
+  ["wheel", "touchstart", "keydown", "mousedown"].forEach(function (ev) {
+    window.addEventListener(ev, stop, { passive: true });
+  });
+
+  // Anchor links glide too, since native smooth scrolling is off.
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var id = a.getAttribute("href");
+      if (id === "#" || id.length < 2) return;
+      var el = document.querySelector(id);
+      if (!el) return;
+      e.preventDefault();
+      clearTimeout(idle);
+      glide(Math.max(0, el.getBoundingClientRect().top + window.scrollY - TOP_PAD));
+    });
+  });
+
+  build();
+  window.addEventListener("resize", function () { clearTimeout(idle); build(); });
+  window.addEventListener("load", build);
+  if (window.ScrollTrigger) ScrollTrigger.addEventListener("refresh", build);
+})();
+
+/* ============================================================
+   PLUMB LINE — scroll position as a dimension string down the right
+   edge, with a bead that travels it. Reports position; it isn't a
+   decorative progress bar at the top of the page.
+   ============================================================ */
+(function () {
+  if (reduce || !window.gsap || !window.ScrollTrigger) return;
+  var fill = document.getElementById("plumbFill");
+  var bead = document.getElementById("plumbBead");
+  if (!fill || !bead) return;
+  gsap.to(fill, {
+    scaleY: 1, ease: "none",
+    scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: true }
+  });
+  gsap.to(bead, {
+    top: "100%", ease: "none",
+    scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: true }
+  });
+})();
+
+/* ============================================================
+   HERO EXIT — removed.
+
+   The title used to disperse sideways on scroll. It now simply
+   travels up and out with its panel, because the panels scroll
+   normally over a held background. Two pieces of choreography on the
+   same words, one of them fighting footage that is already animating,
+   was one too many.
+   ============================================================ */
+
+/* ============================================================
+   ROADMAP ROWS — click to open. One open at a time. The dimension
+   line extends as the row opens, which is why it's a dimension line
+   and not a decorative rule.
+   ============================================================ */
+(function () {
+  var rows = Array.prototype.slice.call(document.querySelectorAll(".row"));
+  rows.forEach(function (row) {
+    var btn = row.querySelector(".row-btn");
+    btn.addEventListener("click", function () {
+      var isOpen = row.classList.contains("open");
+      rows.forEach(function (r) {
+        r.classList.remove("open");
+        r.querySelector(".row-btn").setAttribute("aria-expanded", "false");
+      });
+      if (!isOpen) {
+        row.classList.add("open");
+        btn.setAttribute("aria-expanded", "true");
+      }
+    });
+  });
+})();
+
+/* ============================================================
+   CONTENTS TRACK — drag to pan. Native overflow-x scroll is the
+   base layer (keyboard, trackpad, touch all work untouched); this
+   only adds pointer dragging on top and suppresses the click that
+   would otherwise fire at the end of a drag.
+   ============================================================ */
+(function () {
+  var track = document.getElementById("track");
+  if (!track) return;
+  var down = false, startX = 0, startLeft = 0, moved = 0;
+
+  track.addEventListener("pointerdown", function (e) {
+    if (e.pointerType === "touch") return;   // let native touch scrolling do its job
+    down = true; moved = 0;
+    startX = e.clientX; startLeft = track.scrollLeft;
+    track.classList.add("dragging");
+    track.setPointerCapture(e.pointerId);
+  });
+
+  track.addEventListener("pointermove", function (e) {
+    if (!down) return;
+    var dx = e.clientX - startX;
+    moved = Math.max(moved, Math.abs(dx));
+    track.scrollLeft = startLeft - dx;
+  });
+
+  function release(e) {
+    if (!down) return;
+    down = false;
+    track.classList.remove("dragging");
+    if (track.hasPointerCapture && e.pointerId !== undefined && track.hasPointerCapture(e.pointerId)) {
+      track.releasePointerCapture(e.pointerId);
+    }
+  }
+  track.addEventListener("pointerup", release);
+  track.addEventListener("pointercancel", release);
+
+  // Swallow the click that ends a real drag, so dragging over a card
+  // never reads as a click on it.
+  track.addEventListener("click", function (e) {
+    if (moved > 6) { e.preventDefault(); e.stopPropagation(); }
+  }, true);
+})();
+
+/* ============================================================
+   ASSESSMENT
+   ============================================================ */
+
+/* Cohort benchmark. Deliberately null: there is no honest average to
+   quote until real responses exist, and inventing one ("most operators
+   score 3") would be exactly the kind of fabricated proof this page is
+   trying not to trade in. Set this to the real mean once there's data
+   and the benchmark line turns itself on. */
+var COHORT_AVG = null;
+
+/* Each question maps to one of the roadmap dimensions, so the result
+   can name the weak spot instead of only returning a number. */
+var DIMENSIONS = {
+  1: { name: "Systems",  hint: "the business still leans on you being there" },
+  2: { name: "Brand",    hint: "what you stand for lives in your head, not on paper" },
+  3: { name: "Numbers",  hint: "the second site isn't costed yet" },
+  4: { name: "Timing",   hint: "the timeline is still open-ended" }
+};
+
+var score = 0;
+var answers = {};
+var panels = document.querySelectorAll(".qp");
+var totalQ = panels.length;
+var qBar = document.getElementById("qBar");
+var qCount = document.getElementById("qCount");
+
+document.querySelectorAll(".opt").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    var panel = btn.closest(".qp");
+    var idx = parseInt(panel.dataset.q, 10);
+    var val = parseInt(btn.dataset.score, 10);
+    score += val;
+    answers[idx] = val;
+
+    qBar.style.width = (idx / totalQ * 100) + "%";
+    panel.classList.remove("on");
+
+    var next = document.querySelector('.qp[data-q="' + (idx + 1) + '"]');
+    if (next) {
+      qCount.textContent = "Question " + (idx + 1) + " of " + totalQ;
+      next.classList.add("on");
+    } else {
+      qCount.textContent = "Complete";
+      showResult();
+    }
+  });
+});
+
+function showResult() {
+  var max = 8;
+  var seg, verdict, title, desc;
+
+  if (score >= 6) {
+    seg = "ready-now"; verdict = "Ready now";
+    title = "You're further along than most operators who ask.";
+    desc = "The playbook goes further from here: the site-fit checklist, the numbers to run before committing, and who to call first. If you're weighing an actual site, a conversation will get you further than a PDF.";
+  } else if (score >= 3) {
+    seg = "getting-there"; verdict = "Getting there";
+    title = "The gaps are fixable, not fatal.";
+    desc = "The playbook has the pressure-test questions and the checklist to close those gaps before they turn into expensive problems on a site you've already signed for.";
+  } else {
+    seg = "not-yet"; verdict = "Not yet";
+    title = "Site one needs to stand on its own first.";
+    desc = "That's the common answer, not the embarrassing one. The playbook covers what to fix first, starting with the systems rather than the site search.";
+  }
+
+  document.getElementById("verdict").textContent = verdict;
+  document.getElementById("rTitle").textContent = title;
+  document.getElementById("rDesc").textContent = desc;
+  document.getElementById("rScore").textContent = score + "/" + max;
+  document.getElementById("segTag").textContent = seg;
+  document.getElementById("result").classList.add("on");
+
+  requestAnimationFrame(function () {
+    document.getElementById("rFill").style.width = (score / max * 100) + "%";
+  });
+
+  /* Per-dimension read. Lowest-scoring answer is the weak spot; ties
+     resolve to the earliest question, which is deliberate ordering
+     rather than an accident (systems before brand before numbers). */
+  var weakest = null, weakestVal = 99;
+  Object.keys(DIMENSIONS).forEach(function (k) {
+    var v = answers[k];
+    if (v === undefined) return;
+    if (v < weakestVal) { weakestVal = v; weakest = k; }
+  });
+
+  var diag = document.getElementById("rDiag");
+  diag.innerHTML = "";
+  Object.keys(DIMENSIONS).forEach(function (k) {
+    var v = answers[k];
+    if (v === undefined) return;
+    var label = v === 2 ? "Solid" : (v === 1 ? "Partly there" : "Needs work");
+    var isWeak = (k === weakest && weakestVal < 2);
+    var row = document.createElement("div");
+    var lbl = document.createElement("span");
+    lbl.className = "lbl";
+    lbl.textContent = DIMENSIONS[k].name;
+    var val = document.createElement("span");
+    val.className = "val" + (isWeak ? " weak" : "");
+    val.textContent = label;
+    row.appendChild(lbl); row.appendChild(val);
+    diag.appendChild(row);
+  });
+
+  if (weakest && weakestVal < 2) {
+    var line = document.createElement("div");
+    var l = document.createElement("span");
+    l.className = "lbl";
+    l.textContent = "Start with";
+    var r = document.createElement("span");
+    r.className = "val weak";
+    r.textContent = DIMENSIONS[weakest].name + ", " + DIMENSIONS[weakest].hint;
+    line.appendChild(l); line.appendChild(r);
+    diag.appendChild(line);
+  }
+
+  // Benchmark only renders if a real cohort average has been set.
+  var bench = document.getElementById("rBench");
+  if (typeof COHORT_AVG === "number" && bench) {
+    var rel = score > COHORT_AVG ? "above" : (score < COHORT_AVG ? "below" : "level with");
+    bench.textContent = "Operators who take this before signing average " +
+      COHORT_AVG + " out of " + max + ". You're " + rel + " that.";
+    bench.classList.add("on");
+  }
+
+  // Hot leads get a route to a conversation as well as the download.
+  var call = document.getElementById("callCta");
+  if (call) call.classList.toggle("on", seg === "ready-now");
+
+  window.__seg = seg;
+  window.__score = score;
+  window.__weak = weakest ? DIMENSIONS[weakest].name : null;
+}
+
+/* ============================================================
+   FORM
+   ============================================================ */
+(function () {
+  var form = document.getElementById("playbookForm");
+  var submitBtn = document.getElementById("submitBtn");
+  if (!form) return;
+
+  function mark(id, ok) {
+    var f = document.getElementById(id);
+    f.classList.toggle("bad", !ok);
+    var input = f.querySelector("input");
+    if (input) input.setAttribute("aria-invalid", ok ? "false" : "true");
+    return ok;
+  }
+
+  /* Phone is deliberately permissive. Operators write numbers a dozen
+     ways - 0412 345 678, +61 412 345 678, (02) 9555 1234 - and a strict
+     pattern rejects real numbers, which costs a lead to save a tidy
+     string. Strip everything that isn't a digit and check the count;
+     leading + is allowed for international. Normalise properly in the
+     CRM, where a bad record is cheap to fix and a lost one isn't. */
+  function validPhone(v) {
+    if (/[^\d\s()+\-.]/.test(v)) return false;   // letters etc. are a typo, not a number
+    return /^\+?[\d\s()\-.]+$/.test(v) && v.replace(/\D/g, "").length >= 8
+                                       && v.replace(/\D/g, "").length <= 15;
+  }
+
+  /* Clear a field's error the moment they start fixing it, rather than
+     leaving it red until the next submit. */
+  ["fName", "fEmail", "fPhone", "fCo"].forEach(function (id) {
+    var f = document.getElementById(id); if (!f) return;
+    var input = f.querySelector("input"); if (!input) return;
+    input.addEventListener("input", function () {
+      if (f.classList.contains("bad")) {
+        f.classList.remove("bad");
+        input.setAttribute("aria-invalid", "false");
+      }
+    });
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var fd = new FormData(form);
+    var name = (fd.get("name") || "").toString().trim();
+    var email = (fd.get("email") || "").toString().trim();
+    var phone = (fd.get("phone") || "").toString().trim();
+    var company = (fd.get("company") || "").toString().trim();
+
+    var okName = mark("fName", name.length > 0);
+    var okEmail = mark("fEmail", /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+    var okPhone = mark("fPhone", validPhone(phone));
+    var okCo = mark("fCo", company.length > 0);
+
+    if (!okName || !okEmail || !okPhone || !okCo) {
+      // Send focus to the first problem so keyboard users aren't left
+      // hunting for which field went red.
+      var firstBad = form.querySelector(".field.bad input");
+      if (firstBad) firstBad.focus();
+      return;
+    }
+
+    var payload = {
+      name: name, email: email, phone: phone, company: company,
+      quizSegment: window.__seg || "not-taken",
+      quizScore: window.__score !== undefined ? window.__score : null,
+      // The weak dimension travels too, so the first email can open on
+      // the thing they're actually behind on rather than a generic
+      // "thanks for downloading".
+      weakestArea: window.__weak || null,
+      source: "expansion-playbook-v4"
+    };
+
+    submitBtn.dataset.state = "loading";
+    submitBtn.textContent = "Sending...";
+
+    /* ============================================================
+       CRM INTEGRATION POINT — the only place a dev needs to touch.
+
+       OPTION A, native webhook: replace the setTimeout below with a
+       fetch() POST to the CRM's inbound webhook (GoHighLevel:
+       Settings > Webhooks, or a Workflow inbound trigger.
+       ClickFunnels: Funnel > Integrations, or a relay). Send the
+       payload built above as-is; quizSegment lets automation branch
+       immediately, so "ready-now" can notify sales while "not-yet"
+       drops into a longer nurture.
+
+       OPTION B, relay: POST to a Zapier or Make catch hook and map
+       the fields to a contact plus tag there instead.
+
+       The page owns the design, the CRM owns the pipeline. Only this
+       function changes depending on which CRM wins.
+       ============================================================ */
+    // fetch("https://your-crm-webhook-url", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(payload)
+    // }).then(onSuccess);
+
+    console.log("Would POST to CRM webhook:", payload);
+    setTimeout(onSuccess, 450);
+  });
+
+  function onSuccess() {
+    document.getElementById("formWrap").style.display = "none";
+    document.getElementById("sent").classList.add("on");
+  }
+})();
+
+/* ============================================================
+   MAGNETIC BUTTONS — desktop, fine pointer, motion allowed only.
+   Transform-only, outside any layout write.
+   ============================================================ */
+(function () {
+  var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (!fine || reduce) return;
+
+  document.querySelectorAll(".btn").forEach(function (btn) {
+    var tx = 0, ty = 0, cx = 0, cy = 0, live = false, raf = null;
+
+    btn.addEventListener("mouseenter", function () {
+      live = true;
+      if (!raf) raf = requestAnimationFrame(loop);
+    });
+    btn.addEventListener("mousemove", function (e) {
+      var r = btn.getBoundingClientRect();
+      tx = (e.clientX - (r.left + r.width / 2)) * 0.22;
+      ty = (e.clientY - (r.top + r.height / 2)) * 0.38;
+    });
+    btn.addEventListener("mouseleave", function () { live = false; tx = 0; ty = 0; });
+
+    function loop() {
+      cx += (tx - cx) * 0.16;
+      cy += (ty - cy) * 0.16;
+      btn.style.transform = "translate(" + cx.toFixed(2) + "px," + cy.toFixed(2) + "px)";
+      if (!live && Math.abs(cx) < 0.05 && Math.abs(cy) < 0.05) {
+        btn.style.transform = ""; raf = null; return;
+      }
+      raf = requestAnimationFrame(loop);
+    }
+  });
+})();
+</script>
+
+
+<!-- ============================================================
+     HERO STILL — one photograph, panned by scroll.
+
+     Replaces the 97-frame AVIF scrub. That worked, but 3.7MB of
+     frames plus a preloading scheme plus a video fallback plus an
+     AVIF capability probe was a lot of machinery to keep alive for a
+     background. This is a single 142KB image and about twenty lines
+     of JS, and it does the same job: scroll moves you through the
+     picture rather than past it.
+
+     The image is portrait, so at full-bleed width it stands roughly
+     2278px tall against a viewport of 800-1000px. The surplus is the
+     travel. Scrolling pans from the menu changing hands at the top,
+     down the fluted marble, to the base.
+
+     Everything transform-only, so it stays on the compositor.
+     ============================================================ -->
+<script>
+(function () {
+  var img = document.getElementById("heroStill");
+  var scroller = document.getElementById("heroScroll");
+  var lines = document.querySelectorAll(".hero-title .ln");
+  if (!img || !scroller || reduce || !window.gsap || !window.ScrollTrigger) return;
+  if (window.matchMedia("(max-width:900px)").matches) return;
+
+  var travel = 0;
+
+  function measure() {
+    // How much taller the rendered image is than the frame holding it.
+    // Clamped at zero so an unusually tall viewport just holds still
+    // rather than panning the wrong way.
+    travel = Math.max(img.offsetHeight - img.parentElement.offsetHeight, 0);
+  }
+
+  function run() {
+    measure();
+
+    gsap.to(img, {
+      y: function () { return -travel; },
+      ease: "none",
+      scrollTrigger: {
+        trigger: scroller, start: "top top", end: "bottom bottom",
+        scrub: 0.4, invalidateOnRefresh: true
+      }
+    });
+
+    /* Per-line parallax on the title. Each line has its own --rate in
+       the CSS, so the three words separate vertically as you descend
+       instead of moving as one block. Rates are fractions of the
+       first panel's height, negative meaning upward. */
+    lines.forEach(function (ln) {
+      var rate = parseFloat(getComputedStyle(ln).getPropertyValue("--rate")) || 0;
+      gsap.to(ln, {
+        y: function () { return window.innerHeight * rate; },
+        ease: "none",
+        scrollTrigger: {
+          trigger: scroller, start: "top top",
+          end: "+=" + window.innerHeight,
+          scrub: 0.4, invalidateOnRefresh: true
+        }
+      });
+    });
+
+    ScrollTrigger.refresh();
+  }
+
+  if (img.complete) run();
+  else img.addEventListener("load", run, { once: true });
+
+  window.addEventListener("resize", function () {
+    measure();
+    ScrollTrigger.refresh();
+  });
+})();
+</script>
+
+</body>
+</html>

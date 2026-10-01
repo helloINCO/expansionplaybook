@@ -1706,7 +1706,12 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       if (!el) return;
       e.preventDefault();
       clearTimeout(idle);
-      glide(Math.max(0, el.getBoundingClientRect().top + window.scrollY - TOP_PAD));
+      // Land on the nearest snap stop rather than the raw section top, so
+      // an anchor jump and a scroll end on the same frame of the page.
+      var y = Math.max(0, el.getBoundingClientRect().top + window.scrollY - TOP_PAD);
+      var best = y, bestD = Infinity;
+      stops.forEach(function (s) { var d = Math.abs(s - y); if (d < bestD) { bestD = d; best = s; } });
+      glide(bestD < window.innerHeight * 0.45 ? best : y);
     });
   });
 

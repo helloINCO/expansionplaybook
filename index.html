@@ -22,8 +22,7 @@
 <script>
   window.INCO = {
     webhookUrl: "https://services.leadconnectorhq.com/hooks/eTnVyYz7Y8pQ8nVWisPr/webhook-trigger/5afb236d-fee1-44ca-802e-0ada9a2f6002", // GHL workflow > Inbound Webhook trigger URL
-    bookingUrl: "PASTE_BOOKING_LINK",        // Jayson's booking calendar link
-    pdfUrl:     "PASTE_PLAYBOOK_PDF_LINK",   // Public link to the playbook PDF
+    bookingUrl: "https://api.leadconnectorhq.com/widget/booking/5vYVDE2dcnZDW6y03f1a", // Jayson's booking calendar link
     privacyUrl: "PASTE_PRIVACY_POLICY_LINK", // INCO privacy policy page
     // All tracking (GA4, Meta Pixel, Google Ads, etc.) is set up inside Tag Manager
     gtmId:      "GTM-KTCLBMZM"               // Tag Manager container ID
@@ -1424,7 +1423,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="sent" id="sent">
         <h3>Sent.</h3>
         <p>Check your inbox, The Expansion Playbook is on its way.</p>
+        <!-- CHANGED: playbook is delivered by email only, so the download button is switched off.
         <a class="btn btn-pale" id="pdfLink" href="#" target="_blank" rel="noopener">Download now</a>
+        -->
       </div>
     </div>
   </div>
@@ -1481,7 +1482,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   setLink("callCta",     c.bookingUrl, bookClick);
   setLink("tailCall",    c.bookingUrl, bookClick);
-  setLink("pdfLink",     c.pdfUrl);
   setLink("privacyLink", c.privacyUrl);
 })();
 </script>

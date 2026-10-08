@@ -5,6 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Expansion Playbook - INCO Studio</title>
 
+<!-- ADDED: search and social sharing info (shown in Google and when the link is shared) -->
+<meta name="description" content="Thinking about a second venue? The Expansion Playbook from INCO Studio covers the questions, checklists and contacts worth working through before you sign a lease.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Expansion Playbook | INCO Studio">
+<meta property="og:description" content="What we'd want you to know before you sign for a second venue. A practical guide from INCO Studio.">
+<!-- Share image (1200 x 630). Swap to the full URL once the domain is live -->
+<meta property="og:image" content="media/share.jpg">
+<!-- Browser tab icon -->
+<link rel="icon" href="media/favicon.png">
+
+<!-- ============================================================
+     ADDED: SETTINGS. Fill these in before launch.
+     Anything still starting with "PASTE_" is treated as not set.
+     ============================================================ -->
+<script>
+  window.INCO = {
+    webhookUrl: "PASTE_GHL_WEBHOOK_URL",     // GHL workflow > Inbound Webhook trigger URL
+    bookingUrl: "PASTE_BOOKING_LINK",        // Jayson's booking calendar link
+    pdfUrl:     "PASTE_PLAYBOOK_PDF_LINK",   // Public link to the playbook PDF
+    privacyUrl: "PASTE_PRIVACY_POLICY_LINK", // INCO privacy policy page
+    // All tracking (GA4, Meta Pixel, Google Ads, etc.) is set up inside Tag Manager
+    gtmId:      "GTM-KTCLBMZM"               // Tag Manager container ID
+  };
+  // Returns true once a setting has a real value
+  window.INCO.isSet = function (v) { return !!v && v.indexOf("PASTE_") !== 0; };
+</script>
+
+<!-- ADDED: Google Tag Manager. Loads once gtmId is set in the settings above.
+     Every tracking tool (GA4, Meta Pixel, Google Ads, etc.) is managed inside GTM. -->
+<script>
+  window.dataLayer = window.dataLayer || [];   // message queue that GTM reads page events from
+
+  // Google Tag Manager: standard loader
+  if (window.INCO.isSet(window.INCO.gtmId)) {
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer',window.INCO.gtmId);
+  }
+
+  // Sends a page event to GTM. In GTM, a "Custom Event" trigger with the same
+  // name picks it up and can fire any tag: GA4, Meta Pixel, Google Ads, etc.
+  window.trackEvent = function (name, params) {
+    params = params || {};
+    var msg = { event: name };
+    for (var k in params) msg[k] = params[k];
+    window.dataLayer.push(msg);
+  };
+</script>
+
 <!--
   ============================================================
   DESIGN PLAN (frontend-design.md, two-pass process)
@@ -820,6 +871,15 @@
     .gate .pitch ul{ margin-top:var(--s5); }
   }
   .submit{ width:100%; margin-top:var(--s3); }
+  /* ADDED: button looks inactive while the form is sending */
+  .btn[disabled]{ opacity:.6; cursor:wait; }
+  /* ADDED: honeypot field, hidden from people. Bots fill it in and get ignored. */
+  .hp{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+  /* ADDED: message shown if sending fails */
+  .form-err{ display:none; margin-top:var(--s3); font-size:var(--t-small); color:#e08a72; }
+  .form-err.on{ display:block; }
+  /* ADDED: privacy link inside the fine print */
+  .fineprint a{ color:var(--light-80); }
   .fineprint{ margin-top:var(--s4); font-size:var(--t-micro); color:var(--light-50); }
 
   .sent{ display:none; }
@@ -910,6 +970,12 @@
 </style>
 </head>
 <body>
+
+<!-- ADDED: Google Tag Manager (noscript). Optional backup for visitors with JavaScript off.
+     To use it, replace GTM-XXXXXXX with your container ID and remove the comment marks around it.
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+-->
 
 <div id="bgLayer" aria-hidden="true"></div>
 
@@ -1235,7 +1301,7 @@
         <p id="rDesc"></p>
         <div class="acts">
           <a href="#s-gate" class="btn btn-pale">Get my copy</a>
-          <a href="#" onclick="return false;" class="link" id="callCta">Book a call (demo link)</a>
+          <a href="#" class="link" id="callCta" target="_blank" rel="noopener">Book a call</a>
         </div>
       </div>
     </div>
@@ -1340,8 +1406,15 @@
             <input id="iCo" type="text" name="company" placeholder="Where you operate" required>
             <div class="err">Enter your venue or company.</div>
           </div>
+          <!-- ADDED: honeypot field, hidden from people. If it comes back filled in, it's a bot. -->
+          <div class="hp" aria-hidden="true">
+            <label for="iWebsite">Website</label>
+            <input id="iWebsite" type="text" name="website" tabindex="-1" autocomplete="off">
+          </div>
           <button type="submit" class="btn submit" id="submitBtn">Send me the playbook</button>
-          <p class="fineprint">No spam, just the playbook.</p>
+          <!-- ADDED: error message if sending fails -->
+          <p class="form-err" id="formErr" role="alert"></p>
+          <p class="fineprint">No spam, just the playbook. <!-- ADDED: privacy line --> We may follow up by email, and you can unsubscribe anytime. Read our <a href="#" id="privacyLink" target="_blank" rel="noopener">privacy policy</a>.</p>
         </form>
         <!-- Hidden: the quiz result travels with the lead to the CRM.
              A visitor doesn't need to read their own scoring tag. -->
@@ -1351,7 +1424,7 @@
       <div class="sent" id="sent">
         <h3>Sent.</h3>
         <p>Check your inbox, The Expansion Playbook is on its way.</p>
-        <a class="btn btn-pale" href="#" onclick="return false;">Download now (demo link)</a>
+        <a class="btn btn-pale" id="pdfLink" href="#" target="_blank" rel="noopener">Download now</a>
       </div>
     </div>
   </div>
@@ -1365,7 +1438,7 @@
     <div class="msg">
       <h2>Already deep in a lease negotiation?</h2>
       <p>Then skip the download. If you're testing a site this week, it's faster to just talk it through.</p>
-      <a href="#" onclick="return false;" class="btn">Book a call (demo link)</a>
+      <a href="#" class="btn" id="tailCall" target="_blank" rel="noopener">Book a call</a>
     </div>
   </div>
 </section>
@@ -1378,6 +1451,40 @@
     </div>
   </div>
 </footer>
+
+<!-- ============================================================
+     ADDED: LINKS. Fills in the booking, PDF and privacy links from the
+     settings block. Runs before the snap script on purpose, so real
+     links aren't picked up as on-page jumps.
+     ============================================================ -->
+<script>
+(function () {
+  var c = window.INCO;
+
+  // Point a link at its URL, or block it with a console note if not set yet
+  function setLink(id, url, onClick) {
+    var a = document.getElementById(id);
+    if (!a) return;
+    if (c.isSet(url)) {
+      a.href = url;
+      if (onClick) a.addEventListener("click", onClick);
+    } else {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        console.warn(id + ": link not set yet. Add it in window.INCO at the top of the page.");
+      });
+    }
+  }
+
+  // Send booking clicks to GTM
+  function bookClick() { window.trackEvent("book_call_click"); }
+
+  setLink("callCta",     c.bookingUrl, bookClick);
+  setLink("tailCall",    c.bookingUrl, bookClick);
+  setLink("pdfLink",     c.pdfUrl);
+  setLink("privacyLink", c.privacyUrl);
+})();
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
@@ -2019,6 +2126,9 @@ function showResult() {
   window.__seg = seg;
   window.__score = score;
   window.__weak = weakest ? DIMENSIONS[weakest].name : null;
+
+  // ADDED: send quiz completions to GTM, with the result attached
+  window.trackEvent("quiz_complete", { quiz_segment: seg, quiz_score: score });
 }
 
 /* ============================================================
@@ -2062,9 +2172,71 @@ function showResult() {
     });
   });
 
+  /* ------------------------------------------------------------
+     ADDED: helpers for sending the lead
+     ------------------------------------------------------------ */
+  var formErr = document.getElementById("formErr");
+  var BTN_TEXT = submitBtn.textContent;   // original button text, restored after errors
+  var eventId = null;                      // shared by GTM and GHL so Meta doesn't double count
+
+  // Show or hide the error message under the button
+  function showError(msg) { formErr.textContent = msg; formErr.classList.add("on"); }
+  function hideError() { formErr.textContent = ""; formErr.classList.remove("on"); }
+
+  // Ad tracking details from the page URL (utm tags and Facebook click ID)
+  function adParams() {
+    var q = new URLSearchParams(location.search), out = {};
+    ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid"].forEach(function (k) {
+      if (q.get(k)) out[k] = q.get(k);
+    });
+    return out;
+  }
+
+  // fetch with a time limit, so a slow connection doesn't hang forever
+  function timedFetch(url, opts, ms) {
+    var ctrl = ("AbortController" in window) ? new AbortController() : null;
+    if (ctrl) { opts.signal = ctrl.signal; setTimeout(function () { ctrl.abort(); }, ms || 12000); }
+    return fetch(url, opts);
+  }
+
+  // Send the lead to the GHL webhook
+  function sendLead(payload) {
+    var url = window.INCO.webhookUrl;
+    var body = JSON.stringify(payload);
+
+    // Try 1: a normal JSON request
+    return timedFetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: body
+    }).then(function (res) {
+      if (!res.ok) throw new Error("Webhook replied " + res.status);
+    }).catch(function (err) {
+      // Try 2: if the browser blocked try 1 before sending (a CORS block shows as TypeError),
+      // send a "simple" request instead. It always goes through, we just can't read the reply.
+      if (err && err.name === "TypeError") {
+        return timedFetch(url, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain" },
+          body: body
+        });
+      }
+      throw err;   // timeouts and server errors go to the error message
+    });
+  }
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+    hideError();   // ADDED: clear any earlier error
     var fd = new FormData(form);
+
+    // ADDED: honeypot filled in = bot. Show the thank-you, send nothing, track nothing.
+    if ((fd.get("website") || "").toString().trim() !== "") {
+      document.getElementById("formWrap").style.display = "none";
+      document.getElementById("sent").classList.add("on");
+      return;
+    }
     var name = (fd.get("name") || "").toString().trim();
     var email = (fd.get("email") || "").toString().trim();
     var phone = (fd.get("phone") || "").toString().trim();
@@ -2083,6 +2255,15 @@ function showResult() {
       return;
     }
 
+    // ADDED: stop here if the webhook isn't set yet, so test leads aren't silently lost
+    if (!window.INCO.isSet(window.INCO.webhookUrl)) {
+      showError("This form isn't connected yet. Add the GHL webhook URL in the settings at the top of the page.");
+      return;
+    }
+
+    // ADDED: unique ID for this lead, sent to both GHL and GTM
+    eventId = "lead-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
+
     var payload = {
       name: name, email: email, phone: phone, company: company,
       quizSegment: window.__seg || "not-taken",
@@ -2091,11 +2272,19 @@ function showResult() {
       // the thing they're actually behind on rather than a generic
       // "thanks for downloading".
       weakestArea: window.__weak || null,
-      source: "expansion-playbook-v4"
+      source: "expansion-playbook-v4",
+      // ADDED: lead ID, page and time, so GHL and Meta can match records
+      eventId: eventId,
+      pageUrl: location.href,
+      submittedAt: new Date().toISOString()
     };
+    // ADDED: utm tags and fbclid from the ad, if present
+    var ads = adParams();
+    for (var k in ads) payload[k] = ads[k];
 
     submitBtn.dataset.state = "loading";
     submitBtn.textContent = "Sending...";
+    submitBtn.disabled = true;   // ADDED: stop double clicks while sending
 
     /* ============================================================
        CRM INTEGRATION POINT — the only place a dev needs to touch.
@@ -2120,11 +2309,27 @@ function showResult() {
     //   body: JSON.stringify(payload)
     // }).then(onSuccess);
 
-    console.log("Would POST to CRM webhook:", payload);
-    setTimeout(onSuccess, 450);
+    // Demo send from the prototype, turned off now the real send is below:
+    // console.log("Would POST to CRM webhook:", payload);
+    // setTimeout(onSuccess, 450);
+
+    // ADDED: real send to the GHL webhook
+    sendLead(payload).then(onSuccess).catch(function (err) {
+      console.error("Lead send failed:", err);
+      submitBtn.disabled = false;
+      submitBtn.dataset.state = "";
+      submitBtn.textContent = BTN_TEXT;
+      showError("Something went wrong sending that. Please try again, or email hello@incostudio.co.");
+    });
   });
 
   function onSuccess() {
+    // ADDED: send the lead to GTM, only after a real send
+    window.trackEvent("generate_lead", {
+      form_name: "expansion_playbook",
+      quiz_segment: window.__seg || "not-taken",
+      event_id: eventId   // used as the Meta "eventID" so Meta doesn't double count
+    });
     document.getElementById("formWrap").style.display = "none";
     document.getElementById("sent").classList.add("on");
   }

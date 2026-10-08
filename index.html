@@ -21,7 +21,7 @@
      ============================================================ -->
 <script>
   window.INCO = {
-    webhookUrl: "PASTE_GHL_WEBHOOK_URL",     // GHL workflow > Inbound Webhook trigger URL
+    webhookUrl: "https://services.leadconnectorhq.com/hooks/eTnVyYz7Y8pQ8nVWisPr/webhook-trigger/5afb236d-fee1-44ca-802e-0ada9a2f6002", // GHL workflow > Inbound Webhook trigger URL
     bookingUrl: "PASTE_BOOKING_LINK",        // Jayson's booking calendar link
     pdfUrl:     "PASTE_PLAYBOOK_PDF_LINK",   // Public link to the playbook PDF
     privacyUrl: "PASTE_PRIVACY_POLICY_LINK", // INCO privacy policy page
@@ -2273,6 +2273,9 @@ function showResult() {
       // "thanks for downloading".
       weakestArea: window.__weak || null,
       source: "expansion-playbook-v4",
+      // ADDED: first and last name split out for GHL's contact fields
+      firstName: name.split(/\s+/)[0],
+      lastName: name.split(/\s+/).slice(1).join(" "),
       // ADDED: lead ID, page and time, so GHL and Meta can match records
       eventId: eventId,
       pageUrl: location.href,

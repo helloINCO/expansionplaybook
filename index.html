@@ -1741,24 +1741,30 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
   if (window.matchMedia("(max-width:900px)").matches) return;
 
   var TOP_PAD = 96;     // clears the fixed masthead
-  var BOT_PAD = 104;
+  var BOT_PAD = 56;     // keeps the last control clear of the frame and readout
 
   // align: 'top'    element top sits just below the masthead
   //        'bottom' element bottom sits just above the viewport floor
   //        'third'  element top sits a third of the way down
+  // end:   the last thing on the sheet that has to be reachable. A stop
+  //        is a RANGE, not a point: it runs from the aligned position down
+  //        to the scroll where `end` clears the bottom of the screen.
+  //        Inside that range the page never pulls you back, so a sheet
+  //        taller than the viewport (roadmap rows, the quiz result, the
+  //        logos) can be read and clicked to the bottom.
   var SPEC = [
-    { sel: null,                     align: "page" },   //  1 cover
-    { sel: ".conditions .lede-line", align: "top"  },   //  2 belief / proof
-    { sel: ".plate",                 align: "flush"  }, //  3 it rarely fails loudly (caption sits at its base)
-    { sel: ".casenote .body",        align: "top"  },   //  4 case note
-    { sel: ".roadmap .head h2",      align: "top"  },   //  5 five questions
-    { sel: ".assess .head h2",       align: "third" },  //  6 are you actually ready
-    { sel: ".practice .lead h2",     align: "top"  },   //  7 who's behind this
-    { sel: ".gate .pitch h2",        align: "top"  },   //  8 unlock your copy
-    { sel: ".tail .msg h2",          align: "top"  }    //  9 lease negotiation
+    { sel: null,                     align: "page",  end: null },                  //  1 cover
+    { sel: ".conditions .lede-line", align: "top",   end: ".conditions .turn" },   //  2 belief / proof
+    { sel: ".plate",                 align: "flush", end: null },                  //  3 it rarely fails loudly (caption sits at its base)
+    { sel: ".casenote .body",        align: "top",   end: ".casenote .sign" },     //  4 case note
+    { sel: ".roadmap .head h2",      align: "top",   end: ".roadmap .rows" },      //  5 five questions
+    { sel: ".assess .head h2",       align: "third", end: ".assess .panelwrap" },  //  6 are you actually ready
+    { sel: ".practice .lead h2",     align: "top",   end: ".practice .clients" },  //  7 who's behind this
+    { sel: ".gate .pitch h2",        align: "top",   end: ".gate .form" },         //  8 unlock your copy
+    { sel: ".tail .msg h2",          align: "top",   end: "#tailCall" }            //  9 lease negotiation
   ];
 
-  var stops = [];
+  var stops = [];   // [{ a: first scroll position, b: last }]
   function build() {
     var vh = window.innerHeight;
     var max = document.documentElement.scrollHeight - vh;
@@ -1776,9 +1782,15 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
         else if (s.align === "bottom") y = top + r.height - vh + BOT_PAD;
         else                           y = top - vh / 3;
       }
-      stops.push(Math.max(0, Math.min(Math.round(y), max)));
+      y = Math.max(0, Math.min(Math.round(y), max));
+      var hold = 0, endEl = s.end && document.querySelector(s.end);
+      if (endEl) {
+        var bottom = endEl.getBoundingClientRect().bottom + window.scrollY;
+        hold = Math.max(0, Math.round(bottom - y - (vh - BOT_PAD)));
+      }
+      stops.push({ a: y, b: Math.min(y + hold, max) });
     });
-    stops.sort(function (a, b) { return a - b; });
+    stops.sort(function (m, n) { return m.a - n.a; });
   }
 
   var gliding = false, raf = null, idle = null;
@@ -1803,20 +1815,45 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     })(t0);
   }
 
+  /* Direction-aware. Snapping to whichever stop is nearest means one
+     wheel notch (about 100px) from a stop is always nearer the stop it
+     left than the next one, so the page pulls you straight back and a
+     one-notch-at-a-time scroller can never leave a page. Instead:
+       - resting inside a sheet's own range: stay put
+       - between sheets: continue in the direction you were travelling,
+         to the next range start going down, or the previous range end
+         going up
+     lastRest is where the page last settled, which is what "direction"
+     is measured from. */
+  var lastRest = window.scrollY;
+
   function settle() {
     if (gliding || !stops.length) return;
     var y = window.scrollY;
     // already at the very bottom: leave the footer reachable
-    if (y >= document.documentElement.scrollHeight - window.innerHeight - 2) return;
+    if (y >= document.documentElement.scrollHeight - window.innerHeight - 2) { lastRest = y; return; }
 
-    var best = null, bestD = Infinity;
-    stops.forEach(function (s) {
-      var d = Math.abs(s - y);
-      if (d < bestD) { bestD = d; best = s; }
-    });
-    if (best === null || bestD < 3) return;
-    if (bestD > window.innerHeight * 0.45) return;   // reading, not between pages
-    glide(best);
+    var i;
+    for (i = 0; i < stops.length; i++) {
+      if (y >= stops[i].a - 2 && y <= stops[i].b + 2) { lastRest = y; return; }   // inside a sheet's range
+    }
+
+    var dir = y > lastRest + 6 ? 1 : (y < lastRest - 6 ? -1 : 0);
+    var to = null;
+    if (dir === 1) {
+      for (i = 0; i < stops.length; i++) if (stops[i].a > y) { to = stops[i].a; break; }
+    } else if (dir === -1) {
+      for (i = stops.length - 1; i >= 0; i--) if (stops[i].b < y) { to = stops[i].b; break; }
+    } else {
+      var bestD = Infinity;
+      stops.forEach(function (st) {
+        var t = y < st.a ? st.a : st.b, d = Math.abs(t - y);
+        if (d < bestD) { bestD = d; to = t; }
+      });
+    }
+    if (to === null) { lastRest = y; return; }   // past the last sheet: leave it
+    lastRest = to;
+    glide(to);
   }
 
   window.addEventListener("scroll", function () {
@@ -1844,6 +1881,10 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 
   build();
   window.addEventListener("resize", function () { clearTimeout(idle); build(); });
+  if ("ResizeObserver" in window) {
+    var rebuildT = null;
+    new ResizeObserver(function () { clearTimeout(rebuildT); rebuildT = setTimeout(build, 60); }).observe(document.body);
+  }
   window.addEventListener("load", build);
   if (window.ScrollTrigger) ScrollTrigger.addEventListener("refresh", build);
 })();

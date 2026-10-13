@@ -117,7 +117,7 @@
   parts of those playbooks that would breach the studio's own
   "never overselling" rule.
 
-  1. CONDITIONS (sheet 04) + CASE NOTE (sheet 05). The problem is now
+  1. CONDITIONS (sheet 02) + CASE NOTE (sheet 04). The problem is now
      told twice, deliberately, in two different grammatical persons.
 
      Conditions is second person and present tense: three statements
@@ -138,7 +138,7 @@
      the abstract warning is cashed out before the roadmap offers any
      fixes. Problem, then the five questions, then the tools.
 
-  2. PRACTICE (sheet 08). The About section, composed as a drawing
+  2. PRACTICE (sheet 07). The About section, composed as a drawing
      title block, sitting immediately before the ask. Credentials are
      tabulated as facts, not adjectives. Real client marks from page
      15 of the playbook, presented silently with no "trusted by"
@@ -762,34 +762,6 @@
   }
 
   /* ============================================================
-     CONTENTS — drag-to-pan. Native horizontal scroll underneath (so
-     keyboard, trackpad and touch all work), pointer-drag layered on.
-     ============================================================ */
-  .contents{ padding:var(--s8) 0 var(--s7); background:var(--stone-dim); overflow:hidden; }
-  .contents .head{ grid-column:1 / 9; margin-bottom:var(--s6); }
-  .contents .head h2{ font-size:var(--t-h2); }
-  .contents .head p{ margin-top:var(--s3); font-size:var(--t-small); color:var(--ink-70); max-width:44ch; }
-  .track{
-    display:flex; gap:1px; background:var(--rule); overflow-x:auto; cursor:grab;
-    scrollbar-width:none; padding-left:max(var(--s5),calc(var(--frame) + var(--s4)));
-    scroll-snap-type:x proximity;
-  }
-  .track::-webkit-scrollbar{ display:none; }
-  .track.dragging{ cursor:grabbing; scroll-snap-type:none; }
-  .track.dragging *{ user-select:none; }
-  .card{
-    flex:0 0 auto; width:min(400px,78vw); background:var(--stone-dim);
-    padding:var(--s5) var(--s5) var(--s6); scroll-snap-align:start;
-  }
-  .card:last-child{ margin-right:var(--s5); }
-  .card .ref{ font-size:var(--t-micro); color:var(--ink-soft); margin-bottom:var(--s5); }
-  .card h3{ font-size:var(--t-h3); margin-bottom:var(--s3); letter-spacing:-.025em; }
-  .card p{ font-size:var(--t-small); color:var(--ink-70); }
-  .card-shot{ aspect-ratio:5/3; margin-bottom:var(--s4); background:var(--stone); overflow:hidden; }
-  .card-shot{ box-shadow:var(--lift); }
-  .card-shot img{ filter:grayscale(.4) contrast(1.05); transition:transform 400ms var(--ease); }
-
-  /* ============================================================
      ASSESSMENT — the qualifying quiz. Kept intact, restaged on the
      grid: prompt on the left, answers on the right, so it reads as a
      form being filled rather than a centered card.
@@ -831,7 +803,6 @@
     .row-btn:hover .row-name{ transform:translateX(10px); }
     .opt:hover{ border-color:var(--light); }
     .opt:hover span{ transform:translateX(14px); }
-    .card:hover .card-shot img{ transform:scale(1.04); }
   }
 
   .result{ display:none; }
@@ -938,7 +909,6 @@
     .conditions .head,.conditions .list,.conditions .turn,
     .casenote .body,
     .roadmap .head,.rows,
-    .contents .head,
     .assess .head,.assess .panelwrap,
     .practice .lead,.practice .block,.practice .clients,.practice .portrait,
     .gate .pitch,.gate .form,
@@ -953,8 +923,8 @@
     .casenote .body{ margin-top:var(--s4); }
     .practice .block{ margin-top:var(--s6); }
     .practice .clients{ margin-top:var(--s6); }
-    .roadmap,.contents,.assess,.gate,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
-    .roadmap .head,.contents .head{ margin-bottom:var(--s5); }
+    .roadmap,.assess,.gate,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
+    .roadmap .head{ margin-bottom:var(--s5); }
     .row-btn{ grid-template-columns:38px 1fr 22px; }
     .row-dim{ display:none; }
     .row-body p{ padding-left:calc(38px + var(--s3)); }
@@ -1228,56 +1198,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <!-- ============================================================
-     CONTENTS — drag to pan. Native overflow scroll underneath so
-     keyboard, trackpad and touch all work; pointer-drag layered on
-     top as an enhancement.
-     ============================================================ -->
-<section class="contents" id="s-contents" data-fade data-bg="stone-dim" data-snap data-sheet="06" data-name="Contents">
-  <div class="grid">
-    <div class="head">
-      <h2>What's in the set</h2>
-      <p>Not theory. The actual checklists and contacts we work from. Drag to look through.</p>
-    </div>
-  </div>
-  <!-- Cards run in the book's own order (ch2, ch4, bonus 1, bonus 2).
-       They were previously ch4, bonus1, ch2, bonus2, which read as
-       shuffled - and on a page framed as a drawing set, where sheet
-       order is the whole conceit, out-of-sequence references undercut
-       the device. -->
-  <div class="track" id="track">
-    <article class="card">
-      <div class="card-shot"><img src="https://picsum.photos/seed/inco-services-plant/800/480" alt=""></div>
-      <div class="ref">Chapter two</div>
-      <h3>The pitfalls we watch for</h3>
-      <p>Power capacity, exhaust provision and drainage turn a promising site into a money pit faster than any design decision. What to check, and what to make the landlord fix first.</p>
-    </article>
-    <article class="card">
-      <div class="card-shot"><img src="https://picsum.photos/seed/inco-lease-doc/800/480" alt=""></div>
-      <div class="ref">Chapter four</div>
-      <h3>The site-fit checklist</h3>
-      <p>Site and lease, site services, brand and market, operations, interior design. The categories worth ticking off before you sign, including the three that quietly kill fitouts.</p>
-    </article>
-    <article class="card">
-      <div class="card-shot"><img src="https://picsum.photos/seed/inco-team-table/800/480" alt=""></div>
-      <div class="ref">Bonus one</div>
-      <h3>Build your A-team</h3>
-      <p>Tenant rep, commercial lawyer, certifier, kitchen consultant, shopfitter, POS. Who you need, what each one actually does, and when they need to be in the room.</p>
-    </article>
-    <article class="card">
-      <div class="card-shot"><img src="https://picsum.photos/seed/inco-contacts-page/800/480" alt=""></div>
-      <div class="ref">Bonus two</div>
-      <h3>Our go-to team</h3>
-      <p>The people we call ourselves. Borrow the list, so you're not working out mid-project who you should have rung three months ago.</p>
-    </article>
-  </div>
-</section>
-
-<!-- ============================================================
      ASSESSMENT — the qualifying quiz, logic unchanged from the
      previous build, restaged across the grid. Ready-now scorers get
      a route to a conversation as well as the download.
      ============================================================ -->
-<section class="assess" id="s-assess" data-fade data-bg="olive" data-snap data-sheet="07" data-name="Readiness" data-dark>
+<section class="assess" id="s-assess" data-fade data-bg="olive" data-snap data-sheet="06" data-name="Readiness" data-dark>
   <div class="grid">
     <div class="head">
       <h2>Are you actually ready?</h2>
@@ -1351,7 +1276,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      statement of fact, the second asks the reader to feel something
      about it.
      ============================================================ -->
-<section class="practice" id="s-practice" data-fade data-bg="stone-dim" data-snap data-sheet="08" data-name="Practice">
+<section class="practice" id="s-practice" data-fade data-bg="stone-dim" data-snap data-sheet="07" data-name="Practice">
   <div class="grid">
     <div class="portrait">
       <picture>
@@ -1399,7 +1324,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ============================================================
      GATE — copy left, form right.
      ============================================================ -->
-<section class="gate" id="s-gate" data-fade data-bg="slate" data-snap data-sheet="09" data-name="Download" data-dark>
+<section class="gate" id="s-gate" data-fade data-bg="slate" data-snap data-sheet="08" data-name="Download" data-dark>
   <div class="grid">
     <div class="pitch">
       <h2>Where should we send it?</h2>
@@ -1464,7 +1389,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ============================================================
      TAILPIECE — the other readiness path.
      ============================================================ -->
-<section class="tail" id="s-tail" data-fade data-bg="stone" data-snap data-sheet="10" data-name="Contact">
+<section class="tail" id="s-tail" data-fade data-bg="stone" data-snap data-sheet="09" data-name="Contact">
   <div class="grid">
     <div class="msg">
       <h2>Already deep in a lease negotiation?</h2>
@@ -1478,7 +1403,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="grid">
     <div>
       <span>INCO Studio, Sydney</span>
-      <span>Prototype for internal review, not for public use</span>
     </div>
   </div>
 </footer>
@@ -1795,7 +1719,7 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 })();
 
 /* ============================================================
-   SNAP STOPS — ten defined scroll positions, driven here rather
+   SNAP STOPS — nine defined scroll positions, driven here rather
    than by CSS.
 
    CSS scroll-snap was the wrong tool and was replaced. It aligns a
@@ -1828,11 +1752,10 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     { sel: ".plate",                 align: "flush"  }, //  3 it rarely fails loudly (caption sits at its base)
     { sel: ".casenote .body",        align: "top"  },   //  4 case note
     { sel: ".roadmap .head h2",      align: "top"  },   //  5 five questions
-    { sel: ".contents .head h2",     align: "top"  },   //  6 what's in the set
-    { sel: ".assess .head h2",       align: "third" },  //  7 are you actually ready
-    { sel: ".practice .lead h2",     align: "top"  },   //  8 who's behind this
-    { sel: ".gate .pitch h2",        align: "top"  },   //  9 unlock your copy
-    { sel: ".tail .msg h2",          align: "top"  }    // 10 lease negotiation
+    { sel: ".assess .head h2",       align: "third" },  //  6 are you actually ready
+    { sel: ".practice .lead h2",     align: "top"  },   //  7 who's behind this
+    { sel: ".gate .pitch h2",        align: "top"  },   //  8 unlock your copy
+    { sel: ".tail .msg h2",          align: "top"  }    //  9 lease negotiation
   ];
 
   var stops = [];
@@ -1956,11 +1879,8 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
    ============================================================ */
 
 /* ============================================================
-   DEPTH — two quiet moves, both off when motion is reduced.
-   The portrait drifts slower than the page around it (parallax), and
-   the contents cards arrive 60ms apart the first time the strip is in
-   view. gsap.from only runs if GSAP loaded, so a failed CDN leaves the
-   cards simply there.
+   DEPTH — one quiet move, off when motion is reduced. The portrait
+   drifts slower than the page around it (parallax).
    ============================================================ */
 (function () {
   if (reduce || !window.gsap || !window.ScrollTrigger) return;
@@ -1969,13 +1889,6 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     gsap.fromTo(pic, { y: 28 }, {
       y: -28, ease: "none",
       scrollTrigger: { trigger: ".practice", start: "top bottom", end: "bottom top", scrub: 0.6 }
-    });
-  }
-  var cards = document.querySelectorAll("#track .card");
-  if (cards.length) {
-    gsap.from(cards, {
-      opacity: 0, x: 36, duration: 0.5, ease: "power3.out", stagger: 0.06,
-      scrollTrigger: { trigger: "#track", start: "top 85%", once: true }
     });
   }
 })();
@@ -2001,70 +1914,6 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       }
     });
   });
-})();
-
-/* ============================================================
-   CONTENTS TRACK — drag to pan. Native overflow-x scroll is the
-   base layer (keyboard, trackpad, touch all work untouched); this
-   only adds pointer dragging on top and suppresses the click that
-   would otherwise fire at the end of a drag.
-   ============================================================ */
-(function () {
-  var track = document.getElementById("track");
-  if (!track) return;
-  var down = false, startX = 0, startLeft = 0, moved = 0;
-  var lastX = 0, lastT = 0, vel = 0, glideRaf = null;
-
-  // Let go mid-flick and it keeps travelling, then settles. A drag that
-  // stops dead the instant the pointer lifts reads as a broken scroll.
-  function coast() {
-    var prev = performance.now();
-    (function step(now) {
-      var dt = now - prev; prev = now;
-      track.scrollLeft -= vel * dt;
-      vel *= Math.pow(0.0025, dt / 1000);        // ~0.5s to rest
-      if (Math.abs(vel) > 0.02) glideRaf = requestAnimationFrame(step);
-      else { glideRaf = null; track.classList.remove("dragging"); }
-    })(prev);
-  }
-
-  track.addEventListener("pointerdown", function (e) {
-    if (e.pointerType === "touch") return;   // let native touch scrolling do its job
-    if (glideRaf) { cancelAnimationFrame(glideRaf); glideRaf = null; }
-    vel = 0; lastX = e.clientX; lastT = performance.now();
-    down = true; moved = 0;
-    startX = e.clientX; startLeft = track.scrollLeft;
-    track.classList.add("dragging");
-    track.setPointerCapture(e.pointerId);
-  });
-
-  track.addEventListener("pointermove", function (e) {
-    if (!down) return;
-    var dx = e.clientX - startX;
-    moved = Math.max(moved, Math.abs(dx));
-    var now = performance.now();
-    if (now > lastT) vel = 0.6 * vel + 0.4 * ((e.clientX - lastX) / (now - lastT));
-    lastX = e.clientX; lastT = now;
-    track.scrollLeft = startLeft - dx;
-  });
-
-  function release(e) {
-    if (!down) return;
-    down = false;
-    if (!reduce && performance.now() - lastT < 80 && Math.abs(vel) > 0.1) coast();
-    else track.classList.remove("dragging");
-    if (track.hasPointerCapture && e.pointerId !== undefined && track.hasPointerCapture(e.pointerId)) {
-      track.releasePointerCapture(e.pointerId);
-    }
-  }
-  track.addEventListener("pointerup", release);
-  track.addEventListener("pointercancel", release);
-
-  // Swallow the click that ends a real drag, so dragging over a card
-  // never reads as a click on it.
-  track.addEventListener("click", function (e) {
-    if (moved > 6) { e.preventDefault(); e.stopPropagation(); }
-  }, true);
 })();
 
 /* ============================================================

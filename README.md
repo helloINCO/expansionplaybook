@@ -32,23 +32,19 @@ putting `index.html` in a subfolder and pointing Pages at the root.
 
 ## Before this goes public
 
-Four things are still placeholders. None of them stop the page working,
+Three things are still placeholders. None of them stop the page working,
 but all of them would be visible to a real visitor:
 
-1. **Contents card images** — the four cards in "What's in the set" pull
-   from `picsum.photos`, a random-image service. These need real INCO
-   project photography. They are the only remaining external image
-   dependency; if picsum is ever down, the cards render empty.
-2. **CTA links** — three buttons are marked `(demo link)` and call
+1. **CTA links** — three buttons are marked `(demo link)` and call
    `return false`. Search `demo link` in `index.html`. They need real
    booking URLs.
-3. **CRM webhook** — the form currently logs its payload to the console
+2. **CRM webhook** — the form currently logs its payload to the console
    and fakes a success after 450ms. Search for `CRM INTEGRATION POINT`
    in `index.html`; the `fetch()` is written out and commented, and it is
    the only function that changes depending on which CRM you use. The
    payload carries the quiz segment and the visitor's weakest dimension,
    so automation can branch on them.
-4. **Hero still** — `media/hero-still-1600.jpg` is a 693px web export
+3. **Hero still** — `media/hero-still-1600.jpg` is a 693px web export
    upscaled to 1600px. It holds up at small sizes but softens on a large
    display. Re-export from the original if you have it.
 

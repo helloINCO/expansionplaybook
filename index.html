@@ -177,6 +177,7 @@
     --olive:#666b47;
     --olive-deep:#4c5036;
     --terracotta:#b5533c;      /* error states only */
+    --terracotta-on-dark:#e08a72;  /* same role on slate: 6.5:1, the base tone is 3.5:1 there */
     --light:#f5f3ee;           /* foreground on dark only, never a bg field */
 
     /* Alphas rebalanced for the lighter field: the old .45 meta text
@@ -293,7 +294,6 @@
      Structural, not decoration: the ticks mark the sheet edge and the
      readout (bottom-left) reports which part of the set you're in.
      ============================================================ */
-  .sheet,.plumb,.masthead,.readout{ transform:translateY(var(--chrome-shift,0px)); }
   .sheet{ position:fixed; inset:var(--frame); pointer-events:none; z-index:90;
           border:1px solid var(--rule); mix-blend-mode:multiply; }
   .sheet::before,.sheet::after{
@@ -308,7 +308,7 @@
     position:fixed; left:calc(var(--frame) + 14px); bottom:calc(var(--frame) + 12px);
     z-index:91; font-size:var(--t-micro); color:var(--ink-soft);
     display:flex; align-items:baseline; gap:10px; pointer-events:none;
-    transition:color var(--fast) linear;
+    transition:color var(--fast) ease;
   }
   .readout.on-dark{ color:var(--light-50); }
   .readout .rd-num{ font-weight:700; font-variant-numeric:tabular-nums; }
@@ -334,14 +334,14 @@
     right:calc(var(--frame) + 14px); z-index:92;
     display:flex; justify-content:space-between; align-items:center;
     font-size:var(--t-micro); color:var(--ink-soft); pointer-events:none;
-    transition:color var(--fast) linear;
+    transition:color var(--fast) ease;
   }
   /* The wordmark carries the brand, so it's set at reading size rather
      than as micro-type in the corner, and it inverts against whatever
      is behind it. */
   .mh-mark{
     font-size:var(--t-lead); font-weight:900; letter-spacing:-.035em;
-    color:var(--mh-ink); transition:color 140ms linear;
+    color:var(--mh-ink); transition:color 140ms ease;
   }
   /* Photography sections cover the colour layer, so the computed ink
      would be reading a background nobody can see. Those force light. */
@@ -526,9 +526,9 @@
     background:var(--olive); color:var(--light); border:none; border-radius:999px;
     padding:17px 34px; font-family:inherit; font-size:var(--t-small); font-weight:700;
     letter-spacing:-.01em; cursor:pointer; text-decoration:none; white-space:nowrap;
-    transition:background var(--fast) linear, transform 140ms var(--ease);
+    transition:background var(--fast) ease, transform 140ms var(--ease);
   }
-  .btn{ box-shadow:0 1px 2px rgba(28,28,26,.12), 0 8px 20px rgba(76,80,54,.22); will-change:transform; }
+  .btn{ box-shadow:0 1px 2px rgba(28,28,26,.12), 0 8px 20px rgba(76,80,54,.22); }
   .btn:active{ transform:scale(.97); }
   /* Hover steps DOWN to the dim tone. It used to step up to --light,
      which is now within two values of --stone, so the hover would have
@@ -537,9 +537,10 @@
   .link{
     font-size:var(--t-small); color:inherit; opacity:.65; text-decoration:none;
     padding-bottom:3px; border-bottom:1px solid currentColor;
-    transition:opacity var(--fast) linear;
+    transition:opacity var(--fast) ease;
   }
   :focus-visible{ outline:2px solid var(--olive); outline-offset:3px; }
+  #rTitle:focus{ outline:none; }   /* focus lands here programmatically; the heading itself isn't a control */
   .hero :focus-visible{ outline-color:var(--light); }
 
 
@@ -609,7 +610,7 @@
   }
   .row-idx{ font-size:var(--t-micro); color:var(--light-50); font-variant-numeric:tabular-nums; padding-top:6px; align-self:start; }
   .row-name{ font-size:clamp(28px,3.6vw,52px); font-weight:900; letter-spacing:-.035em; line-height:1;
-             transition:transform var(--ui) var(--ease), color var(--fast) linear; }
+             transition:transform var(--ui) var(--ease), color var(--fast) ease; }
   .row.open .row-name{ color:var(--light); }
   /* dimension line: ticks at each end, extends on open */
   .row-dim{ position:relative; height:1px; background:var(--light-18); }
@@ -626,7 +627,7 @@
   .row-plus::after{ left:10px; top:0; width:1px; height:22px; }
   .row.open .row-plus::after{ transform:rotate(90deg); }
   .row-body{ display:grid; grid-template-rows:0fr; transition:grid-template-rows var(--ui) var(--ease); }
-  .row-body > div{ opacity:0; transition:opacity 160ms linear; }
+  .row-body > div{ opacity:0; transition:opacity 160ms ease; }
   .row.open .row-body > div{ opacity:1; transition-duration:var(--ui); transition-delay:60ms; }
   .row.open .row-body{ grid-template-rows:1fr; }
   .row-body > div{ overflow:hidden; }
@@ -666,7 +667,7 @@
   .conditions .head .lede-line span{ display:block; }
   .conditions .head h2{
     font-size:min(var(--t-h3), 4.2vh); font-weight:500;
-    letter-spacing:-.015em; line-height:1.25; color:var(--light-80);
+    letter-spacing:-.015em; line-height:1.3; color:var(--light-80);
   }
   .conditions .list{ grid-column:1 / 11; border-top:1px solid var(--rule); }
   .conditions .list p{
@@ -767,33 +768,34 @@
      grid: prompt on the left, answers on the right, so it reads as a
      form being filled rather than a centered card.
      ============================================================ */
-  .assess{ background:var(--olive); color:var(--light); padding:var(--s8) 0; }
+  /* Olive is mid-tone: even solid light text only reaches 5.0:1 on it,
+     so the usual 80% / 50% steps fail AA (3.9:1 and 2.5:1). On this sheet
+     body copy goes solid and meta text sits at 92% (4.6:1); hierarchy
+     comes from size and weight instead of fading. */
+  .assess{ background:var(--olive); color:var(--light); padding:var(--s8) 0;
+           --light-80:var(--light); --light-50:rgba(245,243,238,.92); }
   .assess .head{ grid-column:1 / 7; }
   .assess .head h2{ font-size:var(--t-h2); }
   .assess .head p{ margin-top:var(--s3); font-size:var(--t-small); color:var(--light-80); max-width:36ch; }
   .assess .head .count{ margin-top:var(--s6); font-size:var(--t-micro); color:var(--light-50); font-variant-numeric:tabular-nums; }
   .assess .head .bar{ margin-top:var(--s2); width:120px; height:1px; background:var(--light-18); }
-  .assess .head .bar i{ display:block; height:100%; width:0%; background:var(--light); transition:width var(--med) var(--ease); }
+  .assess .head .bar i{ display:block; height:100%; width:100%; background:var(--light); transform:scaleX(0); transform-origin:left; transition:transform var(--med) var(--ease); }
 
   .assess .panelwrap{ grid-column:7 / 13; min-height:340px; position:relative; }
   .qp{ opacity:0; visibility:hidden; position:absolute; inset:0;
        transition:opacity 140ms ease-out, transform var(--ui) var(--ease); transform:translateY(8px); }
   .qp.on{ opacity:1; visibility:visible; position:relative; transform:none; }
-  .qp .q{ font-size:var(--t-lead); font-weight:700; letter-spacing:-.02em; margin-bottom:var(--s5); max-width:34ch; line-height:1.2; }
+  .qp .q{ font-size:var(--t-lead); font-weight:700; letter-spacing:-.02em; margin-bottom:var(--s5); max-width:34ch; line-height:1.3; }
   .opt{
     display:block; width:100%; text-align:left; background:none; color:inherit;
     font-family:inherit; font-size:var(--t-small); padding:18px 0;
     border:none; border-bottom:1px solid var(--light-18); cursor:pointer;
-    transition:border-color var(--fast) linear;
+    transition:border-color var(--fast) ease;
   }
   .opt span{ display:block; transition:transform var(--ui) var(--ease); }
   .opt:active span{ transform:translateX(6px) scale(.99); }
   .opt:first-of-type{ border-top:1px solid var(--light-18); }
   .opt:focus-visible span{ transform:translateX(14px); }
-  .qp.on .opt{ animation:soft-from var(--ui) var(--ease) both; }
-  .qp.on .opt:nth-of-type(1){ animation-delay:40ms; }
-  .qp.on .opt:nth-of-type(2){ animation-delay:80ms; }
-  .qp.on .opt:nth-of-type(3){ animation-delay:120ms; }
 
   /* Hover only where hover exists. On touch it fires on tap and sticks. */
   @media (hover:hover) and (pointer:fine){
@@ -819,8 +821,8 @@
   .result p{ font-size:var(--t-small); color:var(--light-80); max-width:44ch; margin-bottom:var(--s5); }
   .result .scale{ display:flex; align-items:center; gap:var(--s3); margin-bottom:var(--s5); }
   .result .scale .track2{ flex:1; height:1px; background:var(--light-18); position:relative; }
-  .result .scale .track2 i{ position:absolute; left:0; top:0; height:100%; width:0%; background:var(--light);
-                            transition:width 700ms var(--ease); }
+  .result .scale .track2 i{ position:absolute; left:0; top:0; height:100%; width:100%; background:var(--light);
+                            transform:scaleX(0); transform-origin:left; transition:transform 700ms var(--ease); }
   .result .scale b{ font-size:var(--t-micro); font-variant-numeric:tabular-nums; font-weight:700; }
   /* Per-dimension diagnostic. Computed from the actual answers, so it
      tells them something they didn't already type in. */
@@ -835,6 +837,7 @@
   .result .bench{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s5); display:none; }
   .result .bench.on{ display:block; }
   .result .acts{ display:flex; align-items:center; gap:var(--s4); flex-wrap:wrap; }
+  .assess .link{ opacity:1; }   /* 65% link text is 3.1:1 on olive; the underline already marks it */
   #callCta{ display:none; }
   #callCta.on{ display:inline-block; }
 
@@ -853,14 +856,14 @@
   .field label{ display:block; font-size:var(--t-micro); color:var(--light-50); margin-bottom:6px; }
   .field input{
     width:100%; background:none; border:none; border-bottom:1px solid var(--light-18);
-    color:var(--light); font-family:inherit; font-size:var(--t-lead); padding:8px 0; outline:none;
-    transition:border-color var(--fast) linear;
+    color:var(--light); caret-color:var(--light); font-family:inherit; font-size:var(--t-lead); padding:8px 0; outline:none;
+    transition:border-color var(--fast) ease;
   }
   .field input::placeholder{ color:var(--light-50); }
   .field input:focus{ border-color:var(--light); }
-  .err{ font-size:var(--t-micro); color:var(--terracotta); margin-top:8px; display:none; }
+  .err{ font-size:var(--t-micro); color:var(--terracotta-on-dark); margin-top:8px; display:none; }
   .field.bad .err{ display:block; }
-  .field.bad input{ border-color:var(--terracotta); }
+  .field.bad input{ border-color:var(--terracotta-on-dark); }
 
   /* Four fields plus the s8 gutters run the gate sheet to roughly 830px.
      That clears a 900px viewport but overflows a 768-800px laptop, and
@@ -877,7 +880,7 @@
   /* ADDED: honeypot field, hidden from people. Bots fill it in and get ignored. */
   .hp{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
   /* ADDED: message shown if sending fails */
-  .form-err{ display:none; margin-top:var(--s3); font-size:var(--t-small); color:#e08a72; }
+  .form-err{ display:none; margin-top:var(--s3); font-size:var(--t-small); color:var(--terracotta-on-dark); }
   .form-err.on{ display:block; }
   /* ADDED: privacy link inside the fine print */
   .fineprint a{ color:var(--light-80); }
@@ -913,7 +916,7 @@
   .foot-social a{
     display:grid; place-items:center; width:40px; height:40px;
     color:var(--ink-soft); border-radius:999px;
-    transition:color var(--fast) linear, transform 140ms var(--ease);
+    transition:color var(--fast) ease, transform 140ms var(--ease);
   }
   .foot-social a:active{ transform:scale(.94); }
   .foot-social svg{ width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
@@ -925,7 +928,7 @@
   }
   /* The wordmark sits OUTSIDE the sheet border. The border, masthead,
      plumb line and counter are fixed to the screen, so as the wordmark
-     scrolls in they slide up together (--chrome-shift, set in JS) to
+     scrolls in they slide up together (transform, set in JS) to
      keep the border's bottom edge a fixed distance above it. */
   .foot-logo{ margin-top:0; }
   .foot-logo img{ width:100%; height:auto; aspect-ratio:2000 / 654; object-fit:contain; }
@@ -1014,18 +1017,26 @@
   /* ============================================================
      REDUCED MOTION
      ============================================================ */
+  /* Reduced motion means fewer and gentler, not none. Movement goes:
+     entrances, slides, nudges, presses, parallax (the scripts skip the
+     scroll effects). Short opacity and colour fades stay, because they
+     are what tells you a panel changed or a row opened. */
+  @keyframes fade-only{ from{ opacity:0; } to{ opacity:1; } }
   @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{
-      animation-duration:.01ms !important; animation-iteration-count:1 !important;
-      transition-duration:.01ms !important; scroll-behavior:auto !important;
-    }
-    /* No snapping and no fading. Content stays fully visible and each
-       section keeps its own colour; the script already skips both
-       effects, this just makes sure nothing is left mid-state. */
+    *,*::before,*::after{ animation-iteration-count:1 !important; scroll-behavior:auto !important; }
     section[data-fade]{ opacity:1 !important; }
-    .masthead .mh-label,.masthead .mh-cta{ transition:none !important; }
-    .hero-title .ln > span{ transform:none !important; clip-path:none !important; }
-    .hero-meta,.hero-cta{ opacity:1 !important; transform:none !important; }
+    .hero-title .ln > span{ animation:none !important; transform:none !important; clip-path:none !important; }
+    .hero-meta,.hero-cta{ animation:none !important; opacity:1 !important; transform:none !important; }
+    .result.on,.sent.on,.result.on .diag div{ animation:fade-only 180ms ease-out both !important; }
+    .masthead .mh-label,.masthead .mh-cta{ transform:none !important; }
+    .qp{ transform:none !important; }
+    .btn:active,.mh-cta:active,.foot-social a:active,.opt:active span,.row-btn:active .row-name{ transform:none !important; }
+    .row-name,.opt span{ transition:none !important; }
+    .row-btn:hover .row-name,.opt:hover span,.opt:focus-visible span{ transform:none !important; }
+    .row-plus::after{ transition:none !important; }
+    .row-body{ transition:none !important; }
+    .row-dim span{ transition:none !important; }
+    .assess .head .bar i,.result .scale .track2 i{ transition-duration:.01ms !important; }
     .plumb-fill{ transform:scaleY(1); }
   }
 </style>
@@ -1269,7 +1280,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="head">
       <h2>Are you actually ready?</h2>
       <p>Four questions, no email until the end. Answer them honestly — the flattering answer won't help you.</p>
-      <div class="count"><span id="qCount">Question 1 of 4</span></div>
+      <div class="count"><span id="qCount" aria-live="polite">Question 1 of 4</span></div>
       <div class="bar"><i id="qBar"></i></div>
     </div>
 
@@ -1301,7 +1312,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <div class="result" id="result">
         <p class="verdict" id="verdict">Result</p>
-        <h3 id="rTitle"></h3>
+        <h3 id="rTitle" tabindex="-1"></h3>
         <div class="scale">
           <div class="track2"><i id="rFill"></i></div>
           <b id="rScore">0/8</b>
@@ -1814,13 +1825,19 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 (function () {
   var logo = document.querySelector(".foot-logo");
   if (!logo) return;
-  var root = document.documentElement, GAP = 90, queued = false;
+  var root = document.documentElement, GAP = 90, queued = false, last = null;
+  // Written straight onto the elements. A custom property on <html> would
+  // restyle the whole document on every scroll frame.
+  var chrome = Array.prototype.slice.call(document.querySelectorAll(".sheet, .plumb, .masthead, .readout"));
 
   function update() {
     queued = false;
     var frame = parseFloat(getComputedStyle(root).getPropertyValue("--frame")) || 20;
     var d = Math.max(0, (window.innerHeight - frame) - (logo.getBoundingClientRect().top - GAP));
-    root.style.setProperty("--chrome-shift", (-Math.round(d)) + "px");
+    var t = d ? "translateY(" + (-Math.round(d)) + "px)" : "";
+    if (t === last) return;
+    last = t;
+    chrome.forEach(function (el) { el.style.transform = t; });
   }
   function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
 
@@ -1970,14 +1987,34 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     glide(to);
   }
 
+  /* Only scrolling the visitor caused may snap. The page also scrolls on
+     its own: scroll anchoring when form errors make a sheet taller, focus
+     bringing a field into view, a resize. Read as travel, those would
+     glide the visitor off the form they were fixing. Wheel, touch, keys
+     outside form fields and a scrollbar drag count as input; trackpad
+     momentum keeps firing wheel events, so it counts too. */
+  var lastInput = -Infinity;
+
   window.addEventListener("scroll", function () {
     if (gliding) return;
     clearTimeout(idle);
+    if (performance.now() - lastInput > 900) { lastRest = window.scrollY; return; }
     idle = setTimeout(settle, 140);
   }, { passive: true });
 
-  ["wheel", "touchstart", "keydown", "mousedown"].forEach(function (ev) {
-    window.addEventListener(ev, stop, { passive: true });
+  function isScrollInput(e) {
+    // A press on a button or link isn't scrolling, but a press on the
+    // scrollbar lands on <html>. Keys typed into a field aren't scrolling
+    // either, and as errors clear the sheet changes height under them.
+    if (e.type === "mousedown") return e.target === document.documentElement;
+    if (e.type === "keydown") return !(e.target.closest && e.target.closest("input, textarea, select, [contenteditable]"));
+    return true;
+  }
+  ["wheel", "touchstart", "touchmove", "keydown", "mousedown"].forEach(function (ev) {
+    window.addEventListener(ev, function (e) {
+      if (isScrollInput(e)) lastInput = performance.now();
+      stop();
+    }, { passive: true });
   });
 
   // Anchor links glide too, since native smooth scrolling is off.
@@ -2017,9 +2054,10 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     scaleY: 1, ease: "none",
     scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: true }
   });
+  var plumb = bead.parentNode;
   gsap.to(bead, {
-    top: "100%", ease: "none",
-    scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: true }
+    y: function () { return plumb.offsetHeight; }, ease: "none",
+    scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: true, invalidateOnRefresh: true }
   });
 })();
 
@@ -2106,16 +2144,20 @@ document.querySelectorAll(".opt").forEach(function (btn) {
     score += val;
     answers[idx] = val;
 
-    qBar.style.width = (idx / totalQ * 100) + "%";
+    qBar.style.transform = "scaleX(" + (idx / totalQ) + ")";
     panel.classList.remove("on");
 
     var next = document.querySelector('.qp[data-q="' + (idx + 1) + '"]');
     if (next) {
       qCount.textContent = "Question " + (idx + 1) + " of " + totalQ;
       next.classList.add("on");
+      // The answered button is now hidden; without this, keyboard focus
+      // falls back to the top of the document.
+      if (btn.matches(":focus-visible")) next.querySelector(".opt").focus({ preventScroll: true });
     } else {
       qCount.textContent = "Complete";
       showResult();
+      if (btn.matches(":focus-visible")) document.getElementById("rTitle").focus({ preventScroll: true });
     }
   });
 });
@@ -2146,7 +2188,7 @@ function showResult() {
   document.getElementById("result").classList.add("on");
 
   requestAnimationFrame(function () {
-    document.getElementById("rFill").style.width = (score / max * 100) + "%";
+    document.getElementById("rFill").style.transform = "scaleX(" + (score / max) + ")";
   });
 
   /* Per-dimension read. Lowest-scoring answer is the weak spot; ties
@@ -2330,7 +2372,13 @@ function showResult() {
       // Send focus to the first problem so keyboard users aren't left
       // hunting for which field went red.
       var firstBad = form.querySelector(".field.bad input");
-      if (firstBad) firstBad.focus();
+      // Focus without scrolling when the field is already on screen: a
+      // nudge here would wake the snap logic and glide the sheet after a
+      // failed submit. Off screen (phones), let the browser bring it in.
+      if (firstBad) {
+        var fr = firstBad.getBoundingClientRect();
+        firstBad.focus({ preventScroll: fr.top >= 0 && fr.bottom <= window.innerHeight });
+      }
       return;
     }
 

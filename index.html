@@ -894,10 +894,28 @@
   .tail .msg{ grid-column:1 / 8; }
   .tail h2{ font-size:var(--t-h2); margin-bottom:var(--s4); }
   .tail p{ font-size:var(--t-body); color:var(--ink-70); max-width:38ch; margin-bottom:var(--s5); }
-  footer{ padding:var(--s5) 0 var(--s7); }
-  footer .grid > div{ grid-column:1 / 13; display:flex; justify-content:space-between;
-                      border-top:1px solid var(--rule); padding-top:var(--s3);
-                      font-size:var(--t-micro); color:var(--ink-soft); flex-wrap:wrap; gap:var(--s3); }
+  /* Footer, per the mockup: social icons sit right above the hairline,
+     the studio line hangs under it, and the wordmark runs the full
+     width of the grid as the last thing on the page. The bottom padding
+     keeps the wordmark clear of the sheet readout. */
+  footer{ padding:var(--s5) 0 var(--s6); }
+  footer .grid > div{ grid-column:1 / 13; }
+  .foot-social{ display:flex; justify-content:flex-end; margin-right:-8px; }
+  .foot-social a{
+    display:grid; place-items:center; width:40px; height:40px;
+    color:var(--ink-soft); border-radius:999px;
+    transition:color var(--fast) linear, transform 140ms var(--ease);
+  }
+  .foot-social a:active{ transform:scale(.94); }
+  .foot-social svg{ width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+  .foot-social svg .dot{ fill:currentColor; stroke:none; }
+  @media (hover:hover) and (pointer:fine){ .foot-social a:hover{ color:var(--slate); } }
+  .foot-line{
+    border-top:1px solid var(--rule); padding-top:var(--s3);
+    font-size:var(--t-micro); color:var(--ink-soft);
+  }
+  .foot-logo{ margin-top:var(--s7); }
+  .foot-logo img{ width:100%; height:auto; aspect-ratio:2000 / 654; object-fit:contain; }
 
   /* ============================================================
      RESPONSIVE — asymmetric spans collapse to single column.
@@ -1389,7 +1407,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ============================================================
      TAILPIECE — the other readiness path.
      ============================================================ -->
-<section class="tail" id="s-tail" data-fade data-bg="stone" data-snap data-sheet="09" data-name="Contact">
+<section class="tail" id="s-tail" data-fade="in" data-bg="stone" data-snap data-sheet="09" data-name="Contact">
   <div class="grid">
     <div class="msg">
       <h2>Already deep in a lease negotiation?</h2>
@@ -1399,10 +1417,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<footer>
+<footer data-sheet="09" data-name="Contact">
   <div class="grid">
-    <div>
-      <span>INCO Studio, Sydney</span>
+    <div class="foot-social">
+      <a href="https://www.linkedin.com/company/incostudio/" target="_blank" rel="noopener noreferrer" aria-label="INCO Studio on LinkedIn" data-network="linkedin">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10.5V17M12 17v-6.5M12 13.4c0-1.8 1.2-2.9 2.8-2.9S17.5 11.6 17.5 13.4V17"/><circle class="dot" cx="8" cy="7.4" r="1"/></svg>
+      </a>
+      <a href="https://www.instagram.com/_incostudio/" target="_blank" rel="noopener noreferrer" aria-label="INCO Studio on Instagram" data-network="instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle class="dot" cx="17.2" cy="6.8" r="1"/></svg>
+      </a>
+    </div>
+    <div class="foot-line">INCO Studio, Sydney</div>
+    <div class="foot-logo">
+      <picture>
+        <source srcset="media/inco-logo.webp" type="image/webp">
+        <img src="media/inco-logo.png" width="2000" height="654" alt="INCO" loading="lazy" decoding="async">
+      </picture>
     </div>
   </div>
 </footer>
@@ -1437,6 +1467,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   setLink("callCta",     c.bookingUrl, bookClick);
   setLink("tailCall",    c.bookingUrl, bookClick);
   setLink("privacyLink", c.privacyUrl);
+
+  // Send social clicks to GTM
+  document.querySelectorAll(".foot-social a").forEach(function (a) {
+    a.addEventListener("click", function () {
+      window.trackEvent("social_click", { network: a.getAttribute("data-network") });
+    });
+  });
 })();
 </script>
 
@@ -1453,7 +1490,7 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
    readout reports which sheet you're on: wayfinding, not chrome.
    ============================================================ */
 (function () {
-  var sections = Array.prototype.slice.call(document.querySelectorAll("section[data-sheet]"));
+  var sections = Array.prototype.slice.call(document.querySelectorAll("section[data-sheet], footer[data-sheet]"));
   var rdNum = document.getElementById("rdNum");
   var rdName = document.getElementById("rdName");
   var sheet = document.getElementById("sheet");
@@ -1533,7 +1570,7 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       function apply(p) {
         var o;
         if (p < band) o = p / band;                 // arriving
-        else if (p > 1 - band) o = (1 - p) / band;  // leaving
+        else if (p > 1 - band && sec.getAttribute("data-fade") !== "in") o = (1 - p) / band;  // leaving (the last sheet only fades in)
         else o = 1;                                 // holding
         sec.style.opacity = Math.max(0, Math.min(o, 1)).toFixed(3);
       }
@@ -1761,7 +1798,7 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     { sel: ".assess .head h2",       align: "third", end: ".assess .panelwrap" },  //  6 are you actually ready
     { sel: ".practice .lead h2",     align: "top",   end: ".practice .clients" },  //  7 who's behind this
     { sel: ".gate .pitch h2",        align: "top",   end: ".gate .form" },         //  8 unlock your copy
-    { sel: ".tail .msg h2",          align: "top",   end: "#tailCall" }            //  9 lease negotiation
+    { sel: ".tail .msg h2",          align: "top",   end: "footer .foot-logo" }    //  9 lease negotiation + footer
   ];
 
   var stops = [];   // [{ a: first scroll position, b: last }]

@@ -293,6 +293,7 @@
      Structural, not decoration: the ticks mark the sheet edge and the
      readout (bottom-left) reports which part of the set you're in.
      ============================================================ */
+  .sheet,.plumb,.masthead,.readout{ transform:translateY(var(--chrome-shift,0px)); }
   .sheet{ position:fixed; inset:var(--frame); pointer-events:none; z-index:90;
           border:1px solid var(--rule); mix-blend-mode:multiply; }
   .sheet::before,.sheet::after{
@@ -890,7 +891,7 @@
   /* ============================================================
      TAILPIECE
      ============================================================ */
-  .tail{ padding:var(--s8) 0 var(--s5); background:var(--stone); }
+  .tail{ padding:var(--s8) 0 var(--s7); background:var(--stone); }
   .tail .msg{ grid-column:1 / 8; }
   .tail h2{ font-size:var(--t-h2); margin-bottom:var(--s4); }
   .tail p{ font-size:var(--t-body); color:var(--ink-70); max-width:38ch; margin-bottom:var(--s5); }
@@ -898,8 +899,15 @@
      the studio line hangs under it, and the wordmark runs the full
      width of the grid as the last thing on the page. The bottom padding
      keeps the wordmark clear of the sheet readout. */
-  footer{ padding:var(--s3) 0 var(--s6); }
-  footer .grid{ row-gap:0; }   /* spacing in this block is set explicitly, not by the grid gap */
+  footer{ padding:var(--s7) 0 var(--s3); }
+  .tail-foot{ row-gap:0; }   /* spacing in this block is set explicitly, not by the grid gap */
+  .tail-foot > div{ grid-column:1 / 13; }
+  /* The Contact sheet is one full screen on desktop: message at the top,
+     icons and studio line at the bottom, all inside the border. */
+  @media (min-width:901px){
+    .tail{ min-height:100dvh; display:flex; flex-direction:column; justify-content:space-between; }
+    .tail > .grid{ width:100%; }
+  }
   footer .grid > div{ grid-column:1 / 13; }
   .foot-social{ display:flex; justify-content:flex-end; margin-right:-8px; padding-bottom:var(--s1); }
   .foot-social a{
@@ -915,8 +923,25 @@
     border-top:1px solid var(--rule); padding-top:var(--s3);
     font-size:var(--t-micro); color:var(--ink-soft);
   }
-  .foot-logo{ margin-top:var(--s7); }
+  /* The wordmark sits OUTSIDE the sheet border. The border, masthead,
+     plumb line and counter are fixed to the screen, so as the wordmark
+     scrolls in they slide up together (--chrome-shift, set in JS) to
+     keep the border's bottom edge a fixed distance above it. */
+  .foot-logo{ margin-top:0; }
   .foot-logo img{ width:100%; height:auto; aspect-ratio:2000 / 654; object-fit:contain; }
+
+  /* Short sheets fill the screen. A stop used to line the heading up
+     96px from the top and leave the sheet's own height to decide what
+     showed underneath, so a sheet shorter than the viewport let the NEXT
+     page bleed in along the bottom (37px to 270px depending on the
+     screen). Each of these is now at least one full screen with its
+     content centred, and its stop is the sheet's top edge. Taller than
+     the screen is still fine: the stop's range carries on to the last
+     control. Desktop only, phones scroll freely. */
+  @media (min-width:901px){
+    .casenote,.assess,.gate{ min-height:100dvh; display:flex; align-items:center; }
+    .casenote > .grid,.assess > .grid,.gate > .grid{ width:100%; }
+  }
 
   /* Touch devices: grow the hit area to 44px without changing how
      anything looks. Pseudo-elements extend the reach of text links;
@@ -955,6 +980,7 @@
     .practice .clients{ margin-top:var(--s6); }
     .roadmap,.assess,.gate,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
     .tail{ padding-bottom:var(--s5); }
+    .tail-foot{ margin-top:var(--s7); }
     .roadmap .head{ margin-bottom:var(--s5); }
     .row-btn{ grid-template-columns:38px 1fr 22px; }
     .row-dim{ display:none; }
@@ -1433,10 +1459,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="#" class="btn" id="tailCall" target="_blank" rel="noopener">Book a call</a>
     </div>
   </div>
-</section>
-
-<footer data-sheet="09" data-name="Contact">
-  <div class="grid">
+  <!-- Bottom of the Contact sheet, inside the border. The wordmark
+       below it, in the footer, sits outside. -->
+  <div class="grid tail-foot">
     <div class="foot-social">
       <a href="https://www.linkedin.com/company/incostudio/" target="_blank" rel="noopener noreferrer" aria-label="INCO Studio on LinkedIn" data-network="linkedin">
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10.5V17M12 17v-6.5M12 13.4c0-1.8 1.2-2.9 2.8-2.9S17.5 11.6 17.5 13.4V17"/><circle class="dot" cx="8" cy="7.4" r="1"/></svg>
@@ -1446,6 +1471,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <div class="foot-line">INCO Studio, Sydney</div>
+  </div>
+</section>
+
+<footer data-sheet="09" data-name="Contact">
+  <div class="grid">
     <div class="foot-logo">
       <picture>
         <source srcset="media/inco-logo.webp" type="image/webp">
@@ -1774,6 +1804,33 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 })();
 
 /* ============================================================
+   CHROME SHIFT — lifts the fixed border, masthead, plumb line and
+   counter off the bottom of the screen as the footer wordmark arrives,
+   so the wordmark sits outside the border. The border's bottom edge is
+   held GAP px above the wordmark's top; before the wordmark is near,
+   the shift is zero and nothing moves. Positional, not decorative, so
+   it stays on under reduced motion.
+   ============================================================ */
+(function () {
+  var logo = document.querySelector(".foot-logo");
+  if (!logo) return;
+  var root = document.documentElement, GAP = 90, queued = false;
+
+  function update() {
+    queued = false;
+    var frame = parseFloat(getComputedStyle(root).getPropertyValue("--frame")) || 20;
+    var d = Math.max(0, (window.innerHeight - frame) - (logo.getBoundingClientRect().top - GAP));
+    root.style.setProperty("--chrome-shift", (-Math.round(d)) + "px");
+  }
+  function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+
+  window.addEventListener("scroll", queue, { passive: true });
+  window.addEventListener("resize", queue);
+  window.addEventListener("load", queue);
+  update();
+})();
+
+/* ============================================================
    SNAP STOPS — nine defined scroll positions, driven here rather
    than by CSS.
 
@@ -1797,6 +1854,8 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 
   var TOP_PAD = 96;     // clears the fixed masthead
   var BOT_PAD = 56;     // keeps the last control clear of the frame and readout
+  var SLACK = 140;      // extra rest room past a range's end: one wheel notch overshoots by up to ~100px,
+                        // and without this it jumps on to the next page instead of resting at the last control
 
   // align: 'top'    element top sits just below the masthead
   //        'bottom' element bottom sits just above the viewport floor
@@ -1811,12 +1870,12 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     { sel: null,                     align: "page",  end: null },                  //  1 cover
     { sel: ".conditions .lede-line", align: "top",   end: ".conditions .turn" },   //  2 belief / proof
     { sel: ".plate",                 align: "flush", end: null },                  //  3 it rarely fails loudly (caption sits at its base)
-    { sel: ".casenote .body",        align: "top",   end: ".casenote .sign" },     //  4 case note
+    { sel: "#s-case",                align: "flush", end: ".casenote .sign" },     //  4 case note
     { sel: ".roadmap .head h2",      align: "top",   end: ".roadmap .rows" },      //  5 five questions
-    { sel: ".assess .head h2",       align: "third", end: ".assess .panelwrap" },  //  6 are you actually ready
+    { sel: "#s-assess",              align: "flush", end: ".assess .panelwrap" },  //  6 are you actually ready
     { sel: ".practice .lead h2",     align: "top",   end: ".practice .clients" },  //  7 who's behind this
-    { sel: ".gate .pitch h2",        align: "top",   end: ".gate .form" },         //  8 unlock your copy
-    { sel: ".tail .msg h2",          align: "top",   end: "footer .foot-logo" }    //  9 lease negotiation + footer
+    { sel: "#s-gate",                align: "flush", end: ".gate .form" },         //  8 unlock your copy
+    { sel: "#s-tail",                align: "flush", end: "footer .foot-logo" }    //  9 lease negotiation + footer
   ];
 
   var stops = [];   // [{ a: first scroll position, b: last }]
@@ -1843,7 +1902,7 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
         var bottom = endEl.getBoundingClientRect().bottom + window.scrollY;
         hold = Math.max(0, Math.round(bottom - y - (vh - BOT_PAD)));
       }
-      stops.push({ a: y, b: Math.min(y + hold, max) });
+      stops.push({ a: y, b: Math.min(y + hold + (hold ? SLACK : 0), max) });
     });
     stops.sort(function (m, n) { return m.a - n.a; });
   }

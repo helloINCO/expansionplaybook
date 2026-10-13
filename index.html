@@ -917,6 +917,17 @@
   .foot-logo{ margin-top:var(--s7); }
   .foot-logo img{ width:100%; height:auto; aspect-ratio:2000 / 654; object-fit:contain; }
 
+  /* Touch devices: grow the hit area to 44px without changing how
+     anything looks. Pseudo-elements extend the reach of text links;
+     the controls that have a visible box simply get taller. */
+  @media (pointer:coarse){
+    .mh-cta{ display:inline-flex; align-items:center; min-height:44px; padding-top:0; padding-bottom:0; }
+    .link,.fineprint a{ position:relative; }
+    .link::before,.fineprint a::before{ content:""; position:absolute; inset:-15px -8px; }
+    .field input{ min-height:44px; }
+    .foot-social a{ width:44px; height:44px; }
+  }
+
   /* ============================================================
      RESPONSIVE — asymmetric spans collapse to single column.
      ============================================================ */
@@ -950,6 +961,11 @@
     .gate .form{ margin-top:var(--s6); }
     .plumb{ display:none; }
     .readout{ display:none; }
+    /* The venue's name is signed across the top of this photograph, and
+       on a portrait screen cover-fit shows the whole height of it. Render
+       the image 30% taller than its box and anchor it to the floor so the
+       top quarter, with the sign, sits above the visible area. */
+    .plate img{ position:absolute; left:0; top:auto; bottom:0; height:130%; }
     /* No scrub on phones. 3.7MB of frames on mobile data for a
        background, plus a pinned section fighting the address bar,
        isn't a trade worth making. Mobile collapses the scroll region

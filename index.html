@@ -890,7 +890,7 @@
   /* ============================================================
      TAILPIECE
      ============================================================ */
-  .tail{ padding:var(--s8) 0 var(--s7); background:var(--stone); }
+  .tail{ padding:var(--s8) 0 var(--s5); background:var(--stone); }
   .tail .msg{ grid-column:1 / 8; }
   .tail h2{ font-size:var(--t-h2); margin-bottom:var(--s4); }
   .tail p{ font-size:var(--t-body); color:var(--ink-70); max-width:38ch; margin-bottom:var(--s5); }
@@ -898,9 +898,10 @@
      the studio line hangs under it, and the wordmark runs the full
      width of the grid as the last thing on the page. The bottom padding
      keeps the wordmark clear of the sheet readout. */
-  footer{ padding:var(--s5) 0 var(--s6); }
+  footer{ padding:var(--s3) 0 var(--s6); }
+  footer .grid{ row-gap:0; }   /* spacing in this block is set explicitly, not by the grid gap */
   footer .grid > div{ grid-column:1 / 13; }
-  .foot-social{ display:flex; justify-content:flex-end; margin-right:-8px; }
+  .foot-social{ display:flex; justify-content:flex-end; margin-right:-8px; padding-bottom:var(--s1); }
   .foot-social a{
     display:grid; place-items:center; width:40px; height:40px;
     color:var(--ink-soft); border-radius:999px;
@@ -953,6 +954,7 @@
     .practice .block{ margin-top:var(--s6); }
     .practice .clients{ margin-top:var(--s6); }
     .roadmap,.assess,.gate,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
+    .tail{ padding-bottom:var(--s5); }
     .roadmap .head{ margin-bottom:var(--s5); }
     .row-btn{ grid-template-columns:38px 1fr 22px; }
     .row-dim{ display:none; }

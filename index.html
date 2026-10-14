@@ -930,7 +930,9 @@
      plumb line and counter are fixed to the screen, so as the wordmark
      scrolls in they slide up together (transform, set in JS) to
      keep the border's bottom edge a fixed distance above it. */
-  .foot-logo{ margin-top:0; padding:0 50px; }   /* 50px clear of each browser edge */
+  /* Side gap matches the grid's own gutter, so the I lines up with the
+     text edge above it: 44px on desktop, 24px on phones. */
+  .foot-logo{ margin-top:0; padding:0 max(var(--s5), calc(var(--frame) + var(--s4))); }
   /* Full browser width, proportion locked by the aspect ratio. width:100%
      rather than 100vw: on desktops with a visible scrollbar, 100vw is wider
      than the page and the right edge of the O would be cut off. */
@@ -987,6 +989,7 @@
     .roadmap,.assess,.gate,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
     .tail{ padding-bottom:var(--s5); }
     .tail-foot{ margin-top:var(--s7); }
+    .foot-logo{ padding:0 var(--s4); }
     .roadmap .head{ margin-bottom:var(--s5); }
     .row-btn{ grid-template-columns:38px 1fr 22px; }
     .row-dim{ display:none; }

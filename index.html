@@ -96,7 +96,8 @@
     olive #666b47         olive-deep #4c5036   terracotta (errors only)
   Placeholder hexes pending real brand-deck values.
 
-  TYPE: Archivo alone, one family, weights 400/500/700/900, with a
+  TYPE: Founders Grotesk alone (Klim, self-hosted), Regular 400 and
+  Semibold 600 only. Originally Archivo 400/500/700/900, with a
   scale that actually jumps (13 / 15 / 17 / 21 / 30 / 68 / 190) rather
   than clustering every headline around 40px like the last version.
 
@@ -162,9 +163,11 @@
   ============================================================
 -->
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&display=swap" rel="stylesheet">
+<!-- Founders Grotesk (Klim Type Foundry), self-hosted under INCO's web licence.
+     Only the two weights the page uses; preloaded so the hero title doesn't
+     swap visibly after first paint. -->
+<link rel="preload" href="media/fonts/founders-grotesk-semibold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="media/fonts/founders-grotesk-regular.woff2" as="font" type="font/woff2" crossorigin>
 <style>
   :root{
     /* Palette: INCO brand deck, except where noted. Placeholder hexes,
@@ -200,12 +203,14 @@
     --s6:64px; --s7:104px; --s8:168px; --s9:264px;
 
     /* Type scale with actual jumps between steps */
-    --t-micro:13px;
-    --t-small:15px;
-    --t-body:17px;
-    --t-lead:21px;
-    --t-h3:30px;
-    --t-h2:clamp(36px,4.6vw,68px);
+    /* Stepped up one size for Founders Grotesk: its x-height is well
+       below Archivo's, so the old 17px body read like 15px. */
+    --t-micro:14px;
+    --t-small:16px;
+    --t-body:19px;
+    --t-lead:23px;
+    --t-h3:32px;
+    --t-h2:clamp(40px,5vw,76px);
     --t-display:clamp(58px,12.5vw,190px);
 
     --ease:cubic-bezier(.22,1,.36,1);
@@ -217,6 +222,11 @@
 
     --frame:20px;   /* sheet border inset */
   }
+
+  @font-face{ font-family:'Founders Grotesk'; src:url('media/fonts/founders-grotesk-regular.woff2') format('woff2');
+              font-weight:400; font-style:normal; font-display:swap; }
+  @font-face{ font-family:'Founders Grotesk'; src:url('media/fonts/founders-grotesk-semibold.woff2') format('woff2');
+              font-weight:600; font-style:normal; font-display:swap; }
 
   *{box-sizing:border-box; margin:0; padding:0;}
 
@@ -270,7 +280,7 @@
      dark type on a dark plane for anyone the effect didn't reach. */
   html.bg-xfade section[data-bg]{ background:transparent; }
   body{
-    font-family:'Archivo',sans-serif;
+    font-family:'Founders Grotesk','Helvetica Neue',Arial,sans-serif;
     background:var(--stone);
     color:var(--slate);
     font-size:var(--t-body);
@@ -278,7 +288,7 @@
     -webkit-font-smoothing:antialiased;
   }
   ::selection{background:var(--olive); color:var(--light);}
-  h1,h2,h3{ text-wrap:balance; font-weight:900; letter-spacing:-.03em; line-height:.94; }
+  h1,h2,h3{ text-wrap:balance; font-weight:600; letter-spacing:-.015em; line-height:.98; }
   p{ text-wrap:pretty; }
   img{ display:block; width:100%; height:100%; object-fit:cover; }
   a{ color:inherit; }
@@ -315,7 +325,7 @@
     transition:color var(--fast) ease;
   }
   .readout.on-dark{ color:var(--light-50); }
-  .readout .rd-num{ font-weight:700; font-variant-numeric:tabular-nums; }
+  .readout .rd-num{ font-weight:600; font-variant-numeric:tabular-nums; }
   .readout .rd-rule{ width:36px; height:1px; background:currentColor; opacity:.5; }
 
   /* progress: a dimension string down the right edge, not a top bar */
@@ -344,7 +354,7 @@
      than as micro-type in the corner, and it inverts against whatever
      is behind it. */
   .mh-mark{
-    font-size:var(--t-lead); font-weight:900; letter-spacing:-.035em;
+    font-size:var(--t-lead); font-weight:600; letter-spacing:-.01em;
     color:var(--mh-ink); transition:color 140ms ease;
   }
   /* Photography sections cover the colour layer, so the computed ink
@@ -366,7 +376,7 @@
     background:rgba(102,107,71,.82); color:var(--light); border-radius:999px;
     -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
     border:1px solid rgba(245,243,238,.28);
-    padding:8px 19px; font-size:var(--t-micro); font-weight:700; letter-spacing:-.005em;
+    padding:8px 19px; font-size:var(--t-micro); font-weight:600; letter-spacing:-.005em;
     text-decoration:none; white-space:nowrap;
   }
   .mh-cta:active{ transform:scale(.97); }
@@ -453,11 +463,10 @@
      makes the type respect the space it actually has. */
   .hero-title h1{
     font-size:min(var(--t-display), 19vh);
-    line-height:.86; letter-spacing:-.045em;
+    line-height:.9; letter-spacing:-.025em;
   }
   .hero-title .ln{ display:block; overflow:visible; }
   .hero-title .ln > span{ display:inline-block; will-change:transform,opacity; }
-  .hero-title .thin{ font-weight:400; letter-spacing:-.02em; }
   /* Each line carries its own parallax rate on scroll, set in JS: the
      three words pull apart vertically as you descend rather than
      travelling as one block. It rhymes with the fluted marble behind
@@ -528,7 +537,7 @@
   .btn{
     display:inline-flex; align-items:center; justify-content:center;
     background:var(--olive); color:var(--light); border:none; border-radius:999px;
-    padding:17px 34px; font-family:inherit; font-size:var(--t-small); font-weight:700;
+    padding:17px 34px; font-family:inherit; font-size:var(--t-small); font-weight:600;
     letter-spacing:-.01em; cursor:pointer; text-decoration:none; white-space:nowrap;
     transition:background var(--fast) ease, transform 140ms var(--ease);
   }
@@ -561,8 +570,13 @@
      that line implies something about that business that isn't being
      claimed. Keeping the crop on the counter avoids the inference at
      every viewport ratio. */
+  /* The venue's name is signed across the top of this photograph, and
+     this sheet sits under a failure headline. The image renders taller
+     than its box and is anchored to the floor, so the top band with the
+     sign is always out of frame, at every screen ratio. */
   .plate img{
-    object-position:center 78%;
+    position:absolute; left:0; top:auto; bottom:0; height:132%;
+    object-position:center bottom;
     filter:grayscale(.28) contrast(1.05) brightness(.86);
   }
   .plate picture{ position:absolute; inset:0; display:block; }
@@ -613,7 +627,7 @@
     align-items:center; gap:var(--s4); padding:var(--s5) 0; cursor:pointer; text-align:left;
   }
   .row-idx{ font-size:var(--t-micro); color:var(--light-50); font-variant-numeric:tabular-nums; padding-top:6px; align-self:start; }
-  .row-name{ font-size:clamp(28px,3.6vw,52px); font-weight:900; letter-spacing:-.035em; line-height:1;
+  .row-name{ font-size:clamp(28px,3.6vw,52px); font-weight:600; letter-spacing:-.015em; line-height:1;
              transition:transform var(--ui) var(--ease), color var(--fast) ease; }
   .row.open .row-name{ color:var(--light); }
   /* dimension line: ticks at each end, extends on open */
@@ -661,7 +675,7 @@
   .conditions .head{ grid-column:1 / 13; margin-bottom:var(--s5); }
   .conditions .head .lede-line{
     font-size:min(clamp(38px,4.6vw,76px), 11vh);
-    font-weight:700; letter-spacing:-.03em; line-height:1.04;
+    font-weight:600; letter-spacing:-.015em; line-height:1.04;
     margin-bottom:var(--s3);
   }
   /* Broken deliberately, not left to wrap: the two halves are a
@@ -670,13 +684,13 @@
      natural wrapping on narrow screens. */
   .conditions .head .lede-line span{ display:block; }
   .conditions .head h2{
-    font-size:min(var(--t-h3), 4.2vh); font-weight:500;
+    font-size:min(var(--t-h3), 4.2vh); font-weight:400;
     letter-spacing:-.015em; line-height:1.3; color:var(--light-80);
   }
   .conditions .list{ grid-column:1 / 11; border-top:1px solid var(--rule); }
   .conditions .list p{
     padding:var(--s4) 0; border-bottom:1px solid var(--rule);
-    font-size:min(clamp(19px,2.2vw,29px), 3.6vh); font-weight:500;
+    font-size:min(clamp(19px,2.2vw,29px), 3.6vh); font-weight:400;
     letter-spacing:-.02em; line-height:1.3; max-width:38ch;
   }
   /* No max-width: at 17px this sentence is roughly 710px, so it sits
@@ -698,7 +712,7 @@
   /* Was indented to cols 4-11 to sit beside a 'From the playbook'
      label column. That label is gone, so the quote takes the well. */
   .casenote .body{ grid-column:1 / 10; }
-  .casenote blockquote{ font-size:var(--t-h3); font-weight:500; letter-spacing:-.02em; line-height:1.32; }
+  .casenote blockquote{ font-size:var(--t-h3); font-weight:400; letter-spacing:-.02em; line-height:1.32; }
   .casenote .after{ margin-top:var(--s5); font-size:var(--t-body); color:var(--ink-70); max-width:54ch; }
   .casenote .sign{ margin-top:var(--s5); font-size:var(--t-micro); color:var(--ink-soft); }
 
@@ -759,7 +773,7 @@
   }
   @media (hover:hover) and (pointer:fine){ .clients .marks img:hover{ opacity:1; } }
   .clients .cohort{
-    font-size:var(--t-micro); letter-spacing:.06em; text-transform:uppercase;
+    font-size:var(--t-micro);
     color:var(--ink-soft); margin-bottom:var(--s4);
   }
   @media (max-width:900px){
@@ -789,7 +803,7 @@
   .qp{ opacity:0; visibility:hidden; position:absolute; inset:0;
        transition:opacity 140ms ease-out, transform var(--ui) var(--ease); transform:translateY(8px); }
   .qp.on{ opacity:1; visibility:visible; position:relative; transform:none; }
-  .qp .q{ font-size:var(--t-lead); font-weight:700; letter-spacing:-.02em; margin-bottom:var(--s5); max-width:34ch; line-height:1.3; }
+  .qp .q{ font-size:var(--t-lead); font-weight:600; letter-spacing:-.02em; margin-bottom:var(--s5); max-width:34ch; line-height:1.3; }
   .opt{
     display:block; width:100%; text-align:left; background:none; color:inherit;
     font-family:inherit; font-size:var(--t-small); padding:18px 0;
@@ -827,7 +841,7 @@
   .result .scale .track2{ flex:1; height:1px; background:var(--light-18); position:relative; }
   .result .scale .track2 i{ position:absolute; left:0; top:0; height:100%; width:100%; background:var(--light);
                             transform:scaleX(0); transform-origin:left; transition:transform 700ms var(--ease); }
-  .result .scale b{ font-size:var(--t-micro); font-variant-numeric:tabular-nums; font-weight:700; }
+  .result .scale b{ font-size:var(--t-micro); font-variant-numeric:tabular-nums; font-weight:600; }
   /* Per-dimension diagnostic. Computed from the actual answers, so it
      tells them something they didn't already type in. */
   .result .diag{ border-top:1px solid var(--light-18); margin-bottom:var(--s5); }
@@ -836,7 +850,7 @@
     padding:11px 0; border-bottom:1px solid var(--light-18); font-size:var(--t-small);
   }
   .result .diag .lbl{ color:var(--light-50); }
-  .result .diag .val{ font-weight:700; }
+  .result .diag .val{ font-weight:600; }
   .result .diag .val.weak{ color:var(--light); }
   .result .bench{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s5); display:none; }
   .result .bench.on{ display:block; }
@@ -1006,7 +1020,6 @@
        on a portrait screen cover-fit shows the whole height of it. Render
        the image 30% taller than its box and anchor it to the floor so the
        top quarter, with the sign, sits above the visible area. */
-    .plate img{ position:absolute; left:0; top:auto; bottom:0; height:130%; }
     /* No scrub on phones. 3.7MB of frames on mobile data for a
        background, plus a pinned section fighting the address bar,
        isn't a trade worth making. Mobile collapses the scroll region
@@ -1111,7 +1124,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h1>
         <span class="ln"><span>The</span></span>
         <span class="ln"><span>Expansion</span></span>
-        <span class="ln"><span class="thin">Playbook</span></span>
+        <span class="ln"><span>Playbook</span></span>
       </h1>
     </div>
     <div class="hero-meta">

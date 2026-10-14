@@ -67,6 +67,11 @@ together rather than dropping a single new file in at a guessed size.
 
 ## Dependencies
 
+Type is Founders Grotesk (Klim Type Foundry), Regular and Semibold,
+self-hosted from `media/fonts/`. It is a commercial face: the web licence
+is per domain, so confirm INCO's licence covers wherever this page is
+hosted before it goes public.
+
 GSAP 3.15 and ScrollTrigger, loaded from jsDelivr. The page degrades
 gracefully if they fail — scroll animation stops, content stays readable.
 Everything else is vanilla JS.

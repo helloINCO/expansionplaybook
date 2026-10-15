@@ -72,10 +72,13 @@ self-hosted from `media/fonts/`. It is a commercial face: the web licence
 is per domain, so confirm INCO's licence covers wherever this page is
 hosted before it goes public.
 
-GSAP 3.15 from jsDelivr: core, ScrollTrigger, ScrollSmoother and
-SplitText (all four ship free in the standard `gsap` package since 3.13).
-No other libraries. If the CDN fails, the page renders as a plain
-scrolling document with working chrome, quiz and form.
+GSAP 3.15.0, self-hosted in `media/vendor/gsap/`: core, ScrollTrigger,
+ScrollSmoother and SplitText (free under GSAP's standard licence since
+3.13). Bundled rather than loaded from a CDN so the motion can't be
+knocked out by a blocked or slow CDN, and so it works when `index.html`
+is opened straight from disk. No other libraries. If the scripts still
+fail, the page renders as a plain scrolling document; the progress line,
+counter, quiz and form don't depend on GSAP.
 
 ## Animated edition (branch `claude/animated-landing`)
 
@@ -88,7 +91,7 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-Serve it rather than opening the file directly, so the fonts load.
+Opening `index.html` directly also works.
 
 What moves, and why:
 

@@ -1291,7 +1291,7 @@ function showResult() {
      reports the sheet in the middle of the screen.
      ------------------------------------------------------------ */
   var cNum = document.getElementById("cNum"), cName = document.getElementById("cName");
-  var lastTop = null, lastLow = null, lastSheet = null, lastP = -1;
+  var lastTop = null, lastLow = null, lastSheet = null, lastP = -1, lastBg = null;
   function onDark(s) { return s && (s.dataset.theme === "dark" || s.dataset.theme === "olive" || s.hasAttribute("data-photo")); }
   function sheetAt(y) {
     for (var i = 0; i < sheets.length; i++) {
@@ -1306,6 +1306,12 @@ function showResult() {
     // colour, which follows the sheet crossing 55%; photos sit on top.
     var bgSheet = html.classList.contains("bg-live") ? sheetAt(vh * .55) : null;
     function inkSheet(y) { var s = sheetAt(y); return bgSheet && !s.hasAttribute("data-photo") ? bgSheet : s; }
+    // Background: whichever sheet sits on the 55% line owns it. Checked
+    // every frame, so no jump, pin or fast scroll can leave it stale.
+    if (bgSheet && bgSheet.dataset.theme !== lastBg) {
+      lastBg = bgSheet.dataset.theme;
+      g.to(document.body, { backgroundColor: THEME[lastBg], duration: .7, ease: "power2.out", overwrite: true });
+    }
     var topS = inkSheet(44), lowS = inkSheet(vh - 32);
     html.setAttribute("data-top", topS.dataset.theme);
     html.setAttribute("data-low", lowS.dataset.theme);
@@ -1340,6 +1346,7 @@ function showResult() {
      colour, the page moves instantly underneath, everything skipped is
      settled, then the veil lifts. Without it: native scrolling. */
   var THEME = { light: "#F6F6F6", dim: "#ECECEC", dark: "#1c1c1a", olive: "#666b47" };
+  var jumping = null;
   function jumpTo(el, done) {
     done = done || function () {};
     if (!g || !ST) {
@@ -1361,14 +1368,17 @@ function showResult() {
       if (smoother) smoother.scrollTo(el, false, "top top");
       else window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY);
       ST.update();
-      g.killTweensOf(document.body);
-      if (html.classList.contains("bg-live")) g.set(document.body, { backgroundColor: THEME[el.dataset.theme] || THEME.light });
+      if (html.classList.contains("bg-live")) {
+        g.killTweensOf(document.body);
+        lastBg = el.dataset.theme;
+        g.set(document.body, { backgroundColor: THEME[lastBg] || THEME.light });
+      }
       updateChrome();
     }
     if (reduce) { land(); done(); return; }
-    g.killTweensOf(veil);
+    if (jumping) jumping.kill();
     veil.style.background = THEME[el.dataset.theme] || THEME.light;
-    g.timeline()
+    jumping = g.timeline({ onComplete: function () { jumping = null; } })
       .set(veil, { visibility: "visible" })
       .to(veil, { opacity: 1, duration: .35, ease: "power2.in" })
       .add(land)
@@ -1458,14 +1468,7 @@ function showResult() {
   var COLOURS = { light: "#F6F6F6", dim: "#ECECEC", dark: "#1c1c1a", olive: "#666b47" };
   html.classList.add("bg-live");
   g.set(document.body, { backgroundColor: COLOURS[sheets[0].dataset.theme] });
-  sheets.forEach(function (s) {
-    ST.create({
-      trigger: s, start: "top 55%", end: "bottom 55%",
-      onToggle: function (self) {
-        if (self.isActive) g.to(document.body, { backgroundColor: COLOURS[s.dataset.theme], duration: .9, ease: "power2.out", overwrite: true });
-      }
-    });
-  });
+  // the colour itself is chosen every frame in updateChrome()
 
   var ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
   ready.then(build);

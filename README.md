@@ -98,7 +98,12 @@ What moves, and why:
 - **Cover**: the photo opens from a framed viewport to full bleed, the
   title rises line by line, chrome fades in. Plays once on load.
 - **Smooth scroll**: ScrollSmoother on mouse/trackpad only. Touch keeps
-  native momentum. No scroll snapping on this edition.
+  native momentum. One snap point: when scrolling stops near the top
+  of sheet 08 (the form), it settles square in the frame. Only real
+  scrolling triggers it, and never while a form field has focus.
+- **In-page links** ("Get the playbook", "Take the readiness check")
+  fade a veil in the target sheet's colour, jump, and lift it, rather
+  than racing through every sheet in between.
 - **Sheet rhythm**: the page background crossfades between slate, stone
   and olive as each sheet arrives; header, counter and progress ink
   follow whatever colour is under them. The sheet counter rolls.
@@ -110,7 +115,8 @@ What moves, and why:
 - **Imagery**: the plate and portrait unmask and drift with light
   parallax; the INCO wordmark rises into the footer.
 - **Cursor**: a small dot (fine pointers only) that swells over links
-  and becomes a labelled disc over quiz answers. Primary buttons are
+  except on "Get the playbook" and the quiz answers, which have no
+  hover motion. "Take the readiness check" and "Book a call" are
   magnetic. The native cursor stays in text fields.
 
 `prefers-reduced-motion: reduce` turns off the intro, smoothing,

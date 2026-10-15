@@ -180,11 +180,9 @@
   .mh-cta{
     display:inline-flex; align-items:center; min-height:40px; padding:0 20px; border-radius:999px;
     background:var(--olive); color:var(--light); font-size:var(--t-micro); font-weight:600; text-decoration:none;
-    transition:background .25s ease, opacity .5s var(--ease), transform .5s var(--ease);
+    transition:opacity .5s var(--ease), transform .5s var(--ease);
   }
-  .mh-cta:hover{ background:var(--olive-deep); }
   html[data-top="olive"] .mh-cta{ background:var(--slate); }
-  html[data-top="olive"] .mh-cta:hover{ background:var(--olive-deep); }
   html[data-low="olive"] .progress-fill, html[data-low="olive"] .progress-bead i{ background:var(--light); }
   html.in-roadmap .progress, html.in-roadmap .progress-fill, html.in-roadmap .progress-bead{ opacity:0; }
   html.gs .mh-cta{ opacity:0; transform:translateY(-6px); pointer-events:none; }
@@ -206,6 +204,10 @@
   .progress-fill{ position:fixed; z-index:91; right:calc(var(--frame) + 14px); top:var(--s8); bottom:var(--s8);
                   width:1px; background:var(--olive); transform-origin:top; transform:scaleY(var(--p,0)); pointer-events:none;
                   transition:opacity .4s ease, background-color .45s ease; }
+  /* veil: covers the page while an in-page link jumps, so you never
+     watch five sheets race past half-revealed */
+  .veil{ position:fixed; inset:0; z-index:95; opacity:0; visibility:hidden; pointer-events:none; background:var(--slate); }
+
   /* the bead: a square that rides the line to show where you are */
   .progress-bead{ position:fixed; z-index:92; right:calc(var(--frame) + 14px); top:var(--s8); bottom:var(--s8);
                   width:1px; pointer-events:none; transition:opacity .4s ease; }
@@ -254,6 +256,8 @@
   .btn-pale{ background:var(--light); color:var(--slate); }
   .btn-pale::before{ background:var(--stone-dim); }
   .btn[disabled]{ opacity:.6; cursor:wait; }
+  .btn-still::before{ display:none; }
+  .btn-still:active{ transform:none; }
 
   .link{
     position:relative; display:inline-block; background:none; border:0; padding:4px 0;
@@ -379,14 +383,8 @@
         padding:22px 0; border:0; background:none; color:inherit; font:inherit; font-size:var(--t-body); text-align:left; cursor:pointer; }
   .opt::before{ content:""; position:absolute; left:0; right:0; top:0; height:1px; background:var(--rule); }
   .opt:last-child::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:1px; background:var(--rule); }
-  .opt span{ transition:transform .45s var(--ease); }
-  /* hover: a light line runs across the top of the option */
-  .opt i{ position:absolute; left:0; right:0; top:0; height:1px; background:var(--light); transform:scaleX(0); transform-origin:left; transition:transform .5s var(--ease); }
-  @media (hover:hover) and (pointer:fine){
-    .opt:hover span{ transform:translateX(14px); }
-    .opt:hover i{ transform:none; }
-  }
-  .opt:focus-visible span{ transform:translateX(14px); }
+  /* no hover motion on answers; keyboard focus gets a plain outline */
+  .opt:focus-visible{ outline:1px solid var(--light); outline-offset:4px; }
 
   .result{ display:none; }
   .result.on{ display:block; animation:rise .6s var(--ease) both; }
@@ -515,8 +513,7 @@
   @media (prefers-reduced-motion:reduce){
     .qp,.qp.on{ transform:none !important; transition:opacity .2s ease !important; }
     .result.on,.sent.on,.result.on .diag div{ animation:fade .2s ease both !important; }
-    .btn::before,.link::after,.field::after,.opt span,.opt i{ transition:none !important; animation:none !important; }
-    .opt:hover span,.opt:focus-visible span{ transform:none !important; }
+    .btn::before,.link::after,.field::after{ transition:none !important; animation:none !important; }
   }
   @keyframes fade{ from{ opacity:0; } to{ opacity:1; } }
 </style>
@@ -529,7 +526,7 @@
 <div class="frame" aria-hidden="true"></div>
 <header class="masthead" id="masthead">
   <a class="mh-mark" href="#s-hero">INCO Studio</a>
-  <a class="mh-cta" href="#s-gate" data-cursor="Get it">Get the playbook</a>
+  <a class="mh-cta" href="#s-gate" data-still>Get the playbook</a>
 </header>
 <div class="counter" id="counter" aria-hidden="true">
   <span class="num-wrap"><b id="cNum">01</b></span><i></i><span id="cName">Cover</span>
@@ -537,6 +534,7 @@
 <div class="progress" aria-hidden="true"></div>
 <div class="progress-fill" id="progressFill" aria-hidden="true"></div>
 <div class="progress-bead" aria-hidden="true"><span><i></i></span></div>
+<div class="veil" id="veil" aria-hidden="true"></div>
 <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor-dot"></div><div class="cursor-label" id="cursorLabel"></div></div>
 
 <div id="smooth-wrapper">
@@ -650,27 +648,27 @@
       <div class="panelwrap" data-rise>
         <div class="qp on" data-q="1" role="group" aria-labelledby="q1">
           <p class="q" id="q1">Does your first venue run profitably when you're not physically there?</p>
-          <button class="opt" data-score="2" data-cursor="Select"><i></i><span>Yes, it holds up without me</span></button>
-          <button class="opt" data-score="1" data-cursor="Select"><i></i><span>Mostly, with some hands-on days</span></button>
-          <button class="opt" data-score="0" data-cursor="Select"><i></i><span>No, I'm still the glue</span></button>
+          <button class="opt" data-score="2" data-still><span>Yes, it holds up without me</span></button>
+          <button class="opt" data-score="1" data-still><span>Mostly, with some hands-on days</span></button>
+          <button class="opt" data-score="0" data-still><span>No, I'm still the glue</span></button>
         </div>
         <div class="qp" data-q="2" role="group" aria-labelledby="q2">
           <p class="q" id="q2">Is your brand written down, or does it live in your head?</p>
-          <button class="opt" data-score="2" data-cursor="Select"><i></i><span>Documented properly</span></button>
-          <button class="opt" data-score="1" data-cursor="Select"><i></i><span>Partly, some of it</span></button>
-          <button class="opt" data-score="0" data-cursor="Select"><i></i><span>In my head</span></button>
+          <button class="opt" data-score="2" data-still><span>Documented properly</span></button>
+          <button class="opt" data-score="1" data-still><span>Partly, some of it</span></button>
+          <button class="opt" data-score="0" data-still><span>In my head</span></button>
         </div>
         <div class="qp" data-q="3" role="group" aria-labelledby="q3">
           <p class="q" id="q3">Have you scoped a real budget for site two, or is it still a guess?</p>
-          <button class="opt" data-score="2" data-cursor="Select"><i></i><span>Quoted and scoped</span></button>
-          <button class="opt" data-score="1" data-cursor="Select"><i></i><span>A rough range</span></button>
-          <button class="opt" data-score="0" data-cursor="Select"><i></i><span>Not yet</span></button>
+          <button class="opt" data-score="2" data-still><span>Quoted and scoped</span></button>
+          <button class="opt" data-score="1" data-still><span>A rough range</span></button>
+          <button class="opt" data-score="0" data-still><span>Not yet</span></button>
         </div>
         <div class="qp" data-q="4" role="group" aria-labelledby="q4">
           <p class="q" id="q4">When would you want the next site open?</p>
-          <button class="opt" data-score="2" data-cursor="Select"><i></i><span>Within six months</span></button>
-          <button class="opt" data-score="1" data-cursor="Select"><i></i><span>Six to eighteen months</span></button>
-          <button class="opt" data-score="0" data-cursor="Select"><i></i><span>No fixed timeline</span></button>
+          <button class="opt" data-score="2" data-still><span>Within six months</span></button>
+          <button class="opt" data-score="1" data-still><span>Six to eighteen months</span></button>
+          <button class="opt" data-score="0" data-still><span>No fixed timeline</span></button>
         </div>
 
         <div class="result" id="result">
@@ -684,7 +682,7 @@
           <p class="bench" id="rBench"></p>
           <p id="rDesc"></p>
           <div class="acts">
-            <a href="#s-gate" class="btn btn-pale" data-magnetic>Get the playbook</a>
+            <a href="#s-gate" class="btn btn-pale btn-still" data-still>Get the playbook</a>
             <a href="#" class="link" id="callCta" target="_blank" rel="noopener">Book a call</a>
             <button type="button" class="link qnav" id="qRetake">Retake the check</button>
           </div>
@@ -1338,6 +1336,47 @@ function showResult() {
     if (p !== lastP) { lastP = p; html.style.setProperty("--p", p); }
   }
 
+  /* Jump to a sheet. With GSAP: the veil fades up in the target's
+     colour, the page moves instantly underneath, everything skipped is
+     settled, then the veil lifts. Without it: native scrolling. */
+  var THEME = { light: "#F6F6F6", dim: "#ECECEC", dark: "#1c1c1a", olive: "#666b47" };
+  function jumpTo(el, done) {
+    done = done || function () {};
+    if (!g || !ST) {
+      el.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+      setTimeout(done, reduce ? 0 : 700);
+      return;
+    }
+    var veil = document.getElementById("veil");
+    function before(n) { return !el.contains(n) && (n.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING); }
+    function land() {
+      // finish every reveal on the sheets being jumped over, so scrolling
+      // back up finds them complete rather than waiting to play
+      ST.getAll().forEach(function (t) {
+        if (t.vars.once && t.animation && t.trigger && before(t.trigger)) t.animation.progress(1);
+      });
+      var rise = html.classList.contains("pin-roadmap") ? "[data-rise]" : "[data-rise], #qTrack .q-panel";
+      g.set(Array.prototype.filter.call(document.querySelectorAll(rise), before), { y: 0, opacity: 1 });
+      g.set(Array.prototype.filter.call(document.querySelectorAll("[data-draw]"), before), { scaleX: 1 });
+      if (smoother) smoother.scrollTo(el, false, "top top");
+      else window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY);
+      ST.update();
+      g.killTweensOf(document.body);
+      if (html.classList.contains("bg-live")) g.set(document.body, { backgroundColor: THEME[el.dataset.theme] || THEME.light });
+      updateChrome();
+    }
+    if (reduce) { land(); done(); return; }
+    g.killTweensOf(veil);
+    veil.style.background = THEME[el.dataset.theme] || THEME.light;
+    g.timeline()
+      .set(veil, { visibility: "visible" })
+      .to(veil, { opacity: 1, duration: .35, ease: "power2.in" })
+      .add(land)
+      .to(veil, { opacity: 0, duration: .55, ease: "power2.out", delay: .08 })
+      .set(veil, { visibility: "hidden" })
+      .add(done, "-=.3");
+  }
+
   /* In-page links: through the smoother when it's running. The skip
      link also moves keyboard focus into the form once it arrives. */
   function wireAnchors() {
@@ -1348,11 +1387,10 @@ function showResult() {
         var el = document.querySelector(id);
         if (!el) return;
         e.preventDefault();
-        if (smoother) smoother.scrollTo(el, true, "top top");
-        else el.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
-        if (a.classList.contains("skip")) {
-          setTimeout(function () { document.getElementById("iName").focus({ preventScroll: true }); }, smoother ? 1300 : 700);
-        }
+        var skip = a.classList.contains("skip");
+        jumpTo(el, function () {
+          if (skip) document.getElementById("iName").focus({ preventScroll: true });
+        });
       });
     });
   }
@@ -1384,6 +1422,30 @@ function showResult() {
   }
   wireAnchors();
   g.ticker.add(updateChrome);
+
+  /* ------------------------------------------------------------
+     Snap on sheet 08: once scrolling stops near the top of the form
+     sheet, settle it square in the frame. Never while someone is
+     typing in the form.
+     ------------------------------------------------------------ */
+  var gate = document.getElementById("s-gate");
+  var gateMark = ST.create({ trigger: gate, start: "top top" });
+  var lastInput = 0;
+  function felt(e) {
+    if (e.type === "keydown" && e.target.closest && e.target.closest("input, textarea, select")) return;
+    if (e.type === "pointerdown" && e.target !== html) return;   // scrollbar drags only
+    lastInput = Date.now();
+  }
+  ["wheel", "touchmove", "keydown", "pointerdown"].forEach(function (t) { window.addEventListener(t, felt, { passive: true }); });
+  ST.addEventListener("scrollEnd", function () {
+    if (Date.now() - lastInput > 1500) return;      // only after real scrolling
+    if (gate.contains(document.activeElement)) return;
+    lastInput = 0;
+    var y = window.scrollY, at = gateMark.start, vh = window.innerHeight;
+    if (Math.abs(y - at) < 2 || y < at - vh * .45 || y > at + vh * .3) return;
+    if (smoother) smoother.scrollTo(at, !reduce);
+    else window.scrollTo({ top: at, behavior: reduce ? "auto" : "smooth" });
+  });
 
 
   if (reduce) { endIntro(); updateChrome(); return; }
@@ -1594,8 +1656,9 @@ function showResult() {
     window.addEventListener("pointerup", function () { el.classList.remove("is-down"); });
     document.addEventListener("pointerover", function (e) {
       var t = e.target.closest ? e.target : null; if (!t) return;
-      var labelled = t.closest("[data-cursor]");
-      var clickable = t.closest("a, button, label");
+      var still = t.closest("[data-still]");
+      var labelled = still ? null : t.closest("[data-cursor]");
+      var clickable = still ? null : t.closest("a, button, label");
       var typing = t.closest("input, textarea");
       el.classList.toggle("is-label", !!labelled);
       el.classList.toggle("is-hover", !labelled && !!clickable);

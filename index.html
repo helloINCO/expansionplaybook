@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-AU">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -218,7 +218,6 @@
     --fast:200ms;
     --med:520ms;
     --ui:260ms;      /* user-triggered UI: rows, options, results. Under 300ms. */
-    --lift:0 1px 2px rgba(28,28,26,.06), 0 8px 16px rgba(28,28,26,.06), 0 24px 48px rgba(28,28,26,.08); /* layered, diffused: things float, they don't sit in a box */
 
     --frame:20px;   /* sheet border inset */
   }
@@ -289,7 +288,7 @@
   }
   ::selection{background:var(--olive); color:var(--light);}
   h1,h2,h3{ text-wrap:balance; font-weight:600; letter-spacing:-.015em; line-height:.98; }
-  p{ text-wrap:pretty; }
+  p,blockquote,dd,li{ text-wrap:pretty; }
   img{ display:block; width:100%; height:100%; object-fit:cover; }
   a{ color:inherit; }
 
@@ -333,6 +332,8 @@
     position:fixed; right:calc(var(--frame) + 14px); top:var(--s8); bottom:var(--s8);
     width:1px; background:var(--rule); z-index:91; pointer-events:none;
   }
+  .plumb{ transition:opacity 300ms ease; }
+  .plumb.done{ opacity:0; }
   .plumb-fill{ width:100%; height:100%; background:var(--olive);
                transform-origin:top; transform:scaleY(0); }
   .plumb-bead{
@@ -360,7 +361,7 @@
   /* Photography sections cover the colour layer, so the computed ink
      would be reading a background nobody can see. Those force light. */
   .masthead.on-dark .mh-mark{ color:var(--light); }
-  .masthead.on-dark{ color:var(--light-50); }
+  .masthead.on-dark{ color:var(--light-80); }
 
   /* Right side swaps once the cover is behind you: the title label is
      only telling you what you're looking at, which stops being useful
@@ -373,10 +374,8 @@
   .mh-label{ position:absolute; right:0; white-space:nowrap; }
   .mh-cta{
     pointer-events:none; opacity:0; transform:translateY(6px);
-    background:rgba(102,107,71,.82); color:var(--light); border-radius:999px;
-    -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
-    border:1px solid rgba(245,243,238,.28);
-    padding:8px 19px; font-size:var(--t-micro); font-weight:600; letter-spacing:-.005em;
+    background:var(--olive); color:var(--light); border-radius:999px;
+    padding:9px 20px; font-size:var(--t-micro); font-weight:600; letter-spacing:-.005em;
     text-decoration:none; white-space:nowrap;
   }
   .mh-cta:active{ transform:scale(.97); }
@@ -477,11 +476,10 @@
   .hero-title .ln:nth-child(2){ --rate:-0.20; }
   .hero-title .ln:nth-child(3){ --rate:-0.07; }
 
-  .hero-meta{ grid-column:10 / 13; align-self:end; padding-bottom:var(--s2); }
-  .hero-meta p{ font-size:var(--t-small); color:var(--light-80); line-height:1.45; }
-  .hero-meta .rule{ width:100%; height:1px; background:var(--light-18); margin-bottom:var(--s3); }
+  .hero-meta{ grid-column:1 / 8; margin-top:var(--s5); }
+  .hero-meta p{ font-size:var(--t-lead); color:var(--light); line-height:1.35; max-width:30em; }
 
-  .hero-cta{ grid-column:1 / 10; margin-top:var(--s6); display:flex; align-items:center; gap:var(--s5); flex-wrap:wrap; }
+  .hero-cta{ grid-column:1 / 10; margin-top:var(--s5); display:flex; align-items:center; gap:var(--s5); flex-wrap:wrap; }
 
   /* Conditions rides over the photograph instead of sitting on its
      own grey ground. Same grid, repainted for a dark backdrop. The
@@ -541,12 +539,11 @@
     letter-spacing:-.01em; cursor:pointer; text-decoration:none; white-space:nowrap;
     transition:background var(--fast) ease, transform 140ms var(--ease);
   }
-  .btn{ box-shadow:0 1px 2px rgba(28,28,26,.12), 0 8px 20px rgba(76,80,54,.22); }
   .btn:active{ transform:scale(.97); }
   /* Hover steps DOWN to the dim tone. It used to step up to --light,
      which is now within two values of --stone, so the hover would have
      been invisible after the background change. */
-  .btn-pale{ background:var(--stone); color:var(--slate); box-shadow:0 1px 2px rgba(0,0,0,.2), 0 8px 20px rgba(0,0,0,.18); }
+  .btn-pale{ background:var(--stone); color:var(--slate); }
   .link{
     font-size:var(--t-small); color:inherit; opacity:.65; text-decoration:none;
     padding-bottom:3px; border-bottom:1px solid currentColor;
@@ -554,7 +551,15 @@
   }
   :focus-visible{ outline:2px solid var(--olive); outline-offset:3px; }
   #rTitle:focus{ outline:none; }   /* focus lands here programmatically; the heading itself isn't a control */
-  .hero :focus-visible{ outline-color:var(--light); }
+  /* Olive on olive is 1.0:1 and olive on slate barely 3:1, so every dark
+     sheet switches the ring to light. */
+  .hero :focus-visible,.heroPanels :focus-visible,.plate :focus-visible,
+  .roadmap :focus-visible,.assess :focus-visible,.gate :focus-visible{ outline-color:var(--light); }
+  .skip{ position:fixed; left:calc(var(--frame) + 14px); top:-80px; z-index:100;
+         background:var(--olive); color:var(--light); padding:12px 20px; border-radius:999px;
+         font-size:var(--t-small); font-weight:600; text-decoration:none; }
+  .skip:focus{ top:calc(var(--frame) + 12px); }
+  .sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 
 
   /* ============================================================
@@ -651,7 +656,7 @@
   .row-body > div{ overflow:hidden; }
   .row-btn:active .row-name{ transform:translateX(4px); }
   .row-body p{
-    max-width:56ch; font-size:var(--t-body); color:var(--light-80);
+    max-width:31em; font-size:var(--t-body); color:var(--light-80);
     padding:0 0 var(--s6) calc(52px + var(--s4));
   }
 
@@ -683,7 +688,7 @@
      parallel visible. Spans rather than <br> so it collapses to
      natural wrapping on narrow screens. */
   .conditions .head .lede-line span{ display:block; }
-  .conditions .head h2{
+  .conditions .head .sub{
     font-size:min(var(--t-h3), 4.2vh); font-weight:400;
     letter-spacing:-.015em; line-height:1.3; color:var(--light-80);
   }
@@ -713,7 +718,7 @@
      label column. That label is gone, so the quote takes the well. */
   .casenote .body{ grid-column:1 / 10; }
   .casenote blockquote{ font-size:var(--t-h3); font-weight:400; letter-spacing:-.02em; line-height:1.32; }
-  .casenote .after{ margin-top:var(--s5); font-size:var(--t-body); color:var(--ink-70); max-width:54ch; }
+  .casenote .after{ margin-top:var(--s5); font-size:var(--t-body); color:var(--ink-70); max-width:31em; }
   .casenote .sign{ margin-top:var(--s5); font-size:var(--t-micro); color:var(--ink-soft); }
 
   /* ============================================================
@@ -731,7 +736,7 @@
      the page that has a person in it. */
   .practice .lead{ grid-column:1 / 7; grid-row:1; }
   .practice .portrait{ grid-column:8 / 12; grid-row:1 / span 2; align-self:start; }
-  .practice .portrait img{ width:100%; height:auto; aspect-ratio:3/4; object-fit:cover; display:block; box-shadow:var(--lift); }
+  .practice .portrait img{ width:100%; height:auto; aspect-ratio:3/4; object-fit:cover; display:block; }
   .practice .portrait picture{ display:block; will-change:transform; }
   .practice .portrait .cap{
     margin-top:var(--s3); font-size:var(--t-micro); color:var(--ink-soft);
@@ -745,7 +750,7 @@
      takes over, so this never overruns the well. */
   .practice .lead p{
     font-size:var(--t-body); color:var(--ink-70);
-    max-width:72ch; margin-bottom:var(--s4);
+    max-width:32em; margin-bottom:var(--s4);
   }
 
   .block{ grid-column:1 / 7; grid-row:2; border-top:1px solid var(--rule); margin-top:var(--s6); }
@@ -819,7 +824,7 @@
   @media (hover:hover) and (pointer:fine){
     .btn:hover{ background:var(--olive-deep); }
     .btn-pale:hover{ background:var(--stone-dim); }
-    .mh-cta:hover{ background:rgba(76,80,54,.9); }
+    .mh-cta:hover{ background:var(--olive-deep); }
     .link:hover{ opacity:1; }
     .row-btn:hover .row-name{ transform:translateX(10px); }
     .opt:hover{ border-color:var(--light); }
@@ -856,6 +861,9 @@
   .result .bench.on{ display:block; }
   .result .acts{ display:flex; align-items:center; gap:var(--s4); flex-wrap:wrap; }
   .assess .link{ opacity:1; }   /* 65% link text is 3.1:1 on olive; the underline already marks it */
+  .qnav{ background:none; border:0; border-bottom:1px solid currentColor; font-family:inherit; cursor:pointer; }
+  .assess .head .qnav{ display:block; margin-top:var(--s4); }
+  .assess .head .qnav[hidden]{ display:none; }
   #callCta{ display:none; }
   #callCta.on{ display:inline-block; }
 
@@ -902,7 +910,7 @@
   .form-err.on{ display:block; }
   /* ADDED: privacy link inside the fine print */
   .fineprint a{ color:var(--light-80); }
-  .fineprint{ margin-top:var(--s4); font-size:var(--t-micro); color:var(--light-50); }
+  .fineprint{ margin-top:var(--s4); font-size:var(--t-micro); color:var(--light-50); max-width:36em; }
 
   .sent{ display:none; }
   .sent.on{ display:block; animation:soft-from var(--ui) var(--ease) both; }
@@ -943,8 +951,11 @@
   @media (hover:hover) and (pointer:fine){ .foot-social a:hover{ color:var(--slate); } }
   .foot-line{
     border-top:1px solid var(--rule); padding-top:var(--s3);
+    display:flex; flex-wrap:wrap; gap:var(--s2) var(--s5);
     font-size:var(--t-micro); color:var(--ink-soft);
   }
+  .foot-line a{ text-decoration:none; border-bottom:1px solid var(--rule); transition:border-color var(--fast) ease; }
+  @media (hover:hover) and (pointer:fine){ .foot-line a:hover{ border-color:currentColor; } }
   /* The wordmark sits OUTSIDE the sheet border. The border, masthead,
      plumb line and counter are fixed to the screen, so as the wordmark
      scrolls in they slide up together (transform, set in JS) to
@@ -976,8 +987,8 @@
      the controls that have a visible box simply get taller. */
   @media (pointer:coarse){
     .mh-cta{ display:inline-flex; align-items:center; min-height:44px; padding-top:0; padding-bottom:0; }
-    .link,.fineprint a{ position:relative; }
-    .link::before,.fineprint a::before{ content:""; position:absolute; inset:-15px -8px; }
+    .link,.fineprint a,.foot-line a{ position:relative; }
+    .link::before,.fineprint a::before,.foot-line a::before{ content:""; position:absolute; inset:-15px -8px; }
     .field input{ min-height:44px; }
     .foot-social a{ width:44px; height:44px; }
   }
@@ -1018,6 +1029,14 @@
     .gate .form{ margin-top:var(--s6); }
     .plumb{ display:none; }
     .readout{ display:none; }
+    /* Text scrolls under the fixed masthead on phones; a soft backing
+       keeps the wordmark and CTA legible over it. */
+    .masthead::before{
+      content:""; position:absolute; z-index:-1; pointer-events:none;
+      inset:calc(-1 * (var(--frame) + 12px)) calc(-1 * (var(--frame) + 14px)) -10px;
+      background:rgba(246,246,246,.9); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+    }
+    .masthead.on-dark::before{ background:rgba(28,28,26,.82); }
     /* The venue's name is signed across the top of this photograph, and
        on a portrait screen cover-fit shows the whole height of it. Render
        the image 30% taller than its box and anchor it to the floor so the
@@ -1076,8 +1095,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div id="bgLayer" aria-hidden="true"></div>
 
-<div class="sheet" id="sheet"></div>
-<div class="plumb"><div class="plumb-fill" id="plumbFill"></div><div class="plumb-bead" id="plumbBead"></div></div>
+<a class="skip" href="#s-gate">Skip to the form</a>
+
+<div class="sheet" id="sheet" aria-hidden="true"></div>
+<div class="plumb" aria-hidden="true"><div class="plumb-fill" id="plumbFill"></div><div class="plumb-bead" id="plumbBead"></div></div>
 
 <div class="masthead" id="masthead">
   <span class="mh-mark">INCO Studio</span>
@@ -1087,7 +1108,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </span>
 </div>
 
-<div class="readout" id="readout">
+<div class="readout" id="readout" aria-hidden="true">
   <span class="rd-num" id="rdNum">01</span>
   <span class="rd-rule"></span>
   <span id="rdName">Cover</span>
@@ -1099,6 +1120,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      earlier build because it's his call and it works; everything
      around it is recomposed.
      ============================================================ -->
+<main id="main">
 <div class="heroScroll" id="heroScroll">
 
   <!-- Sticky media layer. One portrait still, taller than the
@@ -1130,12 +1152,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </h1>
     </div>
     <div class="hero-meta">
-      <div class="rule"></div>
-      <p>You're thinking about a second venue. This is what we'd want you to know before you sign.</p>
+      <p>A free 16-page guide for operators planning a second venue. What we'd want you to know before you sign.</p>
     </div>
     <div class="hero-cta">
       <a href="#s-assess" class="btn">Take the readiness check</a>
-      <a href="#s-gate" class="link">Skip to the download</a>
+      <a href="#s-gate" class="link">Just send me the playbook</a>
     </div>
   </div>
 </section>
@@ -1155,8 +1176,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="conditions" id="s-conditions" data-sheet="02" data-name="Conditions" data-dark>
   <div class="grid">
     <div class="head">
-      <p class="lede-line"><span>Your first try is built on belief.</span><span>Your second is built on proof.</span></p>
-      <h2>Opening one venue and running two are different businesses.</h2>
+      <h2 class="lede-line"><span>Your first try is built on belief.</span><span>Your second is built on proof.</span></h2>
+      <p class="sub">Opening one venue and running two are different businesses.</p>
     </div>
     <div class="list">
       <p>If the second site doesn't work, it doesn't fail on its own. It takes the first one's cash down with it.</p>
@@ -1192,7 +1213,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="grid">
       <div>
         <h2>It rarely fails loudly.</h2>
-        <p>It creeps. Your ops start straining, your margins thin, and you quietly absorb the difference. By the time it's obvious enough to act on, you've already paid for it.</p>
+        <p>It creeps. Your operations start straining, your margins thin, and you quietly absorb the difference. By the time it's obvious enough to act on, you've already paid for it.</p>
       </div>
     </div>
   </div>
@@ -1219,6 +1240,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="casenote" id="s-case" data-fade data-bg="stone" data-snap data-sheet="04" data-name="Case note">
   <div class="grid">
     <div class="body">
+      <h2 class="sr-only">Case note: the fifth venue</h2>
       <blockquote>A client of mine had four successful venues in the Sydney CBD. After seven years he opened a fifth, in a premium Westfield food hall. That venue closed after two years.</blockquote>
       <p class="after">He wasn't guessing. Seven years of trading, four profitable sites, a product people already queued for, and the best address he'd ever signed for. None of that was enough.</p>
       <p class="after">The tenancy inside the centre was tucked away, and the foot traffic that walked past it was not the traffic his product was built for. The address looked impressive on paper and did nothing at the till. By the time that was obvious, the fitout was spent, two years of trading had gone, and the lease didn't end just because the doors did.</p>
@@ -1237,7 +1259,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="grid">
     <div class="head">
       <h2><span>Five questions worth answering</span><span>before you sign anything.</span></h2>
-      <p>These are the ones we'd put to you before you committed to a site.</p>
+      <p>These are the ones we'd put to you before you commit to a site.</p>
     </div>
     <div class="rows" id="rows">
 
@@ -1307,29 +1329,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p>Four questions, no email until the end. Answer honestly. The flattering answer won't help you.</p>
       <div class="count"><span id="qCount" aria-live="polite">Question 1 of 4</span></div>
       <div class="bar"><i id="qBar"></i></div>
+      <button type="button" class="link qnav" id="qBack" hidden>Back to the previous question</button>
     </div>
 
     <div class="panelwrap">
-      <div class="qp on" data-q="1">
-        <p class="q">Does your first venue run profitably when you're not physically there?</p>
+      <div class="qp on" data-q="1" role="group" aria-labelledby="q1">
+        <p class="q" id="q1">Does your first venue run profitably when you're not physically there?</p>
         <button class="opt" data-score="2"><span>Yes, it holds up without me</span></button>
         <button class="opt" data-score="1"><span>Mostly, with some hands-on days</span></button>
         <button class="opt" data-score="0"><span>No, I'm still the glue</span></button>
       </div>
-      <div class="qp" data-q="2">
-        <p class="q">Is your brand written down, or does it live in your head?</p>
+      <div class="qp" data-q="2" role="group" aria-labelledby="q2">
+        <p class="q" id="q2">Is your brand written down, or does it live in your head?</p>
         <button class="opt" data-score="2"><span>Documented properly</span></button>
         <button class="opt" data-score="1"><span>Partly, some of it</span></button>
         <button class="opt" data-score="0"><span>In my head</span></button>
       </div>
-      <div class="qp" data-q="3">
-        <p class="q">Have you scoped a real budget for site two, or is it still a guess?</p>
+      <div class="qp" data-q="3" role="group" aria-labelledby="q3">
+        <p class="q" id="q3">Have you scoped a real budget for site two, or is it still a guess?</p>
         <button class="opt" data-score="2"><span>Quoted and scoped</span></button>
         <button class="opt" data-score="1"><span>A rough range</span></button>
         <button class="opt" data-score="0"><span>Not yet</span></button>
       </div>
-      <div class="qp" data-q="4">
-        <p class="q">When would you want the next site open?</p>
+      <div class="qp" data-q="4" role="group" aria-labelledby="q4">
+        <p class="q" id="q4">When would you want the next site open?</p>
         <button class="opt" data-score="2"><span>Within six months</span></button>
         <button class="opt" data-score="1"><span>Six to eighteen months</span></button>
         <button class="opt" data-score="0"><span>No fixed timeline</span></button>
@@ -1352,8 +1375,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="bench" id="rBench"></p>
         <p id="rDesc"></p>
         <div class="acts">
-          <a href="#s-gate" class="btn btn-pale">Get my copy</a>
+          <a href="#s-gate" class="btn btn-pale">Get the playbook</a>
           <a href="#" class="link" id="callCta" target="_blank" rel="noopener">Book a call</a>
+          <button type="button" class="link qnav" id="qRetake">Retake the check</button>
         </div>
       </div>
     </div>
@@ -1428,7 +1452,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2>Where should we send it?</h2>
       <p>Sixteen pages, drawn from real projects, including the ones that didn't work.</p>
       <ul>
-        <li>The five-part expansion roadmap</li>
+        <li>The five questions to answer before you sign</li>
         <li>The site-fit checklist</li>
         <li>The A-team roster and go-to contacts</li>
       </ul>
@@ -1439,12 +1463,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <form id="playbookForm" novalidate>
           <div class="field" id="fName">
             <label for="iName">Name</label>
-            <input id="iName" type="text" name="name" placeholder="Your name" required>
+            <input id="iName" type="text" name="name" autocomplete="name" placeholder="Your name" required>
             <div class="err">Enter your name.</div>
           </div>
           <div class="field" id="fEmail">
             <label for="iEmail">Email</label>
-            <input id="iEmail" type="email" name="email" placeholder="you@venue.com" required>
+            <input id="iEmail" type="email" name="email" autocomplete="email" placeholder="you@venue.com" required>
             <div class="err">Enter a valid email.</div>
           </div>
           <div class="field" id="fPhone">
@@ -1455,7 +1479,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
           <div class="field" id="fCo">
             <label for="iCo">Venue or company</label>
-            <input id="iCo" type="text" name="company" placeholder="Where you operate" required>
+            <input id="iCo" type="text" name="company" autocomplete="organization" placeholder="Where you operate" required>
             <div class="err">Enter your venue or company.</div>
           </div>
           <!-- ADDED: honeypot field, hidden from people. If it comes back filled in, it's a bot. -->
@@ -1463,10 +1487,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <label for="iWebsite">Website</label>
             <input id="iWebsite" type="text" name="website" tabindex="-1" autocomplete="off">
           </div>
-          <button type="submit" class="btn submit" id="submitBtn">Send me the playbook</button>
+          <button type="submit" class="btn submit" id="submitBtn">Email me the playbook</button>
           <!-- ADDED: error message if sending fails -->
           <p class="form-err" id="formErr" role="alert"></p>
-          <p class="fineprint">No spam, just the playbook. <!-- ADDED: privacy line --> We may follow up by email, and you can unsubscribe anytime. Read our <a href="#" id="privacyLink" target="_blank" rel="noopener">privacy policy</a>.</p>
+          <p class="fineprint">We'll email you the playbook and may follow up about it. Unsubscribe any time. Read our <a href="#" id="privacyLink" target="_blank" rel="noopener">privacy policy</a>.</p>
         </form>
         <!-- Hidden: the quiz result travels with the lead to the CRM.
              A visitor doesn't need to read their own scoring tag. -->
@@ -1475,7 +1499,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <div class="sent" id="sent">
         <h3>Sent.</h3>
-        <p>Check your inbox, The Expansion Playbook is on its way.</p>
+        <p>Check your inbox. The playbook is on its way.</p>
         <!-- CHANGED: playbook is delivered by email only, so the download button is switched off.
         <a class="btn btn-pale" id="pdfLink" href="#" target="_blank" rel="noopener">Download now</a>
         -->
@@ -1506,9 +1530,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle class="dot" cx="17.2" cy="6.8" r="1"/></svg>
       </a>
     </div>
-    <div class="foot-line">INCO Studio, Sydney</div>
+    <div class="foot-line">
+      <span>INCO Studio, Sydney</span>
+      <a href="mailto:hello@incostudio.co">hello@incostudio.co</a>
+      <a href="privacy.html">Privacy policy</a>
+    </div>
   </div>
 </section>
+
+</main>
 
 <footer data-sheet="09" data-name="Contact">
   <!-- Edge to edge: outside the grid on purpose, so the wordmark spans the
@@ -1553,6 +1583,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   setLink("tailCall",    c.bookingUrl, bookClick);
   setLink("privacyLink", c.privacyUrl);
 
+  // Skip link: after the page glides to the form, put the keyboard there too
+  var skip = document.querySelector(".skip");
+  if (skip) skip.addEventListener("click", function () {
+    setTimeout(function () { var f = document.getElementById("iName"); if (f) f.focus({ preventScroll: true }); }, 800);
+  });
+
   // Send social clicks to GTM
   document.querySelectorAll(".foot-social a").forEach(function (a) {
     a.addEventListener("click", function () {
@@ -1581,6 +1617,7 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
   var sheet = document.getElementById("sheet");
   var masthead = document.getElementById("masthead");
   var readout = document.getElementById("readout");
+  var plumb = document.querySelector(".plumb");
   if (!sections.length || !("IntersectionObserver" in window)) return;
 
   var current = null;
@@ -1590,6 +1627,7 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       if (current === e.target) return;
       current = e.target;
       rdNum.textContent = e.target.dataset.sheet;
+      plumb.classList.toggle("done", e.target.dataset.sheet === "09");
       rdName.textContent = e.target.dataset.name;
       var dark = e.target.hasAttribute("data-dark");
       sheet.classList.toggle("sheet-dark", dark);
@@ -2052,7 +2090,10 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       if (!el) return;
       e.preventDefault();
       clearTimeout(idle);
-      glide(Math.max(0, el.getBoundingClientRect().top + window.scrollY - TOP_PAD));
+      // Full-screen sheets land flush; anything else clears the masthead.
+      var top = el.getBoundingClientRect().top + window.scrollY;
+      var full = el.offsetHeight >= window.innerHeight - 2 && el.matches("section");
+      glide(Math.max(0, full ? top : top - TOP_PAD));
     });
   });
 
@@ -2162,13 +2203,35 @@ var totalQ = panels.length;
 var qBar = document.getElementById("qBar");
 var qCount = document.getElementById("qCount");
 
+var qBack = document.getElementById("qBack");
+var qRetake = document.getElementById("qRetake");
+
+function sumScore() {
+  var t = 0;
+  for (var k in answers) t += answers[k];
+  return t;
+}
+// Show question n (1-based). Answers already given for later questions
+// are dropped, so going back and answering again can't double-count.
+function goTo(n, focus) {
+  Object.keys(answers).forEach(function (k) { if (+k >= n) delete answers[k]; });
+  score = sumScore();
+  panels.forEach(function (p) { p.classList.remove("on"); });
+  document.getElementById("result").classList.remove("on");
+  var panel = document.querySelector('.qp[data-q="' + n + '"]');
+  panel.classList.add("on");
+  qCount.textContent = "Question " + n + " of " + totalQ;
+  qBar.style.transform = "scaleX(" + ((n - 1) / totalQ) + ")";
+  qBack.hidden = n === 1;
+  if (focus) panel.querySelector(".opt").focus({ preventScroll: true });
+}
+
 document.querySelectorAll(".opt").forEach(function (btn) {
   btn.addEventListener("click", function () {
     var panel = btn.closest(".qp");
     var idx = parseInt(panel.dataset.q, 10);
-    var val = parseInt(btn.dataset.score, 10);
-    score += val;
-    answers[idx] = val;
+    answers[idx] = parseInt(btn.dataset.score, 10);
+    score = sumScore();
 
     qBar.style.transform = "scaleX(" + (idx / totalQ) + ")";
     panel.classList.remove("on");
@@ -2177,15 +2240,26 @@ document.querySelectorAll(".opt").forEach(function (btn) {
     if (next) {
       qCount.textContent = "Question " + (idx + 1) + " of " + totalQ;
       next.classList.add("on");
+      qBack.hidden = false;
       // The answered button is now hidden; without this, keyboard focus
       // falls back to the top of the document.
       if (btn.matches(":focus-visible")) next.querySelector(".opt").focus({ preventScroll: true });
     } else {
       qCount.textContent = "Complete";
+      qBack.hidden = true;
       showResult();
       if (btn.matches(":focus-visible")) document.getElementById("rTitle").focus({ preventScroll: true });
     }
   });
+});
+
+qBack.addEventListener("click", function () {
+  var on = document.querySelector(".qp.on");
+  if (on) goTo(parseInt(on.dataset.q, 10) - 1, qBack.matches(":focus-visible"));
+});
+qRetake.addEventListener("click", function () {
+  document.getElementById("rFill").style.transform = "scaleX(0)";
+  goTo(1, qRetake.matches(":focus-visible"));
 });
 
 function showResult() {

@@ -323,7 +323,9 @@
     display:flex; align-items:baseline; gap:10px; pointer-events:none;
     transition:color var(--fast) ease;
   }
-  .readout.on-dark{ color:var(--light-50); }
+  .readout{ color:color-mix(in srgb, var(--mh-ink) 78%, transparent); }
+  .readout.on-photo,
+  html:not(.bg-xfade) .readout.on-dark{ color:var(--light-50); }
   .readout .rd-num{ font-weight:600; font-variant-numeric:tabular-nums; }
   .readout .rd-rule{ width:36px; height:1px; background:currentColor; opacity:.5; }
 
@@ -360,7 +362,14 @@
   }
   /* Photography sections cover the colour layer, so the computed ink
      would be reading a background nobody can see. Those force light. */
-  .masthead.on-dark .mh-mark{ color:var(--light); }
+  /* The wordmark's ink is computed from the crossfading background it
+     actually sits on (--mh-ink). Forcing it light whenever a dark sheet
+     reached mid-screen flipped it to white while a light background was
+     still behind it, which on a phone was most of a screen early. Only
+     photographs, which cover the colour layer, force light. If the
+     crossfade isn't running (no JS), fall back to the sheet's own flag. */
+  .masthead.on-photo .mh-mark,
+  html:not(.bg-xfade) .masthead.on-dark .mh-mark{ color:var(--light); }
   .masthead.on-dark{ color:var(--light-80); }
 
   /* Right side swaps once the cover is behind you: the title label is
@@ -1028,7 +1037,6 @@
     .assess .panelwrap{ margin-top:var(--s6); min-height:0; }
     .gate .form{ margin-top:var(--s6); }
     .plumb{ display:none; }
-    .readout{ display:none; }
     /* The venue's name is signed across the top of this photograph, and
        on a portrait screen cover-fit shows the whole height of it. Render
        the image 30% taller than its box and anchor it to the floor so the
@@ -1134,7 +1142,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
        scroll normally; the footage underneath does not move. -->
   <div class="heroPanels">
 
-<section class="hero hpanel" id="s-hero" data-sheet="01" data-name="Cover" data-dark>
+<section class="hero hpanel" id="s-hero" data-sheet="01" data-name="Cover" data-dark data-photo>
   <div class="grid">
     <div class="hero-title">
       <h1>
@@ -1165,7 +1173,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      and two of them (the risk asymmetry, the incentive mismatch) are
      things nobody else sending these operators an email will say.
      ============================================================ -->
-<section class="conditions" id="s-conditions" data-sheet="02" data-name="Conditions" data-dark>
+<section class="conditions" id="s-conditions" data-sheet="02" data-name="Conditions" data-dark data-photo>
   <div class="grid">
     <div class="head">
       <h2 class="lede-line"><span>Your first try is built on belief.</span><span>Your second is built on proof.</span></h2>
@@ -1194,7 +1202,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      Photography is still a picsum placeholder pending real INCO
      project images (the book has usable shots).
      ============================================================ -->
-<section class="plate" id="s-plate" data-bg="slate" data-snap data-sheet="03" data-name="Reality check" data-dark>
+<section class="plate" id="s-plate" data-bg="slate" data-snap data-sheet="03" data-name="Reality check" data-dark data-photo>
   <picture>
     <source media="(max-width:900px)" srcset="media/plate-1000.webp" type="image/webp">
     <source media="(max-width:900px)" srcset="media/plate-1000.jpg">
@@ -1630,6 +1638,46 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
   sections.forEach(function (s) { obs.observe(s); });
 })();
 
+
+/* ============================================================
+   WHAT'S UNDER THE CHROME — the header and the page counter each
+   check the sheet directly beneath them, not the middle of the screen.
+   Over a photograph (or the phone's solid Conditions panel) they go
+   light; everywhere else they follow the crossfading colour layer.
+   Deciding by mid-screen flipped the header a whole screen early on
+   phones, in both directions.
+   ============================================================ */
+(function () {
+  var masthead = document.getElementById("masthead");
+  var readout = document.getElementById("readout");
+  var mark = masthead && masthead.querySelector(".mh-mark");
+  var sheets = Array.prototype.slice.call(document.querySelectorAll("section[data-sheet], footer[data-sheet]"));
+  if (!masthead || !readout || !mark || !sheets.length) return;
+  var queued = false;
+
+  function sheetAt(y) {
+    for (var i = 0; i < sheets.length; i++) {
+      var r = sheets[i].getBoundingClientRect();
+      if (r.top <= y && r.bottom > y) return sheets[i];
+    }
+    return null;
+  }
+  function overPhoto(y) {
+    var s = sheetAt(y);
+    return !!(s && s.hasAttribute("data-photo"));
+  }
+  function update() {
+    queued = false;
+    var m = mark.getBoundingClientRect(), r = readout.getBoundingClientRect();
+    masthead.classList.toggle("on-photo", overPhoto(m.top + m.height / 2));
+    readout.classList.toggle("on-photo", r.height ? overPhoto(r.top + r.height / 2) : false);
+  }
+  function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+  window.addEventListener("scroll", queue, { passive: true });
+  window.addEventListener("resize", queue);
+  update();
+})();
+
 /* ============================================================
    BACKGROUND CROSSFADE + CONTENT FADE + MASTHEAD SWAP
 
@@ -2026,11 +2074,22 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     }
 
     var dir = y > lastRest + 6 ? 1 : (y < lastRest - 6 ? -1 : 0);
-    var to = null;
+    var to = null, vh = window.innerHeight;
+    /* Next sheet in the direction of travel, counted from where the
+       visitor LEFT, not from where momentum dropped them. A trackpad
+       swipe off the cover can coast past the whole of sheet 02 before
+       scrolling stops; measured from the current position, the next
+       stop down is sheet 03 and 02 is skipped. Only when the scroll has
+       carried a full screen beyond that sheet is it a deliberate jump,
+       and then the nearest sheet ahead wins. */
     if (dir === 1) {
-      for (i = 0; i < stops.length; i++) if (stops[i].a > y) { to = stops[i].a; break; }
+      for (i = 0; i < stops.length; i++) if (stops[i].a > lastRest + 2) { to = stops[i]; break; }
+      if (to && y - to.b > vh) { to = null; for (i = 0; i < stops.length; i++) if (stops[i].a > y) { to = stops[i]; break; } }
+      to = to ? to.a : null;
     } else if (dir === -1) {
-      for (i = stops.length - 1; i >= 0; i--) if (stops[i].b < y) { to = stops[i].b; break; }
+      for (i = stops.length - 1; i >= 0; i--) if (stops[i].b < lastRest - 2) { to = stops[i]; break; }
+      if (to && to.a - y > vh) { to = null; for (i = stops.length - 1; i >= 0; i--) if (stops[i].b < y) { to = stops[i]; break; } }
+      to = to ? to.b : null;
     } else {
       var bestD = Infinity;
       stops.forEach(function (st) {

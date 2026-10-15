@@ -1493,6 +1493,7 @@ function showResult() {
     /* client marks: one quiet stagger */
     document.querySelectorAll("[data-stagger]").forEach(function (wrap) {
       g.from(wrap.children, { y: 18, opacity: 0, duration: .8, ease: "power3.out", stagger: .05,
+        clearProps: "opacity,transform",   // hand back to the CSS resting opacity
         scrollTrigger: { trigger: wrap, start: "top 88%", once: true } });
     });
 
@@ -1517,6 +1518,9 @@ function showResult() {
       scrollTrigger: { trigger: "#wordmark", start: "top bottom", end: "bottom bottom", scrub: true } });
 
     roadmap();
+    // triggers made before the roadmap pin existed must be measured after
+    // it, or everything below the roadmap fires a pin's length too early
+    ST.sort();
     ST.refresh();
   }
 

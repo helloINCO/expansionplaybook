@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-AU">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +12,10 @@
 <meta property="og:description" content="What we'd want you to know before you sign for a second venue. A practical guide from INCO Studio.">
 <!-- Share image (1200 x 630). Swap to the full URL once the domain is live -->
 <meta property="og:image" content="media/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Expansion Playbook, over a blurred photograph of a café counter">
+<meta name="twitter:card" content="summary_large_image">
 <!-- Browser tab icon -->
 <link rel="icon" href="media/favicon.png">
 
@@ -23,7 +27,7 @@
   window.INCO = {
     webhookUrl: "https://services.leadconnectorhq.com/hooks/eTnVyYz7Y8pQ8nVWisPr/webhook-trigger/5afb236d-fee1-44ca-802e-0ada9a2f6002", // GHL workflow > Inbound Webhook trigger URL
     bookingUrl: "https://api.leadconnectorhq.com/widget/booking/5vYVDE2dcnZDW6y03f1a", // Jayson's booking calendar link
-    privacyUrl: "PASTE_PRIVACY_POLICY_LINK", // INCO privacy policy page
+    privacyUrl: "privacy.html",               // INCO privacy policy page
     // All tracking (GA4, Meta Pixel, Google Ads, etc.) is set up inside Tag Manager
     gtmId:      "GTM-KTCLBMZM"               // Tag Manager container ID
   };
@@ -92,7 +96,8 @@
     olive #666b47         olive-deep #4c5036   terracotta (errors only)
   Placeholder hexes pending real brand-deck values.
 
-  TYPE: Archivo alone, one family, weights 400/500/700/900, with a
+  TYPE: Founders Grotesk alone (Klim, self-hosted), Regular 400 and
+  Semibold 600 only. Originally Archivo 400/500/700/900, with a
   scale that actually jumps (13 / 15 / 17 / 21 / 30 / 68 / 190) rather
   than clustering every headline around 40px like the last version.
 
@@ -117,7 +122,7 @@
   parts of those playbooks that would breach the studio's own
   "never overselling" rule.
 
-  1. CONDITIONS (sheet 04) + CASE NOTE (sheet 05). The problem is now
+  1. CONDITIONS (sheet 02) + CASE NOTE (sheet 04). The problem is now
      told twice, deliberately, in two different grammatical persons.
 
      Conditions is second person and present tense: three statements
@@ -138,7 +143,7 @@
      the abstract warning is cashed out before the roadmap offers any
      fixes. Problem, then the five questions, then the tools.
 
-  2. PRACTICE (sheet 08). The About section, composed as a drawing
+  2. PRACTICE (sheet 07). The About section, composed as a drawing
      title block, sitting immediately before the ask. Credentials are
      tabulated as facts, not adjectives. Real client marks from page
      15 of the playbook, presented silently with no "trusted by"
@@ -158,9 +163,11 @@
   ============================================================
 -->
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&display=swap" rel="stylesheet">
+<!-- Founders Grotesk (Klim Type Foundry), self-hosted under INCO's web licence.
+     Only the two weights the page uses; preloaded so the hero title doesn't
+     swap visibly after first paint. -->
+<link rel="preload" href="media/fonts/founders-grotesk-semibold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="media/fonts/founders-grotesk-regular.woff2" as="font" type="font/woff2" crossorigin>
 <style>
   :root{
     /* Palette: INCO brand deck, except where noted. Placeholder hexes,
@@ -177,6 +184,7 @@
     --olive:#666b47;
     --olive-deep:#4c5036;
     --terracotta:#b5533c;      /* error states only */
+    --terracotta-on-dark:#e08a72;  /* same role on slate: 6.5:1, the base tone is 3.5:1 there */
     --light:#f5f3ee;           /* foreground on dark only, never a bg field */
 
     /* Alphas rebalanced for the lighter field: the old .45 meta text
@@ -195,21 +203,29 @@
     --s6:64px; --s7:104px; --s8:168px; --s9:264px;
 
     /* Type scale with actual jumps between steps */
-    --t-micro:13px;
-    --t-small:15px;
-    --t-body:17px;
-    --t-lead:21px;
-    --t-h3:30px;
-    --t-h2:clamp(36px,4.6vw,68px);
+    /* Stepped up one size for Founders Grotesk: its x-height is well
+       below Archivo's, so the old 17px body read like 15px. */
+    --t-micro:14px;
+    --t-small:16px;
+    --t-body:19px;
+    --t-lead:23px;
+    --t-h3:32px;
+    --t-h2:clamp(40px,5vw,76px);
     --t-display:clamp(58px,12.5vw,190px);
 
     --ease:cubic-bezier(.22,1,.36,1);
     --ease-io:cubic-bezier(.76,0,.24,1);
     --fast:200ms;
     --med:520ms;
+    --ui:260ms;      /* user-triggered UI: rows, options, results. Under 300ms. */
 
     --frame:20px;   /* sheet border inset */
   }
+
+  @font-face{ font-family:'Founders Grotesk'; src:url('media/fonts/founders-grotesk-regular.woff2') format('woff2');
+              font-weight:400; font-style:normal; font-display:swap; }
+  @font-face{ font-family:'Founders Grotesk'; src:url('media/fonts/founders-grotesk-semibold.woff2') format('woff2');
+              font-weight:600; font-style:normal; font-display:swap; }
 
   *{box-sizing:border-box; margin:0; padding:0;}
 
@@ -263,7 +279,7 @@
      dark type on a dark plane for anyone the effect didn't reach. */
   html.bg-xfade section[data-bg]{ background:transparent; }
   body{
-    font-family:'Archivo',sans-serif;
+    font-family:'Founders Grotesk','Helvetica Neue',Arial,sans-serif;
     background:var(--stone);
     color:var(--slate);
     font-size:var(--t-body);
@@ -271,8 +287,8 @@
     -webkit-font-smoothing:antialiased;
   }
   ::selection{background:var(--olive); color:var(--light);}
-  h1,h2,h3{ text-wrap:balance; font-weight:900; letter-spacing:-.03em; line-height:.94; }
-  p{ text-wrap:pretty; }
+  h1,h2,h3{ text-wrap:balance; font-weight:600; letter-spacing:-.015em; line-height:.98; }
+  p,blockquote,dd,li{ text-wrap:pretty; }
   img{ display:block; width:100%; height:100%; object-fit:cover; }
   a{ color:inherit; }
 
@@ -305,10 +321,12 @@
     position:fixed; left:calc(var(--frame) + 14px); bottom:calc(var(--frame) + 12px);
     z-index:91; font-size:var(--t-micro); color:var(--ink-soft);
     display:flex; align-items:baseline; gap:10px; pointer-events:none;
-    transition:color var(--fast) linear;
+    transition:color var(--fast) ease;
   }
-  .readout.on-dark{ color:var(--light-50); }
-  .readout .rd-num{ font-weight:700; font-variant-numeric:tabular-nums; }
+  .readout{ color:color-mix(in srgb, var(--mh-ink) 78%, transparent); }
+  .readout.on-photo,
+  html:not(.bg-xfade) .readout.on-dark{ color:var(--light-50); }
+  .readout .rd-num{ font-weight:600; font-variant-numeric:tabular-nums; }
   .readout .rd-rule{ width:36px; height:1px; background:currentColor; opacity:.5; }
 
   /* progress: a dimension string down the right edge, not a top bar */
@@ -316,6 +334,8 @@
     position:fixed; right:calc(var(--frame) + 14px); top:var(--s8); bottom:var(--s8);
     width:1px; background:var(--rule); z-index:91; pointer-events:none;
   }
+  .plumb{ transition:opacity 300ms ease; }
+  .plumb.done{ opacity:0; }
   .plumb-fill{ width:100%; height:100%; background:var(--olive);
                transform-origin:top; transform:scaleY(0); }
   .plumb-bead{
@@ -331,19 +351,26 @@
     right:calc(var(--frame) + 14px); z-index:92;
     display:flex; justify-content:space-between; align-items:center;
     font-size:var(--t-micro); color:var(--ink-soft); pointer-events:none;
-    transition:color var(--fast) linear;
+    transition:color var(--fast) ease;
   }
   /* The wordmark carries the brand, so it's set at reading size rather
      than as micro-type in the corner, and it inverts against whatever
      is behind it. */
   .mh-mark{
-    font-size:var(--t-lead); font-weight:900; letter-spacing:-.035em;
-    color:var(--mh-ink); transition:color 140ms linear;
+    font-size:var(--t-lead); font-weight:600; letter-spacing:-.01em;
+    color:var(--mh-ink); transition:color 140ms ease;
   }
   /* Photography sections cover the colour layer, so the computed ink
      would be reading a background nobody can see. Those force light. */
-  .masthead.on-dark .mh-mark{ color:var(--light); }
-  .masthead.on-dark{ color:var(--light-50); }
+  /* The wordmark's ink is computed from the crossfading background it
+     actually sits on (--mh-ink). Forcing it light whenever a dark sheet
+     reached mid-screen flipped it to white while a light background was
+     still behind it, which on a phone was most of a screen early. Only
+     photographs, which cover the colour layer, force light. If the
+     crossfade isn't running (no JS), fall back to the sheet's own flag. */
+  .masthead.on-photo .mh-mark,
+  html:not(.bg-xfade) .masthead.on-dark .mh-mark{ color:var(--light); }
+  .masthead.on-dark{ color:var(--light-80); }
 
   /* Right side swaps once the cover is behind you: the title label is
      only telling you what you're looking at, which stops being useful
@@ -357,10 +384,10 @@
   .mh-cta{
     pointer-events:none; opacity:0; transform:translateY(6px);
     background:var(--olive); color:var(--light); border-radius:999px;
-    padding:9px 20px; font-size:var(--t-micro); font-weight:700; letter-spacing:-.005em;
+    padding:9px 20px; font-size:var(--t-micro); font-weight:600; letter-spacing:-.005em;
     text-decoration:none; white-space:nowrap;
   }
-  .mh-cta:hover{ background:var(--olive-deep); }
+  .mh-cta:active{ transform:scale(.97); }
   .masthead.past-cover .mh-label{ opacity:0; transform:translateY(-6px); }
   .masthead.past-cover .mh-cta{ opacity:1; transform:none; pointer-events:auto; }
 
@@ -444,11 +471,10 @@
      makes the type respect the space it actually has. */
   .hero-title h1{
     font-size:min(var(--t-display), 19vh);
-    line-height:.86; letter-spacing:-.045em;
+    line-height:.9; letter-spacing:-.025em;
   }
   .hero-title .ln{ display:block; overflow:visible; }
   .hero-title .ln > span{ display:inline-block; will-change:transform,opacity; }
-  .hero-title .thin{ font-weight:400; letter-spacing:-.02em; }
   /* Each line carries its own parallax rate on scroll, set in JS: the
      three words pull apart vertically as you descend rather than
      travelling as one block. It rhymes with the fluted marble behind
@@ -459,11 +485,10 @@
   .hero-title .ln:nth-child(2){ --rate:-0.20; }
   .hero-title .ln:nth-child(3){ --rate:-0.07; }
 
-  .hero-meta{ grid-column:10 / 13; align-self:end; padding-bottom:var(--s2); }
-  .hero-meta p{ font-size:var(--t-small); color:var(--light-80); line-height:1.45; }
-  .hero-meta .rule{ width:100%; height:1px; background:var(--light-18); margin-bottom:var(--s3); }
+  .hero-meta{ grid-column:1 / 8; margin-top:var(--s5); }
+  .hero-meta p{ font-size:var(--t-lead); color:var(--light); line-height:1.35; max-width:30em; }
 
-  .hero-cta{ grid-column:1 / 10; margin-top:var(--s6); display:flex; align-items:center; gap:var(--s5); flex-wrap:wrap; }
+  .hero-cta{ grid-column:1 / 10; margin-top:var(--s5); display:flex; align-items:center; gap:var(--s5); flex-wrap:wrap; }
 
   /* Conditions rides over the photograph instead of sitting on its
      own grey ground. Same grid, repainted for a dark backdrop. The
@@ -505,6 +530,7 @@
     to{ clip-path:inset(0 0 -20% 0); transform:translateY(0); }
   }
   @keyframes soft{ to{ opacity:1; transform:none; } }
+  @keyframes soft-from{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
   .hero-title .ln > span{ animation:rise .95s var(--ease) both; }
   .hero-title .ln:nth-child(1) > span{ animation-delay:.10s; }
   .hero-title .ln:nth-child(2) > span{ animation-delay:.20s; }
@@ -518,25 +544,31 @@
   .btn{
     display:inline-flex; align-items:center; justify-content:center;
     background:var(--olive); color:var(--light); border:none; border-radius:999px;
-    padding:17px 34px; font-family:inherit; font-size:var(--t-small); font-weight:700;
+    padding:17px 34px; font-family:inherit; font-size:var(--t-small); font-weight:600;
     letter-spacing:-.01em; cursor:pointer; text-decoration:none; white-space:nowrap;
-    transition:background var(--fast) linear, transform 140ms var(--ease);
+    transition:background var(--fast) ease, transform 140ms var(--ease);
   }
-  .btn:hover{ background:var(--olive-deep); }
-  .btn:active{ transform:scale(.975); }
+  .btn:active{ transform:scale(.97); }
   /* Hover steps DOWN to the dim tone. It used to step up to --light,
      which is now within two values of --stone, so the hover would have
      been invisible after the background change. */
   .btn-pale{ background:var(--stone); color:var(--slate); }
-  .btn-pale:hover{ background:var(--stone-dim); }
   .link{
     font-size:var(--t-small); color:inherit; opacity:.65; text-decoration:none;
     padding-bottom:3px; border-bottom:1px solid currentColor;
-    transition:opacity var(--fast) linear;
+    transition:opacity var(--fast) ease;
   }
-  .link:hover{ opacity:1; }
   :focus-visible{ outline:2px solid var(--olive); outline-offset:3px; }
-  .hero :focus-visible{ outline-color:var(--light); }
+  #rTitle:focus{ outline:none; }   /* focus lands here programmatically; the heading itself isn't a control */
+  /* Olive on olive is 1.0:1 and olive on slate barely 3:1, so every dark
+     sheet switches the ring to light. */
+  .hero :focus-visible,.heroPanels :focus-visible,.plate :focus-visible,
+  .roadmap :focus-visible,.assess :focus-visible,.gate :focus-visible{ outline-color:var(--light); }
+  .skip{ position:fixed; left:calc(var(--frame) + 14px); top:-80px; z-index:100;
+         background:var(--olive); color:var(--light); padding:12px 20px; border-radius:999px;
+         font-size:var(--t-small); font-weight:600; text-decoration:none; }
+  .skip:focus{ top:calc(var(--frame) + 12px); }
+  .sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 
 
   /* ============================================================
@@ -552,8 +584,13 @@
      that line implies something about that business that isn't being
      claimed. Keeping the crop on the counter avoids the inference at
      every viewport ratio. */
+  /* The venue's name is signed across the top of this photograph, and
+     this sheet sits under a failure headline. The image renders taller
+     than its box and is anchored to the floor, so the top band with the
+     sign is always out of frame, at every screen ratio. */
   .plate img{
-    object-position:center 78%;
+    position:absolute; left:0; top:auto; bottom:0; height:132%;
+    object-position:center bottom;
     filter:grayscale(.28) contrast(1.05) brightness(.86);
   }
   .plate picture{ position:absolute; inset:0; display:block; }
@@ -604,29 +641,31 @@
     align-items:center; gap:var(--s4); padding:var(--s5) 0; cursor:pointer; text-align:left;
   }
   .row-idx{ font-size:var(--t-micro); color:var(--light-50); font-variant-numeric:tabular-nums; padding-top:6px; align-self:start; }
-  .row-name{ font-size:clamp(28px,3.6vw,52px); font-weight:900; letter-spacing:-.035em; line-height:1;
-             transition:transform var(--med) var(--ease), color var(--fast) linear; }
-  .row-btn:hover .row-name{ transform:translateX(10px); }
+  .row-name{ font-size:clamp(28px,3.6vw,52px); font-weight:600; letter-spacing:-.015em; line-height:1;
+             transition:transform var(--ui) var(--ease), color var(--fast) ease; }
   .row.open .row-name{ color:var(--light); }
   /* dimension line: ticks at each end, extends on open */
   .row-dim{ position:relative; height:1px; background:var(--light-18); }
   .row-dim span{ position:absolute; inset:0; background:var(--light); transform-origin:left; transform:scaleX(0);
-                 transition:transform var(--med) var(--ease); }
+                 transition:transform var(--ui) var(--ease); }
   .row.open .row-dim span{ transform:scaleX(1); }
   .row-dim::before,.row-dim::after{ content:""; position:absolute; top:-3px; width:1px; height:7px; background:var(--light-18); }
   .row-dim::before{ left:0; } .row-dim::after{ right:0; }
   .row-plus{ position:relative; width:22px; height:22px; }
   .row-plus::before,.row-plus::after{
-    content:""; position:absolute; background:var(--light-50); transition:transform var(--med) var(--ease);
+    content:""; position:absolute; background:var(--light-50); transition:transform var(--ui) var(--ease);
   }
   .row-plus::before{ left:0; top:10px; width:22px; height:1px; }
   .row-plus::after{ left:10px; top:0; width:1px; height:22px; }
   .row.open .row-plus::after{ transform:rotate(90deg); }
-  .row-body{ display:grid; grid-template-rows:0fr; transition:grid-template-rows var(--med) var(--ease); }
+  .row-body{ display:grid; grid-template-rows:0fr; transition:grid-template-rows var(--ui) var(--ease); }
+  .row-body > div{ opacity:0; transition:opacity 160ms ease; }
+  .row.open .row-body > div{ opacity:1; transition-duration:var(--ui); transition-delay:60ms; }
   .row.open .row-body{ grid-template-rows:1fr; }
   .row-body > div{ overflow:hidden; }
+  .row-btn:active .row-name{ transform:translateX(4px); }
   .row-body p{
-    max-width:56ch; font-size:var(--t-body); color:var(--light-80);
+    max-width:31em; font-size:var(--t-body); color:var(--light-80);
     padding:0 0 var(--s6) calc(52px + var(--s4));
   }
 
@@ -650,7 +689,7 @@
   .conditions .head{ grid-column:1 / 13; margin-bottom:var(--s5); }
   .conditions .head .lede-line{
     font-size:min(clamp(38px,4.6vw,76px), 11vh);
-    font-weight:700; letter-spacing:-.03em; line-height:1.04;
+    font-weight:600; letter-spacing:-.015em; line-height:1.04;
     margin-bottom:var(--s3);
   }
   /* Broken deliberately, not left to wrap: the two halves are a
@@ -658,14 +697,14 @@
      parallel visible. Spans rather than <br> so it collapses to
      natural wrapping on narrow screens. */
   .conditions .head .lede-line span{ display:block; }
-  .conditions .head h2{
-    font-size:min(var(--t-h3), 4.2vh); font-weight:500;
-    letter-spacing:-.015em; line-height:1.25; color:var(--light-80);
+  .conditions .head .sub{
+    font-size:min(var(--t-h3), 4.2vh); font-weight:400;
+    letter-spacing:-.015em; line-height:1.3; color:var(--light-80);
   }
   .conditions .list{ grid-column:1 / 11; border-top:1px solid var(--rule); }
   .conditions .list p{
     padding:var(--s4) 0; border-bottom:1px solid var(--rule);
-    font-size:min(clamp(19px,2.2vw,29px), 3.6vh); font-weight:500;
+    font-size:min(clamp(19px,2.2vw,29px), 3.6vh); font-weight:400;
     letter-spacing:-.02em; line-height:1.3; max-width:38ch;
   }
   /* No max-width: at 17px this sentence is roughly 710px, so it sits
@@ -687,8 +726,8 @@
   /* Was indented to cols 4-11 to sit beside a 'From the playbook'
      label column. That label is gone, so the quote takes the well. */
   .casenote .body{ grid-column:1 / 10; }
-  .casenote blockquote{ font-size:var(--t-h3); font-weight:500; letter-spacing:-.02em; line-height:1.32; }
-  .casenote .after{ margin-top:var(--s5); font-size:var(--t-body); color:var(--ink-70); max-width:54ch; }
+  .casenote blockquote{ font-size:var(--t-h3); font-weight:400; letter-spacing:-.02em; line-height:1.32; }
+  .casenote .after{ margin-top:var(--s5); font-size:var(--t-body); color:var(--ink-70); max-width:31em; }
   .casenote .sign{ margin-top:var(--s5); font-size:var(--t-micro); color:var(--ink-soft); }
 
   /* ============================================================
@@ -707,6 +746,7 @@
   .practice .lead{ grid-column:1 / 7; grid-row:1; }
   .practice .portrait{ grid-column:8 / 12; grid-row:1 / span 2; align-self:start; }
   .practice .portrait img{ width:100%; height:auto; aspect-ratio:3/4; object-fit:cover; display:block; }
+  .practice .portrait picture{ display:block; will-change:transform; }
   .practice .portrait .cap{
     margin-top:var(--s3); font-size:var(--t-micro); color:var(--ink-soft);
   }
@@ -719,7 +759,7 @@
      takes over, so this never overruns the well. */
   .practice .lead p{
     font-size:var(--t-body); color:var(--ink-70);
-    max-width:72ch; margin-bottom:var(--s4);
+    max-width:32em; margin-bottom:var(--s4);
   }
 
   .block{ grid-column:1 / 7; grid-row:2; border-top:1px solid var(--rule); margin-top:var(--s6); }
@@ -745,9 +785,9 @@
     height:auto; opacity:.60;
     transition:opacity 260ms var(--ease);
   }
-  .clients .marks img:hover{ opacity:1; }
+  @media (hover:hover) and (pointer:fine){ .clients .marks img:hover{ opacity:1; } }
   .clients .cohort{
-    font-size:var(--t-micro); letter-spacing:.06em; text-transform:uppercase;
+    font-size:var(--t-micro);
     color:var(--ink-soft); margin-bottom:var(--s4);
   }
   @media (max-width:900px){
@@ -756,70 +796,66 @@
   }
 
   /* ============================================================
-     CONTENTS — drag-to-pan. Native horizontal scroll underneath (so
-     keyboard, trackpad and touch all work), pointer-drag layered on.
-     ============================================================ */
-  .contents{ padding:var(--s8) 0 var(--s7); background:var(--stone-dim); overflow:hidden; }
-  .contents .head{ grid-column:1 / 9; margin-bottom:var(--s6); }
-  .contents .head h2{ font-size:var(--t-h2); }
-  .contents .head p{ margin-top:var(--s3); font-size:var(--t-small); color:var(--ink-70); max-width:44ch; }
-  .track{
-    display:flex; gap:1px; background:var(--rule); overflow-x:auto; cursor:grab;
-    scrollbar-width:none; padding-left:max(var(--s5),calc(var(--frame) + var(--s4)));
-    scroll-snap-type:x proximity;
-  }
-  .track::-webkit-scrollbar{ display:none; }
-  .track.dragging{ cursor:grabbing; scroll-snap-type:none; }
-  .track.dragging *{ user-select:none; }
-  .card{
-    flex:0 0 auto; width:min(400px,78vw); background:var(--stone-dim);
-    padding:var(--s5) var(--s5) var(--s6); scroll-snap-align:start;
-  }
-  .card:last-child{ margin-right:var(--s5); }
-  .card .ref{ font-size:var(--t-micro); color:var(--ink-soft); margin-bottom:var(--s5); }
-  .card h3{ font-size:var(--t-h3); margin-bottom:var(--s3); letter-spacing:-.025em; }
-  .card p{ font-size:var(--t-small); color:var(--ink-70); }
-  .card-shot{ aspect-ratio:5/3; margin-bottom:var(--s4); background:var(--stone); overflow:hidden; }
-  .card-shot img{ filter:grayscale(.4) contrast(1.05); transition:transform 700ms var(--ease); }
-  .card:hover .card-shot img{ transform:scale(1.04); }
-
-  /* ============================================================
      ASSESSMENT — the qualifying quiz. Kept intact, restaged on the
      grid: prompt on the left, answers on the right, so it reads as a
      form being filled rather than a centered card.
      ============================================================ */
-  .assess{ background:var(--olive); color:var(--light); padding:var(--s8) 0; }
+  /* Olive is mid-tone: even solid light text only reaches 5.0:1 on it,
+     so the usual 80% / 50% steps fail AA (3.9:1 and 2.5:1). On this sheet
+     body copy goes solid and meta text sits at 92% (4.6:1); hierarchy
+     comes from size and weight instead of fading. */
+  .assess{ background:var(--olive); color:var(--light); padding:var(--s8) 0;
+           --light-80:var(--light); --light-50:rgba(245,243,238,.92); }
   .assess .head{ grid-column:1 / 7; }
   .assess .head h2{ font-size:var(--t-h2); }
   .assess .head p{ margin-top:var(--s3); font-size:var(--t-small); color:var(--light-80); max-width:36ch; }
   .assess .head .count{ margin-top:var(--s6); font-size:var(--t-micro); color:var(--light-50); font-variant-numeric:tabular-nums; }
   .assess .head .bar{ margin-top:var(--s2); width:120px; height:1px; background:var(--light-18); }
-  .assess .head .bar i{ display:block; height:100%; width:0%; background:var(--light); transition:width var(--med) var(--ease); }
+  .assess .head .bar i{ display:block; height:100%; width:100%; background:var(--light); transform:scaleX(0); transform-origin:left; transition:transform var(--med) var(--ease); }
 
   .assess .panelwrap{ grid-column:7 / 13; min-height:340px; position:relative; }
   .qp{ opacity:0; visibility:hidden; position:absolute; inset:0;
-       transition:opacity 260ms linear, transform 260ms var(--ease); transform:translateY(10px); }
+       transition:opacity 140ms ease-out, transform var(--ui) var(--ease); transform:translateY(8px); }
   .qp.on{ opacity:1; visibility:visible; position:relative; transform:none; }
-  .qp .q{ font-size:var(--t-lead); font-weight:700; letter-spacing:-.02em; margin-bottom:var(--s5); max-width:34ch; line-height:1.2; }
+  .qp .q{ font-size:var(--t-lead); font-weight:600; letter-spacing:-.02em; margin-bottom:var(--s5); max-width:34ch; line-height:1.3; }
   .opt{
     display:block; width:100%; text-align:left; background:none; color:inherit;
     font-family:inherit; font-size:var(--t-small); padding:18px 0;
     border:none; border-bottom:1px solid var(--light-18); cursor:pointer;
-    transition:padding-left var(--fast) var(--ease), border-color var(--fast) linear;
+    transition:border-color var(--fast) ease;
   }
+  .opt span{ display:block; transition:transform var(--ui) var(--ease); }
+  .opt:active span{ transform:translateX(6px) scale(.99); }
   .opt:first-of-type{ border-top:1px solid var(--light-18); }
-  .opt:hover{ padding-left:14px; border-color:var(--light); }
+  .opt:focus-visible span{ transform:translateX(14px); }
+
+  /* Hover only where hover exists. On touch it fires on tap and sticks. */
+  @media (hover:hover) and (pointer:fine){
+    .btn:hover{ background:var(--olive-deep); }
+    .btn-pale:hover{ background:var(--stone-dim); }
+    .mh-cta:hover{ background:var(--olive-deep); }
+    .link:hover{ opacity:1; }
+    .row-btn:hover .row-name{ transform:translateX(10px); }
+    .opt:hover{ border-color:var(--light); }
+    .opt:hover span{ transform:translateX(14px); }
+  }
 
   .result{ display:none; }
-  .result.on{ display:block; }
+  .result.on{ display:block; animation:soft-from var(--ui) var(--ease) both; }
+  .result.on .diag div{ animation:soft-from var(--ui) var(--ease) both; }
+  .result.on .diag div:nth-child(1){ animation-delay:60ms; }
+  .result.on .diag div:nth-child(2){ animation-delay:100ms; }
+  .result.on .diag div:nth-child(3){ animation-delay:140ms; }
+  .result.on .diag div:nth-child(4){ animation-delay:180ms; }
+  .result.on .diag div:nth-child(5){ animation-delay:220ms; }
   .result .verdict{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s3); }
   .result h3{ font-size:var(--t-h3); margin-bottom:var(--s3); }
   .result p{ font-size:var(--t-small); color:var(--light-80); max-width:44ch; margin-bottom:var(--s5); }
   .result .scale{ display:flex; align-items:center; gap:var(--s3); margin-bottom:var(--s5); }
   .result .scale .track2{ flex:1; height:1px; background:var(--light-18); position:relative; }
-  .result .scale .track2 i{ position:absolute; left:0; top:0; height:100%; width:0%; background:var(--light);
-                            transition:width 900ms var(--ease); }
-  .result .scale b{ font-size:var(--t-micro); font-variant-numeric:tabular-nums; font-weight:700; }
+  .result .scale .track2 i{ position:absolute; left:0; top:0; height:100%; width:100%; background:var(--light);
+                            transform:scaleX(0); transform-origin:left; transition:transform 700ms var(--ease); }
+  .result .scale b{ font-size:var(--t-micro); font-variant-numeric:tabular-nums; font-weight:600; }
   /* Per-dimension diagnostic. Computed from the actual answers, so it
      tells them something they didn't already type in. */
   .result .diag{ border-top:1px solid var(--light-18); margin-bottom:var(--s5); }
@@ -828,11 +864,15 @@
     padding:11px 0; border-bottom:1px solid var(--light-18); font-size:var(--t-small);
   }
   .result .diag .lbl{ color:var(--light-50); }
-  .result .diag .val{ font-weight:700; }
+  .result .diag .val{ font-weight:600; }
   .result .diag .val.weak{ color:var(--light); }
   .result .bench{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s5); display:none; }
   .result .bench.on{ display:block; }
   .result .acts{ display:flex; align-items:center; gap:var(--s4); flex-wrap:wrap; }
+  .assess .link{ opacity:1; }   /* 65% link text is 3.1:1 on olive; the underline already marks it */
+  .qnav{ background:none; border:0; border-bottom:1px solid currentColor; font-family:inherit; cursor:pointer; }
+  .assess .head .qnav{ display:block; margin-top:var(--s4); }
+  .assess .head .qnav[hidden]{ display:none; }
   #callCta{ display:none; }
   #callCta.on{ display:inline-block; }
 
@@ -851,14 +891,14 @@
   .field label{ display:block; font-size:var(--t-micro); color:var(--light-50); margin-bottom:6px; }
   .field input{
     width:100%; background:none; border:none; border-bottom:1px solid var(--light-18);
-    color:var(--light); font-family:inherit; font-size:var(--t-lead); padding:8px 0; outline:none;
-    transition:border-color var(--fast) linear;
+    color:var(--light); caret-color:var(--light); font-family:inherit; font-size:var(--t-lead); padding:8px 0; outline:none;
+    transition:border-color var(--fast) ease;
   }
   .field input::placeholder{ color:var(--light-50); }
   .field input:focus{ border-color:var(--light); }
-  .err{ font-size:var(--t-micro); color:var(--terracotta); margin-top:8px; display:none; }
+  .err{ font-size:var(--t-micro); color:var(--terracotta-on-dark); margin-top:8px; display:none; }
   .field.bad .err{ display:block; }
-  .field.bad input{ border-color:var(--terracotta); }
+  .field.bad input{ border-color:var(--terracotta-on-dark); }
 
   /* Four fields plus the s8 gutters run the gate sheet to roughly 830px.
      That clears a 900px viewport but overflows a 768-800px laptop, and
@@ -875,14 +915,14 @@
   /* ADDED: honeypot field, hidden from people. Bots fill it in and get ignored. */
   .hp{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
   /* ADDED: message shown if sending fails */
-  .form-err{ display:none; margin-top:var(--s3); font-size:var(--t-small); color:#e08a72; }
+  .form-err{ display:none; margin-top:var(--s3); font-size:var(--t-small); color:var(--terracotta-on-dark); }
   .form-err.on{ display:block; }
   /* ADDED: privacy link inside the fine print */
   .fineprint a{ color:var(--light-80); }
-  .fineprint{ margin-top:var(--s4); font-size:var(--t-micro); color:var(--light-50); }
+  .fineprint{ margin-top:var(--s4); font-size:var(--t-micro); color:var(--light-50); max-width:36em; }
 
   .sent{ display:none; }
-  .sent.on{ display:block; }
+  .sent.on{ display:block; animation:soft-from var(--ui) var(--ease) both; }
   .sent h3{ font-size:var(--t-h3); margin-bottom:var(--s3); }
   .sent p{ font-size:var(--t-small); color:var(--light-80); margin-bottom:var(--s5); max-width:38ch; }
 
@@ -893,10 +933,74 @@
   .tail .msg{ grid-column:1 / 8; }
   .tail h2{ font-size:var(--t-h2); margin-bottom:var(--s4); }
   .tail p{ font-size:var(--t-body); color:var(--ink-70); max-width:38ch; margin-bottom:var(--s5); }
-  footer{ padding:var(--s5) 0 var(--s7); }
-  footer .grid > div{ grid-column:1 / 13; display:flex; justify-content:space-between;
-                      border-top:1px solid var(--rule); padding-top:var(--s3);
-                      font-size:var(--t-micro); color:var(--ink-soft); flex-wrap:wrap; gap:var(--s3); }
+  /* Footer, per the mockup: social icons sit right above the hairline,
+     the studio line hangs under it, and the wordmark runs the full
+     width of the grid as the last thing on the page. The bottom padding
+     keeps the wordmark clear of the sheet readout. */
+  footer{ padding:var(--s7) 0 0; }
+  .tail-foot{ row-gap:0; }   /* spacing in this block is set explicitly, not by the grid gap */
+  .tail-foot > div{ grid-column:1 / 13; }
+  /* The Contact sheet is one full screen on desktop: message at the top,
+     icons and studio line at the bottom, all inside the border. */
+  @media (min-width:901px){
+    .tail{ min-height:100dvh; display:flex; flex-direction:column; justify-content:center; }
+    .tail-foot{ margin-top:var(--s6); }
+    .tail > .grid{ width:100%; }
+  }
+  footer .grid > div{ grid-column:1 / 13; }
+  .foot-social{ display:flex; justify-content:flex-end; margin-right:-8px; padding-bottom:var(--s1); }
+  .foot-social a{
+    display:grid; place-items:center; width:40px; height:40px;
+    color:var(--ink-soft); border-radius:999px;
+    transition:color var(--fast) ease, transform 140ms var(--ease);
+  }
+  .foot-social a:active{ transform:scale(.94); }
+  .foot-social svg{ width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+  .foot-social svg .dot{ fill:currentColor; stroke:none; }
+  @media (hover:hover) and (pointer:fine){ .foot-social a:hover{ color:var(--slate); } }
+  .foot-line{
+    border-top:1px solid var(--rule); padding-top:var(--s3);
+    display:flex; flex-wrap:wrap; gap:var(--s2) var(--s5);
+    font-size:var(--t-micro); color:var(--ink-soft);
+  }
+  .foot-line a{ text-decoration:none; border-bottom:1px solid var(--rule); transition:border-color var(--fast) ease; }
+  @media (hover:hover) and (pointer:fine){ .foot-line a:hover{ border-color:currentColor; } }
+  /* The wordmark sits OUTSIDE the sheet border. The border, masthead,
+     plumb line and counter are fixed to the screen, so as the wordmark
+     scrolls in they slide up together (transform, set in JS) to
+     keep the border's bottom edge a fixed distance above it. */
+  /* Side gap matches the grid's own gutter, so the I lines up with the
+     text edge above it: 44px on desktop, 24px on phones. */
+  .foot-logo{ margin-top:0; padding:0 max(var(--s5), calc(var(--frame) + var(--s4))); }
+  /* Full browser width, proportion locked by the aspect ratio. width:100%
+     rather than 100vw: on desktops with a visible scrollbar, 100vw is wider
+     than the page and the right edge of the O would be cut off. */
+  .foot-logo picture{ display:block; width:100%; }
+  .foot-logo img{ display:block; width:100%; max-width:none; height:auto; aspect-ratio:1894 / 614; }
+
+  /* Short sheets fill the screen. A stop used to line the heading up
+     96px from the top and leave the sheet's own height to decide what
+     showed underneath, so a sheet shorter than the viewport let the NEXT
+     page bleed in along the bottom (37px to 270px depending on the
+     screen). Each of these is now at least one full screen with its
+     content centred, and its stop is the sheet's top edge. Taller than
+     the screen is still fine: the stop's range carries on to the last
+     control. Desktop only, phones scroll freely. */
+  @media (min-width:901px){
+    .casenote,.assess,.gate{ min-height:100dvh; display:flex; align-items:center; }
+    .casenote > .grid,.assess > .grid,.gate > .grid{ width:100%; }
+  }
+
+  /* Touch devices: grow the hit area to 44px without changing how
+     anything looks. Pseudo-elements extend the reach of text links;
+     the controls that have a visible box simply get taller. */
+  @media (pointer:coarse){
+    .mh-cta{ display:inline-flex; align-items:center; min-height:44px; padding-top:0; padding-bottom:0; }
+    .link,.fineprint a,.foot-line a{ position:relative; }
+    .link::before,.fineprint a::before,.foot-line a::before{ content:""; position:absolute; inset:-15px -8px; }
+    .field input{ min-height:44px; }
+    .foot-social a{ width:44px; height:44px; }
+  }
 
   /* ============================================================
      RESPONSIVE — asymmetric spans collapse to single column.
@@ -908,7 +1012,6 @@
     .conditions .head,.conditions .list,.conditions .turn,
     .casenote .body,
     .roadmap .head,.rows,
-    .contents .head,
     .assess .head,.assess .panelwrap,
     .practice .lead,.practice .block,.practice .clients,.practice .portrait,
     .gate .pitch,.gate .form,
@@ -923,15 +1026,21 @@
     .casenote .body{ margin-top:var(--s4); }
     .practice .block{ margin-top:var(--s6); }
     .practice .clients{ margin-top:var(--s6); }
-    .roadmap,.contents,.assess,.gate,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
-    .roadmap .head,.contents .head{ margin-bottom:var(--s5); }
+    .roadmap,.assess,.gate,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
+    .tail{ padding-bottom:var(--s5); }
+    .tail-foot{ margin-top:var(--s7); }
+    .foot-logo{ padding:0 var(--s4); }
+    .roadmap .head{ margin-bottom:var(--s5); }
     .row-btn{ grid-template-columns:38px 1fr 22px; }
     .row-dim{ display:none; }
     .row-body p{ padding-left:calc(38px + var(--s3)); }
     .assess .panelwrap{ margin-top:var(--s6); min-height:0; }
     .gate .form{ margin-top:var(--s6); }
     .plumb{ display:none; }
-    .readout{ display:none; }
+    /* The venue's name is signed across the top of this photograph, and
+       on a portrait screen cover-fit shows the whole height of it. Render
+       the image 30% taller than its box and anchor it to the floor so the
+       top quarter, with the sign, sits above the visible area. */
     /* No scrub on phones. 3.7MB of frames on mobile data for a
        background, plus a pinned section fighting the address bar,
        isn't a trade worth making. Mobile collapses the scroll region
@@ -952,18 +1061,26 @@
   /* ============================================================
      REDUCED MOTION
      ============================================================ */
+  /* Reduced motion means fewer and gentler, not none. Movement goes:
+     entrances, slides, nudges, presses, parallax (the scripts skip the
+     scroll effects). Short opacity and colour fades stay, because they
+     are what tells you a panel changed or a row opened. */
+  @keyframes fade-only{ from{ opacity:0; } to{ opacity:1; } }
   @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{
-      animation-duration:.01ms !important; animation-iteration-count:1 !important;
-      transition-duration:.01ms !important; scroll-behavior:auto !important;
-    }
-    /* No snapping and no fading. Content stays fully visible and each
-       section keeps its own colour; the script already skips both
-       effects, this just makes sure nothing is left mid-state. */
+    *,*::before,*::after{ animation-iteration-count:1 !important; scroll-behavior:auto !important; }
     section[data-fade]{ opacity:1 !important; }
-    .masthead .mh-label,.masthead .mh-cta{ transition:none !important; }
-    .hero-title .ln > span{ transform:none !important; clip-path:none !important; }
-    .hero-meta,.hero-cta{ opacity:1 !important; transform:none !important; }
+    .hero-title .ln > span{ animation:none !important; transform:none !important; clip-path:none !important; }
+    .hero-meta,.hero-cta{ animation:none !important; opacity:1 !important; transform:none !important; }
+    .result.on,.sent.on,.result.on .diag div{ animation:fade-only 180ms ease-out both !important; }
+    .masthead .mh-label,.masthead .mh-cta{ transform:none !important; }
+    .qp{ transform:none !important; }
+    .btn:active,.mh-cta:active,.foot-social a:active,.opt:active span,.row-btn:active .row-name{ transform:none !important; }
+    .row-name,.opt span{ transition:none !important; }
+    .row-btn:hover .row-name,.opt:hover span,.opt:focus-visible span{ transform:none !important; }
+    .row-plus::after{ transition:none !important; }
+    .row-body{ transition:none !important; }
+    .row-dim span{ transition:none !important; }
+    .assess .head .bar i,.result .scale .track2 i{ transition-duration:.01ms !important; }
     .plumb-fill{ transform:scaleY(1); }
   }
 </style>
@@ -978,8 +1095,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div id="bgLayer" aria-hidden="true"></div>
 
-<div class="sheet" id="sheet"></div>
-<div class="plumb"><div class="plumb-fill" id="plumbFill"></div><div class="plumb-bead" id="plumbBead"></div></div>
+<a class="skip" href="#s-gate">Skip to the form</a>
+
+<div class="sheet" id="sheet" aria-hidden="true"></div>
+<div class="plumb" aria-hidden="true"><div class="plumb-fill" id="plumbFill"></div><div class="plumb-bead" id="plumbBead"></div></div>
 
 <div class="masthead" id="masthead">
   <span class="mh-mark">INCO Studio</span>
@@ -989,7 +1108,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </span>
 </div>
 
-<div class="readout" id="readout">
+<div class="readout" id="readout" aria-hidden="true">
   <span class="rd-num" id="rdNum">01</span>
   <span class="rd-rule"></span>
   <span id="rdName">Cover</span>
@@ -1001,6 +1120,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      earlier build because it's his call and it works; everything
      around it is recomposed.
      ============================================================ -->
+<main id="main">
 <div class="heroScroll" id="heroScroll">
 
   <!-- Sticky media layer. One portrait still, taller than the
@@ -1022,22 +1142,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
        scroll normally; the footage underneath does not move. -->
   <div class="heroPanels">
 
-<section class="hero hpanel" id="s-hero" data-sheet="01" data-name="Cover" data-dark>
+<section class="hero hpanel" id="s-hero" data-sheet="01" data-name="Cover" data-dark data-photo>
   <div class="grid">
     <div class="hero-title">
       <h1>
         <span class="ln"><span>The</span></span>
         <span class="ln"><span>Expansion</span></span>
-        <span class="ln"><span class="thin">Playbook</span></span>
+        <span class="ln"><span>Playbook</span></span>
       </h1>
     </div>
     <div class="hero-meta">
-      <div class="rule"></div>
-      <p>You're thinking about a second venue. This is what we'd want you to know before you sign.</p>
+      <p>A free 16-page guide for operators planning a second venue. What we'd want you to know before you sign.</p>
     </div>
     <div class="hero-cta">
       <a href="#s-assess" class="btn">Take the readiness check</a>
-      <a href="#s-gate" class="link">Skip to the download</a>
+      <a href="#s-gate" class="link">Just send me the playbook</a>
     </div>
   </div>
 </section>
@@ -1054,11 +1173,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      and two of them (the risk asymmetry, the incentive mismatch) are
      things nobody else sending these operators an email will say.
      ============================================================ -->
-<section class="conditions" id="s-conditions" data-sheet="02" data-name="Conditions">
+<section class="conditions" id="s-conditions" data-sheet="02" data-name="Conditions" data-dark data-photo>
   <div class="grid">
     <div class="head">
-      <p class="lede-line"><span>Your first try is built on belief.</span><span>Your second is built on proof.</span></p>
-      <h2>Opening one venue and running two are different businesses.</h2>
+      <h2 class="lede-line"><span>Your first try is built on belief.</span><span>Your second is built on proof.</span></h2>
+      <p class="sub">Opening one venue and running two are different businesses.</p>
     </div>
     <div class="list">
       <p>If the second site doesn't work, it doesn't fail on its own. It takes the first one's cash down with it.</p>
@@ -1083,7 +1202,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      Photography is still a picsum placeholder pending real INCO
      project images (the book has usable shots).
      ============================================================ -->
-<section class="plate" id="s-plate" data-bg="slate" data-snap data-sheet="03" data-name="Reality check" data-dark>
+<section class="plate" id="s-plate" data-bg="slate" data-snap data-sheet="03" data-name="Reality check" data-dark data-photo>
   <picture>
     <source media="(max-width:900px)" srcset="media/plate-1000.webp" type="image/webp">
     <source media="(max-width:900px)" srcset="media/plate-1000.jpg">
@@ -1094,7 +1213,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="grid">
       <div>
         <h2>It rarely fails loudly.</h2>
-        <p>It creeps. Your ops start straining, your margins thin, and you quietly absorb the difference. By the time it's obvious enough to act on, you've already paid for it.</p>
+        <p>It creeps. Your operations start straining, your margins thin, and you quietly absorb the difference. By the time it's obvious enough to act on, you've already paid for it.</p>
       </div>
     </div>
   </div>
@@ -1109,7 +1228,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      pain lands before the roadmap rather than after it: the abstract
      claim on the plate above is immediately cashed out as a specific
      business that shut. Spelled out further than the book does, but
-     only with facts the book supplies - seven years, two profitable
+     only with facts the book supplies - seven years, four profitable
      venues, a premium address, closed in two - because the frightening
      part is that the operator was experienced, not that he was
      careless. No invented figures.
@@ -1121,8 +1240,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="casenote" id="s-case" data-fade data-bg="stone" data-snap data-sheet="04" data-name="Case note">
   <div class="grid">
     <div class="body">
-      <blockquote>A client of mine had two successful venues in the Sydney CBD. After seven years he opened a third, in a premium Westfield food hall. That venue closed after two years.</blockquote>
-      <p class="after">He wasn't guessing. Seven years of trading, two profitable sites, a product people already queued for, and the best address he'd ever signed for. None of that was enough.</p>
+      <h2 class="sr-only">Case note: the fifth venue</h2>
+      <blockquote>A client of mine had four successful venues in the Sydney CBD. After seven years he opened a fifth, in a premium Westfield food hall. That venue closed after two years.</blockquote>
+      <p class="after">He wasn't guessing. Seven years of trading, four profitable sites, a product people already queued for, and the best address he'd ever signed for. None of that was enough.</p>
       <p class="after">The tenancy inside the centre was tucked away, and the foot traffic that walked past it was not the traffic his product was built for. The address looked impressive on paper and did nothing at the till. By the time that was obvious, the fitout was spent, two years of trading had gone, and the lease didn't end just because the doors did.</p>
       <p class="after">Status is not a strategy. Working out why a site is the right one is a cheap question to answer before you sign, and an expensive one afterwards.</p>
       <p class="sign">Jayson Lee, Director</p>
@@ -1139,7 +1259,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="grid">
     <div class="head">
       <h2><span>Five questions worth answering</span><span>before you sign anything.</span></h2>
-      <p>These are the ones we'd put to you before you committed to a site.</p>
+      <p>These are the ones we'd put to you before you commit to a site.</p>
     </div>
     <div class="rows" id="rows">
 
@@ -1198,93 +1318,49 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <!-- ============================================================
-     CONTENTS — drag to pan. Native overflow scroll underneath so
-     keyboard, trackpad and touch all work; pointer-drag layered on
-     top as an enhancement.
-     ============================================================ -->
-<section class="contents" id="s-contents" data-fade data-bg="stone-dim" data-snap data-sheet="06" data-name="Contents">
-  <div class="grid">
-    <div class="head">
-      <h2>What's in the set</h2>
-      <p>Not theory. The actual checklists and contacts we work from. Drag to look through.</p>
-    </div>
-  </div>
-  <!-- Cards run in the book's own order (ch2, ch4, bonus 1, bonus 2).
-       They were previously ch4, bonus1, ch2, bonus2, which read as
-       shuffled - and on a page framed as a drawing set, where sheet
-       order is the whole conceit, out-of-sequence references undercut
-       the device. -->
-  <div class="track" id="track">
-    <article class="card">
-      <div class="card-shot"><img src="https://picsum.photos/seed/inco-services-plant/800/480" alt=""></div>
-      <div class="ref">Chapter two</div>
-      <h3>The pitfalls we watch for</h3>
-      <p>Power capacity, exhaust provision and drainage turn a promising site into a money pit faster than any design decision. What to check, and what to make the landlord fix first.</p>
-    </article>
-    <article class="card">
-      <div class="card-shot"><img src="https://picsum.photos/seed/inco-lease-doc/800/480" alt=""></div>
-      <div class="ref">Chapter four</div>
-      <h3>The site-fit checklist</h3>
-      <p>Site and lease, site services, brand and market, operations, interior design. The categories worth ticking off before you sign, including the three that quietly kill fitouts.</p>
-    </article>
-    <article class="card">
-      <div class="card-shot"><img src="https://picsum.photos/seed/inco-team-table/800/480" alt=""></div>
-      <div class="ref">Bonus one</div>
-      <h3>Build your A-team</h3>
-      <p>Tenant rep, commercial lawyer, certifier, kitchen consultant, shopfitter, POS. Who you need, what each one actually does, and when they need to be in the room.</p>
-    </article>
-    <article class="card">
-      <div class="card-shot"><img src="https://picsum.photos/seed/inco-contacts-page/800/480" alt=""></div>
-      <div class="ref">Bonus two</div>
-      <h3>Our go-to team</h3>
-      <p>The people we call ourselves. Borrow the list, so you're not working out mid-project who you should have rung three months ago.</p>
-    </article>
-  </div>
-</section>
-
-<!-- ============================================================
      ASSESSMENT — the qualifying quiz, logic unchanged from the
      previous build, restaged across the grid. Ready-now scorers get
      a route to a conversation as well as the download.
      ============================================================ -->
-<section class="assess" id="s-assess" data-fade data-bg="olive" data-snap data-sheet="07" data-name="Readiness" data-dark>
+<section class="assess" id="s-assess" data-fade data-bg="olive" data-snap data-sheet="06" data-name="Readiness" data-dark>
   <div class="grid">
     <div class="head">
       <h2>Are you actually ready?</h2>
-      <p>Four questions, no email until the end. Answer them honestly — the flattering answer won't help you.</p>
-      <div class="count"><span id="qCount">Question 1 of 4</span></div>
+      <p>Four questions, no email until the end. Answer honestly. The flattering answer won't help you.</p>
+      <div class="count"><span id="qCount" aria-live="polite">Question 1 of 4</span></div>
       <div class="bar"><i id="qBar"></i></div>
+      <button type="button" class="link qnav" id="qBack" hidden>Back to the previous question</button>
     </div>
 
     <div class="panelwrap">
-      <div class="qp on" data-q="1">
-        <p class="q">Does your first venue run profitably when you're not physically there?</p>
-        <button class="opt" data-score="2">Yes, it holds up without me</button>
-        <button class="opt" data-score="1">Mostly, with some hands-on days</button>
-        <button class="opt" data-score="0">No, I'm still the glue</button>
+      <div class="qp on" data-q="1" role="group" aria-labelledby="q1">
+        <p class="q" id="q1">Does your first venue run profitably when you're not physically there?</p>
+        <button class="opt" data-score="2"><span>Yes, it holds up without me</span></button>
+        <button class="opt" data-score="1"><span>Mostly, with some hands-on days</span></button>
+        <button class="opt" data-score="0"><span>No, I'm still the glue</span></button>
       </div>
-      <div class="qp" data-q="2">
-        <p class="q">Is your brand written down, or does it live in your head?</p>
-        <button class="opt" data-score="2">Documented properly</button>
-        <button class="opt" data-score="1">Partly, some of it</button>
-        <button class="opt" data-score="0">In my head</button>
+      <div class="qp" data-q="2" role="group" aria-labelledby="q2">
+        <p class="q" id="q2">Is your brand written down, or does it live in your head?</p>
+        <button class="opt" data-score="2"><span>Documented properly</span></button>
+        <button class="opt" data-score="1"><span>Partly, some of it</span></button>
+        <button class="opt" data-score="0"><span>In my head</span></button>
       </div>
-      <div class="qp" data-q="3">
-        <p class="q">Have you scoped a real budget for site two, or is it still a guess?</p>
-        <button class="opt" data-score="2">Quoted and scoped</button>
-        <button class="opt" data-score="1">A rough range</button>
-        <button class="opt" data-score="0">Not yet</button>
+      <div class="qp" data-q="3" role="group" aria-labelledby="q3">
+        <p class="q" id="q3">Have you scoped a real budget for site two, or is it still a guess?</p>
+        <button class="opt" data-score="2"><span>Quoted and scoped</span></button>
+        <button class="opt" data-score="1"><span>A rough range</span></button>
+        <button class="opt" data-score="0"><span>Not yet</span></button>
       </div>
-      <div class="qp" data-q="4">
-        <p class="q">When would you want the next site open?</p>
-        <button class="opt" data-score="2">Within six months</button>
-        <button class="opt" data-score="1">Six to eighteen months</button>
-        <button class="opt" data-score="0">No fixed timeline</button>
+      <div class="qp" data-q="4" role="group" aria-labelledby="q4">
+        <p class="q" id="q4">When would you want the next site open?</p>
+        <button class="opt" data-score="2"><span>Within six months</span></button>
+        <button class="opt" data-score="1"><span>Six to eighteen months</span></button>
+        <button class="opt" data-score="0"><span>No fixed timeline</span></button>
       </div>
 
       <div class="result" id="result">
         <p class="verdict" id="verdict">Result</p>
-        <h3 id="rTitle"></h3>
+        <h3 id="rTitle" tabindex="-1"></h3>
         <div class="scale">
           <div class="track2"><i id="rFill"></i></div>
           <b id="rScore">0/8</b>
@@ -1299,8 +1375,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="bench" id="rBench"></p>
         <p id="rDesc"></p>
         <div class="acts">
-          <a href="#s-gate" class="btn btn-pale">Get my copy</a>
+          <a href="#s-gate" class="btn btn-pale">Get the playbook</a>
           <a href="#" class="link" id="callCta" target="_blank" rel="noopener">Book a call</a>
+          <button type="button" class="link qnav" id="qRetake">Retake the check</button>
         </div>
       </div>
     </div>
@@ -1321,7 +1398,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      statement of fact, the second asks the reader to feel something
      about it.
      ============================================================ -->
-<section class="practice" id="s-practice" data-fade data-bg="stone-dim" data-snap data-sheet="08" data-name="Practice">
+<section class="practice" id="s-practice" data-fade data-bg="stone-dim" data-snap data-sheet="07" data-name="Practice">
   <div class="grid">
     <div class="portrait">
       <picture>
@@ -1369,13 +1446,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ============================================================
      GATE — copy left, form right.
      ============================================================ -->
-<section class="gate" id="s-gate" data-fade data-bg="slate" data-snap data-sheet="09" data-name="Download" data-dark>
+<section class="gate" id="s-gate" data-fade data-bg="slate" data-snap data-sheet="08" data-name="Download" data-dark>
   <div class="grid">
     <div class="pitch">
       <h2>Where should we send it?</h2>
-      <p>Sixteen pages, drawn from real projects — including the ones that didn't work.</p>
+      <p>Sixteen pages, drawn from real projects, including the ones that didn't work.</p>
       <ul>
-        <li>The five-part expansion roadmap</li>
+        <li>The five questions to answer before you sign</li>
         <li>The site-fit checklist</li>
         <li>The A-team roster and go-to contacts</li>
       </ul>
@@ -1386,12 +1463,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <form id="playbookForm" novalidate>
           <div class="field" id="fName">
             <label for="iName">Name</label>
-            <input id="iName" type="text" name="name" placeholder="Your name" required>
+            <input id="iName" type="text" name="name" autocomplete="name" placeholder="Your name" required>
             <div class="err">Enter your name.</div>
           </div>
           <div class="field" id="fEmail">
             <label for="iEmail">Email</label>
-            <input id="iEmail" type="email" name="email" placeholder="you@venue.com" required>
+            <input id="iEmail" type="email" name="email" autocomplete="email" placeholder="you@venue.com" required>
             <div class="err">Enter a valid email.</div>
           </div>
           <div class="field" id="fPhone">
@@ -1402,7 +1479,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
           <div class="field" id="fCo">
             <label for="iCo">Venue or company</label>
-            <input id="iCo" type="text" name="company" placeholder="Where you operate" required>
+            <input id="iCo" type="text" name="company" autocomplete="organization" placeholder="Where you operate" required>
             <div class="err">Enter your venue or company.</div>
           </div>
           <!-- ADDED: honeypot field, hidden from people. If it comes back filled in, it's a bot. -->
@@ -1410,10 +1487,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <label for="iWebsite">Website</label>
             <input id="iWebsite" type="text" name="website" tabindex="-1" autocomplete="off">
           </div>
-          <button type="submit" class="btn submit" id="submitBtn">Send me the playbook</button>
+          <button type="submit" class="btn submit" id="submitBtn">Email me the playbook</button>
           <!-- ADDED: error message if sending fails -->
           <p class="form-err" id="formErr" role="alert"></p>
-          <p class="fineprint">No spam, just the playbook. <!-- ADDED: privacy line --> We may follow up by email, and you can unsubscribe anytime. Read our <a href="#" id="privacyLink" target="_blank" rel="noopener">privacy policy</a>.</p>
+          <p class="fineprint">We'll email you the playbook and may follow up about it. Unsubscribe any time. Read our <a href="#" id="privacyLink" target="_blank" rel="noopener">privacy policy</a>.</p>
         </form>
         <!-- Hidden: the quiz result travels with the lead to the CRM.
              A visitor doesn't need to read their own scoring tag. -->
@@ -1422,7 +1499,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <div class="sent" id="sent">
         <h3>Sent.</h3>
-        <p>Check your inbox, The Expansion Playbook is on its way.</p>
+        <p>Check your inbox. The playbook is on its way.</p>
         <!-- CHANGED: playbook is delivered by email only, so the download button is switched off.
         <a class="btn btn-pale" id="pdfLink" href="#" target="_blank" rel="noopener">Download now</a>
         -->
@@ -1434,7 +1511,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ============================================================
      TAILPIECE — the other readiness path.
      ============================================================ -->
-<section class="tail" id="s-tail" data-fade data-bg="stone" data-snap data-sheet="10" data-name="Contact">
+<section class="tail" id="s-tail" data-fade="in" data-bg="stone" data-snap data-sheet="09" data-name="Contact">
   <div class="grid">
     <div class="msg">
       <h2>Already deep in a lease negotiation?</h2>
@@ -1442,14 +1519,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="#" class="btn" id="tailCall" target="_blank" rel="noopener">Book a call</a>
     </div>
   </div>
+  <!-- Bottom of the Contact sheet, inside the border. The wordmark
+       below it, in the footer, sits outside. -->
+  <div class="grid tail-foot">
+    <div class="foot-social">
+      <a href="https://www.linkedin.com/company/incostudio/" target="_blank" rel="noopener noreferrer" aria-label="INCO Studio on LinkedIn" data-network="linkedin">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10.5V17M12 17v-6.5M12 13.4c0-1.8 1.2-2.9 2.8-2.9S17.5 11.6 17.5 13.4V17"/><circle class="dot" cx="8" cy="7.4" r="1"/></svg>
+      </a>
+      <a href="https://www.instagram.com/_incostudio/" target="_blank" rel="noopener noreferrer" aria-label="INCO Studio on Instagram" data-network="instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle class="dot" cx="17.2" cy="6.8" r="1"/></svg>
+      </a>
+    </div>
+    <div class="foot-line">
+      <span>INCO Studio, Sydney</span>
+      <a href="mailto:hello@incostudio.co">hello@incostudio.co</a>
+      <a href="privacy.html">Privacy policy</a>
+    </div>
+  </div>
 </section>
 
-<footer>
-  <div class="grid">
-    <div>
-      <span>INCO Studio, Sydney</span>
-      <span>Prototype for internal review, not for public use</span>
-    </div>
+</main>
+
+<footer data-sheet="09" data-name="Contact">
+  <!-- Edge to edge: outside the grid on purpose, so the wordmark spans the
+       whole browser width at any size. The asset is trimmed to its ink, so
+       the letters themselves meet both edges. -->
+  <div class="foot-logo">
+    <picture>
+      <source srcset="media/inco-logo.webp" type="image/webp">
+      <img src="media/inco-logo.png" width="1894" height="614" alt="INCO" loading="lazy" decoding="async">
+    </picture>
   </div>
 </footer>
 
@@ -1483,6 +1582,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   setLink("callCta",     c.bookingUrl, bookClick);
   setLink("tailCall",    c.bookingUrl, bookClick);
   setLink("privacyLink", c.privacyUrl);
+
+  // Skip link: after the page glides to the form, put the keyboard there too
+  var skip = document.querySelector(".skip");
+  if (skip) skip.addEventListener("click", function () {
+    setTimeout(function () { var f = document.getElementById("iName"); if (f) f.focus({ preventScroll: true }); }, 800);
+  });
+
+  // Send social clicks to GTM
+  document.querySelectorAll(".foot-social a").forEach(function (a) {
+    a.addEventListener("click", function () {
+      window.trackEvent("social_click", { network: a.getAttribute("data-network") });
+    });
+  });
 })();
 </script>
 
@@ -1499,12 +1611,13 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
    readout reports which sheet you're on: wayfinding, not chrome.
    ============================================================ */
 (function () {
-  var sections = Array.prototype.slice.call(document.querySelectorAll("section[data-sheet]"));
+  var sections = Array.prototype.slice.call(document.querySelectorAll("section[data-sheet], footer[data-sheet]"));
   var rdNum = document.getElementById("rdNum");
   var rdName = document.getElementById("rdName");
   var sheet = document.getElementById("sheet");
   var masthead = document.getElementById("masthead");
   var readout = document.getElementById("readout");
+  var plumb = document.querySelector(".plumb");
   if (!sections.length || !("IntersectionObserver" in window)) return;
 
   var current = null;
@@ -1514,6 +1627,7 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       if (current === e.target) return;
       current = e.target;
       rdNum.textContent = e.target.dataset.sheet;
+      plumb.classList.toggle("done", e.target.dataset.sheet === "09");
       rdName.textContent = e.target.dataset.name;
       var dark = e.target.hasAttribute("data-dark");
       sheet.classList.toggle("sheet-dark", dark);
@@ -1522,6 +1636,46 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     });
   }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
   sections.forEach(function (s) { obs.observe(s); });
+})();
+
+
+/* ============================================================
+   WHAT'S UNDER THE CHROME — the header and the page counter each
+   check the sheet directly beneath them, not the middle of the screen.
+   Over a photograph (or the phone's solid Conditions panel) they go
+   light; everywhere else they follow the crossfading colour layer.
+   Deciding by mid-screen flipped the header a whole screen early on
+   phones, in both directions.
+   ============================================================ */
+(function () {
+  var masthead = document.getElementById("masthead");
+  var readout = document.getElementById("readout");
+  var mark = masthead && masthead.querySelector(".mh-mark");
+  var sheets = Array.prototype.slice.call(document.querySelectorAll("section[data-sheet], footer[data-sheet]"));
+  if (!masthead || !readout || !mark || !sheets.length) return;
+  var queued = false;
+
+  function sheetAt(y) {
+    for (var i = 0; i < sheets.length; i++) {
+      var r = sheets[i].getBoundingClientRect();
+      if (r.top <= y && r.bottom > y) return sheets[i];
+    }
+    return null;
+  }
+  function overPhoto(y) {
+    var s = sheetAt(y);
+    return !!(s && s.hasAttribute("data-photo"));
+  }
+  function update() {
+    queued = false;
+    var m = mark.getBoundingClientRect(), r = readout.getBoundingClientRect();
+    masthead.classList.toggle("on-photo", overPhoto(m.top + m.height / 2));
+    readout.classList.toggle("on-photo", r.height ? overPhoto(r.top + r.height / 2) : false);
+  }
+  function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+  window.addEventListener("scroll", queue, { passive: true });
+  window.addEventListener("resize", queue);
+  update();
 })();
 
 /* ============================================================
@@ -1579,7 +1733,7 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       function apply(p) {
         var o;
         if (p < band) o = p / band;                 // arriving
-        else if (p > 1 - band) o = (1 - p) / band;  // leaving
+        else if (p > 1 - band && sec.getAttribute("data-fade") !== "in") o = (1 - p) / band;  // leaving (the last sheet only fades in)
         else o = 1;                                 // holding
         sec.style.opacity = Math.max(0, Math.min(o, 1)).toFixed(3);
       }
@@ -1765,7 +1919,40 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 })();
 
 /* ============================================================
-   SNAP STOPS — ten defined scroll positions, driven here rather
+   CHROME SHIFT — lifts the fixed border, masthead, plumb line and
+   counter off the bottom of the screen as the footer wordmark arrives,
+   so the wordmark sits outside the border. The border's bottom edge is
+   held GAP px above the wordmark's top; before the wordmark is near,
+   the shift is zero and nothing moves. Positional, not decorative, so
+   it stays on under reduced motion.
+   ============================================================ */
+(function () {
+  var logo = document.querySelector(".foot-logo");
+  if (!logo) return;
+  var root = document.documentElement, GAP = 90, queued = false, last = null;
+  // Written straight onto the elements. A custom property on <html> would
+  // restyle the whole document on every scroll frame.
+  var chrome = Array.prototype.slice.call(document.querySelectorAll(".sheet, .plumb, .masthead, .readout"));
+
+  function update() {
+    queued = false;
+    var frame = parseFloat(getComputedStyle(root).getPropertyValue("--frame")) || 20;
+    var d = Math.max(0, (window.innerHeight - frame) - (logo.getBoundingClientRect().top - GAP));
+    var t = d ? "translateY(" + (-Math.round(d)) + "px)" : "";
+    if (t === last) return;
+    last = t;
+    chrome.forEach(function (el) { el.style.transform = t; });
+  }
+  function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+
+  window.addEventListener("scroll", queue, { passive: true });
+  window.addEventListener("resize", queue);
+  window.addEventListener("load", queue);
+  update();
+})();
+
+/* ============================================================
+   SNAP STOPS — nine defined scroll positions, driven here rather
    than by CSS.
 
    CSS scroll-snap was the wrong tool and was replaced. It aligns a
@@ -1787,25 +1974,32 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
   if (window.matchMedia("(max-width:900px)").matches) return;
 
   var TOP_PAD = 96;     // clears the fixed masthead
-  var BOT_PAD = 104;
+  var BOT_PAD = 56;     // keeps the last control clear of the frame and readout
+  var SLACK = 140;      // extra rest room past a range's end: one wheel notch overshoots by up to ~100px,
+                        // and without this it jumps on to the next page instead of resting at the last control
 
   // align: 'top'    element top sits just below the masthead
   //        'bottom' element bottom sits just above the viewport floor
   //        'third'  element top sits a third of the way down
+  // end:   the last thing on the sheet that has to be reachable. A stop
+  //        is a RANGE, not a point: it runs from the aligned position down
+  //        to the scroll where `end` clears the bottom of the screen.
+  //        Inside that range the page never pulls you back, so a sheet
+  //        taller than the viewport (roadmap rows, the quiz result, the
+  //        logos) can be read and clicked to the bottom.
   var SPEC = [
-    { sel: null,                     align: "page" },   //  1 cover
-    { sel: ".conditions .lede-line", align: "top"  },   //  2 belief / proof
-    { sel: ".plate",                 align: "flush"  }, //  3 it rarely fails loudly (caption sits at its base)
-    { sel: ".casenote .body",        align: "top"  },   //  4 case note
-    { sel: ".roadmap .head h2",      align: "top"  },   //  5 five questions
-    { sel: ".contents .head h2",     align: "top"  },   //  6 what's in the set
-    { sel: ".assess .head h2",       align: "third" },  //  7 are you actually ready
-    { sel: ".practice .lead h2",     align: "top"  },   //  8 who's behind this
-    { sel: ".gate .pitch h2",        align: "top"  },   //  9 unlock your copy
-    { sel: ".tail .msg h2",          align: "top"  }    // 10 lease negotiation
+    { sel: null,                     align: "page",  end: null },                  //  1 cover
+    { sel: ".conditions .lede-line", align: "top",   end: ".conditions .turn" },   //  2 belief / proof
+    { sel: ".plate",                 align: "flush", end: null },                  //  3 it rarely fails loudly (caption sits at its base)
+    { sel: "#s-case",                align: "flush", end: ".casenote .sign" },     //  4 case note
+    { sel: ".roadmap .head h2",      align: "top",   end: ".roadmap .rows" },      //  5 five questions
+    { sel: "#s-assess",              align: "flush", end: ".assess .panelwrap" },  //  6 are you actually ready
+    { sel: ".practice .lead h2",     align: "top",   end: ".practice .clients" },  //  7 who's behind this
+    { sel: "#s-gate",                align: "flush", end: ".gate .form" },         //  8 unlock your copy
+    { sel: "#s-tail",                align: "flush", end: "footer .foot-logo" }    //  9 lease negotiation + footer
   ];
 
-  var stops = [];
+  var stops = [];   // [{ a: first scroll position, b: last }]
   function build() {
     var vh = window.innerHeight;
     var max = document.documentElement.scrollHeight - vh;
@@ -1823,9 +2017,15 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
         else if (s.align === "bottom") y = top + r.height - vh + BOT_PAD;
         else                           y = top - vh / 3;
       }
-      stops.push(Math.max(0, Math.min(Math.round(y), max)));
+      y = Math.max(0, Math.min(Math.round(y), max));
+      var hold = 0, endEl = s.end && document.querySelector(s.end);
+      if (endEl) {
+        var bottom = endEl.getBoundingClientRect().bottom + window.scrollY;
+        hold = Math.max(0, Math.round(bottom - y - (vh - BOT_PAD)));
+      }
+      stops.push({ a: y, b: Math.min(y + hold + (hold ? SLACK : 0), max) });
     });
-    stops.sort(function (a, b) { return a - b; });
+    stops.sort(function (m, n) { return m.a - n.a; });
   }
 
   var gliding = false, raf = null, idle = null;
@@ -1850,30 +2050,86 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     })(t0);
   }
 
+  /* Direction-aware. Snapping to whichever stop is nearest means one
+     wheel notch (about 100px) from a stop is always nearer the stop it
+     left than the next one, so the page pulls you straight back and a
+     one-notch-at-a-time scroller can never leave a page. Instead:
+       - resting inside a sheet's own range: stay put
+       - between sheets: continue in the direction you were travelling,
+         to the next range start going down, or the previous range end
+         going up
+     lastRest is where the page last settled, which is what "direction"
+     is measured from. */
+  var lastRest = window.scrollY;
+
   function settle() {
     if (gliding || !stops.length) return;
     var y = window.scrollY;
     // already at the very bottom: leave the footer reachable
-    if (y >= document.documentElement.scrollHeight - window.innerHeight - 2) return;
+    if (y >= document.documentElement.scrollHeight - window.innerHeight - 2) { lastRest = y; return; }
 
-    var best = null, bestD = Infinity;
-    stops.forEach(function (s) {
-      var d = Math.abs(s - y);
-      if (d < bestD) { bestD = d; best = s; }
-    });
-    if (best === null || bestD < 3) return;
-    if (bestD > window.innerHeight * 0.45) return;   // reading, not between pages
-    glide(best);
+    var i;
+    for (i = 0; i < stops.length; i++) {
+      if (y >= stops[i].a - 2 && y <= stops[i].b + 2) { lastRest = y; return; }   // inside a sheet's range
+    }
+
+    var dir = y > lastRest + 6 ? 1 : (y < lastRest - 6 ? -1 : 0);
+    var to = null, vh = window.innerHeight;
+    /* Next sheet in the direction of travel, counted from where the
+       visitor LEFT, not from where momentum dropped them. A trackpad
+       swipe off the cover can coast past the whole of sheet 02 before
+       scrolling stops; measured from the current position, the next
+       stop down is sheet 03 and 02 is skipped. Only when the scroll has
+       carried a full screen beyond that sheet is it a deliberate jump,
+       and then the nearest sheet ahead wins. */
+    if (dir === 1) {
+      for (i = 0; i < stops.length; i++) if (stops[i].a > lastRest + 2) { to = stops[i]; break; }
+      if (to && y - to.b > vh) { to = null; for (i = 0; i < stops.length; i++) if (stops[i].a > y) { to = stops[i]; break; } }
+      to = to ? to.a : null;
+    } else if (dir === -1) {
+      for (i = stops.length - 1; i >= 0; i--) if (stops[i].b < lastRest - 2) { to = stops[i]; break; }
+      if (to && to.a - y > vh) { to = null; for (i = stops.length - 1; i >= 0; i--) if (stops[i].b < y) { to = stops[i]; break; } }
+      to = to ? to.b : null;
+    } else {
+      var bestD = Infinity;
+      stops.forEach(function (st) {
+        var t = y < st.a ? st.a : st.b, d = Math.abs(t - y);
+        if (d < bestD) { bestD = d; to = t; }
+      });
+    }
+    if (to === null) { lastRest = y; return; }   // past the last sheet: leave it
+    lastRest = to;
+    glide(to);
   }
+
+  /* Only scrolling the visitor caused may snap. The page also scrolls on
+     its own: scroll anchoring when form errors make a sheet taller, focus
+     bringing a field into view, a resize. Read as travel, those would
+     glide the visitor off the form they were fixing. Wheel, touch, keys
+     outside form fields and a scrollbar drag count as input; trackpad
+     momentum keeps firing wheel events, so it counts too. */
+  var lastInput = -Infinity;
 
   window.addEventListener("scroll", function () {
     if (gliding) return;
     clearTimeout(idle);
+    if (performance.now() - lastInput > 900) { lastRest = window.scrollY; return; }
     idle = setTimeout(settle, 140);
   }, { passive: true });
 
-  ["wheel", "touchstart", "keydown", "mousedown"].forEach(function (ev) {
-    window.addEventListener(ev, stop, { passive: true });
+  function isScrollInput(e) {
+    // A press on a button or link isn't scrolling, but a press on the
+    // scrollbar lands on <html>. Keys typed into a field aren't scrolling
+    // either, and as errors clear the sheet changes height under them.
+    if (e.type === "mousedown") return e.target === document.documentElement;
+    if (e.type === "keydown") return !(e.target.closest && e.target.closest("input, textarea, select, [contenteditable]"));
+    return true;
+  }
+  ["wheel", "touchstart", "touchmove", "keydown", "mousedown"].forEach(function (ev) {
+    window.addEventListener(ev, function (e) {
+      if (isScrollInput(e)) lastInput = performance.now();
+      stop();
+    }, { passive: true });
   });
 
   // Anchor links glide too, since native smooth scrolling is off.
@@ -1885,12 +2141,19 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       if (!el) return;
       e.preventDefault();
       clearTimeout(idle);
-      glide(Math.max(0, el.getBoundingClientRect().top + window.scrollY - TOP_PAD));
+      // Full-screen sheets land flush; anything else clears the masthead.
+      var top = el.getBoundingClientRect().top + window.scrollY;
+      var full = el.offsetHeight >= window.innerHeight - 2 && el.matches("section");
+      glide(Math.max(0, full ? top : top - TOP_PAD));
     });
   });
 
   build();
   window.addEventListener("resize", function () { clearTimeout(idle); build(); });
+  if ("ResizeObserver" in window) {
+    var rebuildT = null;
+    new ResizeObserver(function () { clearTimeout(rebuildT); rebuildT = setTimeout(build, 60); }).observe(document.body);
+  }
   window.addEventListener("load", build);
   if (window.ScrollTrigger) ScrollTrigger.addEventListener("refresh", build);
 })();
@@ -1909,9 +2172,10 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     scaleY: 1, ease: "none",
     scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: true }
   });
+  var plumb = bead.parentNode;
   gsap.to(bead, {
-    top: "100%", ease: "none",
-    scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: true }
+    y: function () { return plumb.offsetHeight; }, ease: "none",
+    scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: true, invalidateOnRefresh: true }
   });
 })();
 
@@ -1924,6 +2188,21 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
    same words, one of them fighting footage that is already animating,
    was one too many.
    ============================================================ */
+
+/* ============================================================
+   DEPTH — one quiet move, off when motion is reduced. The portrait
+   drifts slower than the page around it (parallax).
+   ============================================================ */
+(function () {
+  if (reduce || !window.gsap || !window.ScrollTrigger) return;
+  var pic = document.querySelector(".practice .portrait picture");
+  if (pic && !window.matchMedia("(max-width:900px)").matches) {
+    gsap.fromTo(pic, { y: 28 }, {
+      y: -28, ease: "none",
+      scrollTrigger: { trigger: ".practice", start: "top bottom", end: "bottom top", scrub: 0.6 }
+    });
+  }
+})();
 
 /* ============================================================
    ROADMAP ROWS — click to open. One open at a time. The dimension
@@ -1946,50 +2225,6 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       }
     });
   });
-})();
-
-/* ============================================================
-   CONTENTS TRACK — drag to pan. Native overflow-x scroll is the
-   base layer (keyboard, trackpad, touch all work untouched); this
-   only adds pointer dragging on top and suppresses the click that
-   would otherwise fire at the end of a drag.
-   ============================================================ */
-(function () {
-  var track = document.getElementById("track");
-  if (!track) return;
-  var down = false, startX = 0, startLeft = 0, moved = 0;
-
-  track.addEventListener("pointerdown", function (e) {
-    if (e.pointerType === "touch") return;   // let native touch scrolling do its job
-    down = true; moved = 0;
-    startX = e.clientX; startLeft = track.scrollLeft;
-    track.classList.add("dragging");
-    track.setPointerCapture(e.pointerId);
-  });
-
-  track.addEventListener("pointermove", function (e) {
-    if (!down) return;
-    var dx = e.clientX - startX;
-    moved = Math.max(moved, Math.abs(dx));
-    track.scrollLeft = startLeft - dx;
-  });
-
-  function release(e) {
-    if (!down) return;
-    down = false;
-    track.classList.remove("dragging");
-    if (track.hasPointerCapture && e.pointerId !== undefined && track.hasPointerCapture(e.pointerId)) {
-      track.releasePointerCapture(e.pointerId);
-    }
-  }
-  track.addEventListener("pointerup", release);
-  track.addEventListener("pointercancel", release);
-
-  // Swallow the click that ends a real drag, so dragging over a card
-  // never reads as a click on it.
-  track.addEventListener("click", function (e) {
-    if (moved > 6) { e.preventDefault(); e.stopPropagation(); }
-  }, true);
 })();
 
 /* ============================================================
@@ -2019,26 +2254,63 @@ var totalQ = panels.length;
 var qBar = document.getElementById("qBar");
 var qCount = document.getElementById("qCount");
 
+var qBack = document.getElementById("qBack");
+var qRetake = document.getElementById("qRetake");
+
+function sumScore() {
+  var t = 0;
+  for (var k in answers) t += answers[k];
+  return t;
+}
+// Show question n (1-based). Answers already given for later questions
+// are dropped, so going back and answering again can't double-count.
+function goTo(n, focus) {
+  Object.keys(answers).forEach(function (k) { if (+k >= n) delete answers[k]; });
+  score = sumScore();
+  panels.forEach(function (p) { p.classList.remove("on"); });
+  document.getElementById("result").classList.remove("on");
+  var panel = document.querySelector('.qp[data-q="' + n + '"]');
+  panel.classList.add("on");
+  qCount.textContent = "Question " + n + " of " + totalQ;
+  qBar.style.transform = "scaleX(" + ((n - 1) / totalQ) + ")";
+  qBack.hidden = n === 1;
+  if (focus) panel.querySelector(".opt").focus({ preventScroll: true });
+}
+
 document.querySelectorAll(".opt").forEach(function (btn) {
   btn.addEventListener("click", function () {
     var panel = btn.closest(".qp");
     var idx = parseInt(panel.dataset.q, 10);
-    var val = parseInt(btn.dataset.score, 10);
-    score += val;
-    answers[idx] = val;
+    answers[idx] = parseInt(btn.dataset.score, 10);
+    score = sumScore();
 
-    qBar.style.width = (idx / totalQ * 100) + "%";
+    qBar.style.transform = "scaleX(" + (idx / totalQ) + ")";
     panel.classList.remove("on");
 
     var next = document.querySelector('.qp[data-q="' + (idx + 1) + '"]');
     if (next) {
       qCount.textContent = "Question " + (idx + 1) + " of " + totalQ;
       next.classList.add("on");
+      qBack.hidden = false;
+      // The answered button is now hidden; without this, keyboard focus
+      // falls back to the top of the document.
+      if (btn.matches(":focus-visible")) next.querySelector(".opt").focus({ preventScroll: true });
     } else {
       qCount.textContent = "Complete";
+      qBack.hidden = true;
       showResult();
+      if (btn.matches(":focus-visible")) document.getElementById("rTitle").focus({ preventScroll: true });
     }
   });
+});
+
+qBack.addEventListener("click", function () {
+  var on = document.querySelector(".qp.on");
+  if (on) goTo(parseInt(on.dataset.q, 10) - 1, qBack.matches(":focus-visible"));
+});
+qRetake.addEventListener("click", function () {
+  document.getElementById("rFill").style.transform = "scaleX(0)";
+  goTo(1, qRetake.matches(":focus-visible"));
 });
 
 function showResult() {
@@ -2067,7 +2339,7 @@ function showResult() {
   document.getElementById("result").classList.add("on");
 
   requestAnimationFrame(function () {
-    document.getElementById("rFill").style.width = (score / max * 100) + "%";
+    document.getElementById("rFill").style.transform = "scaleX(" + (score / max) + ")";
   });
 
   /* Per-dimension read. Lowest-scoring answer is the weak spot; ties
@@ -2251,7 +2523,13 @@ function showResult() {
       // Send focus to the first problem so keyboard users aren't left
       // hunting for which field went red.
       var firstBad = form.querySelector(".field.bad input");
-      if (firstBad) firstBad.focus();
+      // Focus without scrolling when the field is already on screen: a
+      // nudge here would wake the snap logic and glide the sheet after a
+      // failed submit. Off screen (phones), let the browser bring it in.
+      if (firstBad) {
+        var fr = firstBad.getBoundingClientRect();
+        firstBad.focus({ preventScroll: fr.top >= 0 && fr.bottom <= window.innerHeight });
+      }
       return;
     }
 
@@ -2405,7 +2683,10 @@ function showResult() {
     // How much taller the rendered image is than the frame holding it.
     // Clamped at zero so an unusually tall viewport just holds still
     // rather than panning the wrong way.
-    travel = Math.max(img.offsetHeight - img.parentElement.offsetHeight, 0);
+    // Measured against .hero-media, not img.parentElement: the parent is
+    // the inline <picture>, which reports 0 height, so the pan used to
+    // run the full image height and drag its bottom edge into view.
+    travel = Math.max(img.offsetHeight - img.closest(".hero-media").offsetHeight, 0);
   }
 
   function run() {

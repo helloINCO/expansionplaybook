@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy policy | INCO Studio</title>
+<meta name="description" content="How INCO Studio handles personal information collected through The Expansion Playbook page: what we collect, why, who we share it with, and your choices.">
+<link rel="icon" href="media/favicon.png">
+
+<!--
+  Design read: trust page for operators vetting INCO before handing over
+  their details. Same drawing-set language as the playbook page (sheet
+  frame, hairlines, Founders Grotesk, INCO palette), turned down to a quiet
+  reading page. Light and dark follow the visitor's system setting.
+
+  Before publishing, check these against what is actually live:
+    1. Section 3: delete Google Analytics, Google Ads or Meta if they are
+       not active inside Tag Manager.
+    2. Section 6: the 24 month retention period is a proposed default.
+    3. Entity name and the "we don't sell" and "no list buying" lines.
+-->
+
+<link rel="preload" href="media/fonts/founders-grotesk-semibold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="media/fonts/founders-grotesk-regular.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  :root{
+    --slate:#1c1c1a;
+    --stone:#F6F6F6;
+    --olive:#666b47;
+    --olive-deep:#4c5036;
+    --light:#f5f3ee;
+
+    --bg:var(--stone);
+    --fg:var(--slate);
+    --ink-70:rgba(28,28,26,.72);
+    --ink-soft:rgba(28,28,26,.64);
+    --rule:rgba(28,28,26,.2);
+
+    --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:40px; --s6:64px; --s7:104px; --s8:168px;
+
+    --t-micro:14px;
+    --t-small:16px;
+    --t-body:19px;
+    --t-lead:23px;
+    --t-h2:clamp(28px,3vw,42px);
+    --t-display:clamp(48px,9vw,132px);
+
+    --ease:cubic-bezier(.22,1,.36,1);
+    --fast:200ms;
+    --ui:260ms;
+    --frame:20px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:var(--slate);
+      --fg:var(--light);
+      --ink-70:rgba(245,243,238,.78);
+      --ink-soft:rgba(245,243,238,.62);
+      --rule:rgba(245,243,238,.2);
+    }
+  }
+
+  @font-face{ font-family:'Founders Grotesk'; src:url('media/fonts/founders-grotesk-regular.woff2') format('woff2');
+              font-weight:400; font-style:normal; font-display:swap; }
+  @font-face{ font-family:'Founders Grotesk'; src:url('media/fonts/founders-grotesk-semibold.woff2') format('woff2');
+              font-weight:600; font-style:normal; font-display:swap; }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{ overflow-x:clip; background:var(--bg); }   /* overscroll bounce shows the page colour, not white */
+  @media (prefers-reduced-motion:no-preference){ html{ scroll-behavior:smooth; } }
+  body{
+    font-family:'Founders Grotesk','Helvetica Neue',Arial,sans-serif;
+    background:var(--bg); color:var(--fg);
+    font-size:var(--t-body); line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--olive); color:var(--light); }
+  h1,h2,h3{ text-wrap:balance; font-weight:600; letter-spacing:-.015em; }
+  p{ text-wrap:pretty; }
+  a{
+    color:inherit; text-decoration:underline; text-decoration-thickness:1px;
+    text-underline-offset:3px; text-decoration-color:var(--ink-soft);
+    transition:text-decoration-color var(--fast) linear;
+  }
+  a:hover{ text-decoration-color:currentColor; }
+  :focus-visible{ outline:2px solid var(--olive); outline-offset:3px; }
+  @media (prefers-color-scheme:dark){ :focus-visible{ outline-color:var(--light); } }
+
+  .skip{
+    position:absolute; left:var(--s3); top:-60px; z-index:30;
+    background:var(--olive); color:var(--light); padding:10px 18px; border-radius:999px;
+    font-size:var(--t-small); font-weight:600; text-decoration:none;
+  }
+  .skip:focus{ top:var(--s3); }
+
+  .grid{
+    display:grid; grid-template-columns:repeat(12,1fr);
+    column-gap:var(--s4); max-width:1440px; margin:0 auto;
+    padding:0 max(var(--s5), calc(var(--frame) + var(--s4)));
+  }
+
+  /* Sheet frame: the same drawing border as the playbook page. */
+  .sheet{
+    position:fixed; inset:var(--frame); pointer-events:none; z-index:20;
+    border:1px solid var(--rule);
+  }
+  .sheet::before,.sheet::after{
+    content:""; position:absolute; width:11px; height:11px; border:1px solid var(--rule);
+  }
+  .sheet::before{ top:-1px; left:-1px; border-right:0; border-bottom:0; }
+  .sheet::after{ bottom:-1px; right:-1px; border-left:0; border-top:0; }
+
+  .masthead{
+    position:absolute; top:calc(var(--frame) + 12px);
+    left:calc(var(--frame) + 14px); right:calc(var(--frame) + 14px); z-index:10;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .mh-mark{
+    font-size:var(--t-lead); font-weight:600; letter-spacing:-.01em;
+    text-decoration:none; color:var(--fg);
+  }
+
+  /* Hero: title low-left, a single line of context, the date. */
+  .hero{ padding-top:96px; padding-bottom:var(--s7); }
+  .hero h1{
+    grid-column:1 / 12; font-size:var(--t-display);
+    line-height:.98; letter-spacing:-.025em; padding-bottom:.04em;
+  }
+  .hero .lede{
+    grid-column:1 / 7; margin-top:var(--s5);
+    font-size:var(--t-lead); line-height:1.35; font-weight:400; letter-spacing:-.015em;
+  }
+  .hero .stamp{
+    grid-column:1 / 7; margin-top:var(--s4);
+    font-size:var(--t-small); color:var(--ink-soft);
+  }
+  @keyframes soft{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
+  @media (prefers-reduced-motion:no-preference){
+    .hero h1,.hero .lede,.hero .stamp{ animation:soft .6s var(--ease) both; }
+    .hero .lede{ animation-delay:.08s; }
+    .hero .stamp{ animation-delay:.16s; }
+  }
+
+  /* Contents: sticky, with a dimension tick that draws beside the section you are in. */
+  .toc{ grid-column:1 / 4; align-self:start; position:sticky; top:64px; }
+  .toc h2{ font-size:var(--t-small); font-weight:600; letter-spacing:-.005em; color:var(--ink-soft); margin-bottom:var(--s3); }
+  .toc ol{ list-style:none; }
+  .toc a{
+    position:relative; display:block; padding:6px 0 6px 30px;
+    font-size:var(--t-small); line-height:1.35; color:var(--ink-soft);
+    text-decoration:none; transition:color var(--fast) linear;
+  }
+  .toc a::before{
+    content:""; position:absolute; left:0; top:50%; width:20px; height:1px;
+    background:var(--olive); transform:scaleX(0); transform-origin:left;
+    transition:transform var(--ui) var(--ease);
+  }
+  .toc a[aria-current="location"]{ color:var(--fg); font-weight:600; }
+  .toc a[aria-current="location"]::before{ transform:scaleX(1); }
+  @media (prefers-color-scheme:dark){ .toc a::before{ background:var(--light); } }
+  @media (hover:hover) and (pointer:fine){ .toc a:hover{ color:var(--fg); } }
+
+  /* Document */
+  .doc{ grid-column:5 / 12; padding-bottom:var(--s7); }
+  .doc p,.doc li,.doc dd{ max-width:66ch; }
+  .doc p + p{ margin-top:var(--s3); }
+
+  .doc section{ margin-top:var(--s7); padding-top:var(--s5); border-top:1px solid var(--rule); scroll-margin-top:var(--s5); }
+  .doc section.first{ margin-top:0; padding-top:0; border-top:0; }
+  .doc h2{ font-size:var(--t-h2); line-height:1.04; margin-bottom:var(--s4); }
+  .doc h3{ font-size:var(--t-lead); line-height:1.2; letter-spacing:-.02em; font-weight:600; margin-bottom:var(--s3); }
+
+  .intro{ font-size:var(--t-lead); line-height:1.4; font-weight:400; letter-spacing:-.015em; max-width:34ch; margin-bottom:var(--s6); }
+  .intro-body{ margin-bottom:var(--s7); color:var(--ink-70); }
+
+  .short{ border-top:1px solid var(--rule); max-width:none; list-style:none; }
+  .short li{
+    max-width:none; padding:var(--s4) 0; border-bottom:1px solid var(--rule);
+    font-size:var(--t-lead); line-height:1.3; font-weight:400; letter-spacing:-.015em;
+  }
+  .short li span{ display:block; max-width:44ch; }
+
+  .split{ display:grid; grid-template-columns:1fr 1fr; gap:var(--s5); margin:var(--s5) 0; }
+
+  /* Lists get a drawn tick, not a bullet glyph. */
+  .list{ list-style:none; }
+  .list li{ position:relative; padding:0 0 var(--s3) 26px; }
+  .list li::before{
+    content:""; position:absolute; left:0; top:.82em; width:12px; height:1px;
+    background:currentColor; opacity:.55;
+  }
+
+  .providers{
+    display:grid; grid-template-columns:minmax(150px,28%) 1fr; gap:var(--s4) var(--s4);
+    margin:var(--s4) 0 var(--s5); padding-top:var(--s4); border-top:1px solid var(--rule);
+  }
+  .providers dt{ font-weight:600; letter-spacing:-.01em; }
+  .providers dd{ color:var(--ink-70); }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    margin-top:var(--s4);
+    background:var(--olive); color:var(--light); border:none; border-radius:999px;
+    padding:17px 34px; font-family:inherit; font-size:var(--t-small); font-weight:600;
+    letter-spacing:-.01em; text-decoration:none; white-space:nowrap;
+    box-shadow:0 1px 2px rgba(28,28,26,.12), 0 8px 20px rgba(76,80,54,.22);
+    transition:background var(--fast) linear, transform 140ms var(--ease);
+  }
+  .btn:active{ transform:scale(.97); }
+  @media (hover:hover) and (pointer:fine){ .btn:hover{ background:var(--olive-deep); } }
+
+  footer{ padding:0 0 var(--s6); }
+  footer .grid > div{
+    grid-column:1 / 13; border-top:1px solid var(--rule); padding-top:var(--s3);
+    display:flex; justify-content:space-between; gap:var(--s4); flex-wrap:wrap;
+    font-size:var(--t-micro); color:var(--ink-soft);
+  }
+
+  @media (pointer:coarse){
+    .toc a{ padding-top:11px; padding-bottom:11px; }
+    .btn{ min-height:48px; }
+  }
+
+  @media (max-width:900px){
+    :root{ --frame:12px; }
+    .grid{ column-gap:var(--s3); padding:0 var(--s4); }
+    .hero{ padding-bottom:var(--s6); }
+    .hero h1,.hero .lede,.hero .stamp,
+    .toc,.doc,footer .grid > div{ grid-column:1 / 13; }
+    .toc{ position:static; margin-bottom:var(--s6); }
+    .toc ol{ display:grid; grid-template-columns:1fr 1fr; gap:0 var(--s3); }
+    .toc a{ padding-left:0; }
+    .toc a::before{ display:none; }
+    .doc section{ margin-top:var(--s6); }
+    .split{ grid-template-columns:1fr; gap:var(--s4); }
+    .providers{ grid-template-columns:1fr; gap:var(--s1) 0; }
+    .providers dd{ margin-bottom:var(--s3); }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{
+      animation-duration:.01ms !important; animation-iteration-count:1 !important;
+      transition-duration:.01ms !important;
+    }
+  }
+
+  @media print{
+    .sheet,.toc,.skip,.btn{ display:none; }
+    body{ background:#fff; color:#000; }
+    .doc{ grid-column:1 / 13; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="sheet" aria-hidden="true"></div>
+
+<header class="masthead">
+  <a class="mh-mark" href="index.html">INCO Studio</a>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="grid">
+      <h1>Privacy policy</h1>
+      <p class="lede">What we collect when you use The Expansion Playbook page, why we collect it, and what you can do about it.</p>
+      <p class="stamp">Last updated 15 October 2026</p>
+    </div>
+  </section>
+
+  <div class="grid">
+
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#s-collect">1. What we collect</a></li>
+        <li><a href="#s-use">2. Why we collect it</a></li>
+        <li><a href="#s-share">3. Who we share it with</a></li>
+        <li><a href="#s-overseas">4. Sending it overseas</a></li>
+        <li><a href="#s-cookies">5. Cookies and tracking</a></li>
+        <li><a href="#s-keep">6. How long we keep it</a></li>
+        <li><a href="#s-safe">7. Keeping it safe</a></li>
+        <li><a href="#s-rights">8. Your choices</a></li>
+        <li><a href="#s-complaints">9. Complaints</a></li>
+        <li><a href="#s-minors">10. Under 18s</a></li>
+        <li><a href="#s-changes">11. Changes</a></li>
+        <li><a href="#s-contact">12. Contact us</a></li>
+      </ol>
+    </nav>
+
+    <article class="doc">
+
+      <section class="first" aria-labelledby="h-short">
+        <p class="intro">We&rsquo;re a design studio, not a data company. Here is what happens to the details you give us.</p>
+        <p class="intro-body">INCO Studio Pty Ltd (&ldquo;INCO&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) is a hospitality and retail design studio in Sydney. This policy covers the personal information we handle through the playbook page at playbook.incostudio.co, and any other INCO page that links to it. We aim to handle that information in line with the Privacy Act 1988 (Cth) and the Australian Privacy Principles.</p>
+
+        <h2 id="h-short">The short version</h2>
+        <ul class="short">
+          <li><span>We ask for your name, email, phone number and venue or company so we can send you the playbook and follow up.</span></li>
+          <li><span>If you take the readiness check, your four answers are saved against that record so our follow-up fits where you are.</span></li>
+          <li><span>Cookies and ad tools tell us how the page performs and which ads brought you here.</span></li>
+          <li><span>We don&rsquo;t sell your information. The few tools that store or process it are named in section 3.</span></li>
+          <li><span>You can ask to see it, fix it, delete it, or stop hearing from us, at any time.</span></li>
+        </ul>
+      </section>
+
+      <section id="s-collect" aria-labelledby="h-collect">
+        <h2 id="h-collect">1. What we collect</h2>
+        <p>It depends on what you do on the page.</p>
+
+        <div class="split">
+          <div>
+            <h3>What you give us</h3>
+            <ul class="list">
+              <li>Your name, email address, phone number, and the venue or company you operate</li>
+              <li>Your answers to the four readiness questions, the score they produce, and the area the check flags as your weakest</li>
+              <li>If you book a call, the details you enter in the booking calendar, including anything you write there</li>
+              <li>Anything you tell us when you email or speak to us</li>
+            </ul>
+          </div>
+          <div>
+            <h3>What we collect automatically</h3>
+            <ul class="list">
+              <li>Your IP address, browser and device type, and the pages you view</li>
+              <li>How you got here, including campaign tags in the link (UTM tags, and click IDs such as Facebook&rsquo;s fbclid)</li>
+              <li>The time you submitted the form and the page you submitted it from</li>
+              <li>Cookie and pixel identifiers set by the tools in section 5</li>
+            </ul>
+          </div>
+        </div>
+
+        <p>We don&rsquo;t ask for payment details, government ID numbers or sensitive information such as health, race, religion or sexual orientation. Please don&rsquo;t send them to us.</p>
+        <p>If you arrive through an ad, the ad platform tells us which campaign you came from. We don&rsquo;t buy contact lists or add details to your record from other sources.</p>
+      </section>
+
+      <section id="s-use" aria-labelledby="h-use">
+        <h2 id="h-use">2. Why we collect it and how we use it</h2>
+        <p>We use your information to:</p>
+        <ul class="list" style="margin-top:var(--s3)">
+          <li>send you The Expansion Playbook by email</li>
+          <li>respond to your messages, and set up and run any call you book</li>
+          <li>follow up by email or phone about the playbook, your answers, and how INCO could help</li>
+          <li>tailor that follow-up, because your readiness result decides which emails you receive and whether we suggest a call</li>
+          <li>measure the page and our advertising, and show INCO ads to people who have visited it</li>
+          <li>keep the page secure, block spam, and meet our legal obligations</li>
+        </ul>
+        <p>When you submit the form, you agree to hear from us about the playbook and our services. Every marketing email has an unsubscribe link, and we act on it promptly and always within five business days. We won&rsquo;t use your information for anything unrelated to the above without asking you first, unless the law requires it.</p>
+        <p>We don&rsquo;t sell personal information.</p>
+      </section>
+
+      <section id="s-share" aria-labelledby="h-share">
+        <h2 id="h-share">3. Who we share it with</h2>
+        <p>These are the providers that handle your information, and they handle it only for the purposes in section 2.</p>
+
+        <dl class="providers">
+          <dt>HighLevel</dt>
+          <dd>Also branded GoHighLevel and LeadConnector. It is our CRM. It receives what you submit in the form, your readiness result and campaign tags, sends our emails, and runs the booking calendar.</dd>
+
+          <dt>Google</dt>
+          <dd>Google Tag Manager loads our measurement tools. Google Analytics and Google Ads, where active, receive page activity and cookie identifiers.</dd>
+
+          <dt>Meta</dt>
+          <dd>Where the Meta Pixel is active, Meta (Facebook and Instagram) receives page activity, form-submission events and cookie identifiers, so we can measure and target our ads.</dd>
+
+          <dt>Hosting and delivery</dt>
+          <dd>Our web host and content delivery providers, such as jsDelivr, receive your IP address when the page loads.</dd>
+
+          <dt>Our team and advisers</dt>
+          <dd>Our team (some of whom work remotely), contractors, and professional advisers such as lawyers and accountants, where they need it to do their job.</dd>
+        </dl>
+
+        <p>Google and Meta handle the data they receive under their own privacy policies. Beyond the settings we choose, we can&rsquo;t see or control what they do with it.</p>
+        <p>We may also disclose information if the law requires it, to protect someone&rsquo;s safety, or as part of a sale or restructure of our business. The page links to LinkedIn and Instagram, which have their own policies.</p>
+      </section>
+
+      <section id="s-overseas" aria-labelledby="h-overseas">
+        <h2 id="h-overseas">4. Sending information overseas</h2>
+        <p>Several of the providers above store and process data outside Australia, mainly in the United States. We choose established providers and take reasonable steps to make sure they handle your information in line with the Australian Privacy Principles. We can&rsquo;t promise another country&rsquo;s laws will protect it in the same way.</p>
+      </section>
+
+      <section id="s-cookies" aria-labelledby="h-cookies">
+        <h2 id="h-cookies">5. Cookies and tracking</h2>
+        <p>Cookies and pixels are small files and snippets of code that recognise your browser. We use them to keep the page working, to measure how it is used, and to measure and target our advertising.</p>
+        <p>You can control them:</p>
+        <ul class="list" style="margin-top:var(--s3)">
+          <li>Set your browser to block or delete cookies. The form still works without them.</li>
+          <li>Opt out of Google Analytics with <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google&rsquo;s browser add-on</a>.</li>
+          <li>Adjust Google ads in your <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google ad settings</a>.</li>
+          <li>Adjust Meta ads in your <a href="https://www.facebook.com/adpreferences" target="_blank" rel="noopener">ad preferences</a>.</li>
+          <li>Opt out of many ad networks at <a href="https://optout.networkadvertising.org/" target="_blank" rel="noopener">optout.networkadvertising.org</a>.</li>
+        </ul>
+        <p>We don&rsquo;t respond to Do Not Track signals, because there is no agreed standard for them yet. The options above are the reliable route.</p>
+      </section>
+
+      <section id="s-keep" aria-labelledby="h-keep">
+        <h2 id="h-keep">6. How long we keep it</h2>
+        <p>If you don&rsquo;t become a client, we keep your details for up to 24 months after our last contact, then delete or de-identify them.</p>
+        <p>If you unsubscribe, we keep your email address on a suppression list so we don&rsquo;t contact you again. Cookie and analytics data is kept according to the retention settings in our Google and Meta accounts.</p>
+      </section>
+
+      <section id="s-safe" aria-labelledby="h-safe">
+        <h2 id="h-safe">7. Keeping it safe</h2>
+        <p>Access to your details is limited to the team members who need it, and the systems that hold them sit behind password-protected accounts. The form has spam protection built in.</p>
+        <p>No system is perfectly secure. If something goes wrong that is likely to cause you serious harm, we will tell you and, where required, the Office of the Australian Information Commissioner.</p>
+      </section>
+
+      <section id="s-rights" aria-labelledby="h-rights">
+        <h2 id="h-rights">8. Your choices</h2>
+        <p>You can ask us at any time to:</p>
+        <ul class="list" style="margin-top:var(--s3)">
+          <li>tell you what personal information we hold about you</li>
+          <li>correct anything that is wrong or out of date</li>
+          <li>delete your information</li>
+          <li>stop contacting you, or stop using your information for marketing</li>
+        </ul>
+        <p>Email <a href="mailto:hello@incostudio.co">hello@incostudio.co</a>. We&rsquo;ll reply within 30 days. We may need to confirm it&rsquo;s you first, and in limited cases the law lets us decline a request, in which case we&rsquo;ll tell you why.</p>
+        <p>To stop our marketing emails, use the unsubscribe link in any of them. To limit ad tracking, use the options in section 5.</p>
+      </section>
+
+      <section id="s-complaints" aria-labelledby="h-complaints">
+        <h2 id="h-complaints">9. Complaints</h2>
+        <p>If you think we have mishandled your information, email us at <a href="mailto:hello@incostudio.co">hello@incostudio.co</a> with the details and we&rsquo;ll reply within 30 days.</p>
+        <p>If you&rsquo;re not satisfied with our response, you can complain to the Office of the Australian Information Commissioner at <a href="https://www.oaic.gov.au" target="_blank" rel="noopener">oaic.gov.au</a> or on 1300 363 992.</p>
+      </section>
+
+      <section id="s-minors" aria-labelledby="h-minors">
+        <h2 id="h-minors">10. Under 18s</h2>
+        <p>This page is written for business owners and operators. We don&rsquo;t knowingly collect information from anyone under 18. If you think we have, email us and we&rsquo;ll delete it.</p>
+      </section>
+
+      <section id="s-changes" aria-labelledby="h-changes">
+        <h2 id="h-changes">11. Changes to this policy</h2>
+        <p>We&rsquo;ll update this page when our practices change and change the date at the top. If a change is significant, we&rsquo;ll email the people on our mailing list.</p>
+      </section>
+
+      <section id="s-contact" aria-labelledby="h-contact">
+        <h2 id="h-contact">12. Contact us</h2>
+        <p>INCO Studio Pty Ltd<br>Sydney, New South Wales, Australia</p>
+        <a class="btn" href="mailto:hello@incostudio.co">Email us</a>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<footer>
+  <div class="grid">
+    <div>
+      <span>INCO Studio Pty Ltd, Sydney</span>
+      <a href="index.html">Back to the playbook</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Contents: mark the section you are reading. Wayfinding only. */
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll(".toc a"));
+  var secs = Array.prototype.slice.call(document.querySelectorAll(".doc section[id^='s-']"));
+  if (!links.length || !secs.length || !("IntersectionObserver" in window)) return;
+
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      links.forEach(function (l) { l.removeAttribute("aria-current"); });
+      var a = byId[e.target.id];
+      if (a) a.setAttribute("aria-current", "location");
+    });
+  }, { rootMargin: "-15% 0px -75% 0px", threshold: 0 });
+
+  secs.forEach(function (s) { io.observe(s); });
+})();
+</script>
+
+</body>
+</html>

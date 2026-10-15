@@ -27,7 +27,7 @@
   window.INCO = {
     webhookUrl: "https://services.leadconnectorhq.com/hooks/eTnVyYz7Y8pQ8nVWisPr/webhook-trigger/5afb236d-fee1-44ca-802e-0ada9a2f6002", // GHL workflow > Inbound Webhook trigger URL
     bookingUrl: "https://api.leadconnectorhq.com/widget/booking/5vYVDE2dcnZDW6y03f1a", // Jayson's booking calendar link
-    privacyUrl: "PASTE_PRIVACY_POLICY_LINK", // INCO privacy policy page
+    privacyUrl: "privacy.html",               // INCO privacy policy page
     // All tracking (GA4, Meta Pixel, Google Ads, etc.) is set up inside Tag Manager
     gtmId:      "GTM-KTCLBMZM"               // Tag Manager container ID
   };
@@ -926,7 +926,8 @@
   /* The Contact sheet is one full screen on desktop: message at the top,
      icons and studio line at the bottom, all inside the border. */
   @media (min-width:901px){
-    .tail{ min-height:100dvh; display:flex; flex-direction:column; justify-content:space-between; }
+    .tail{ min-height:100dvh; display:flex; flex-direction:column; justify-content:center; }
+    .tail-foot{ margin-top:var(--s6); }
     .tail > .grid{ width:100%; }
   }
   footer .grid > div{ grid-column:1 / 13; }
@@ -954,7 +955,8 @@
   /* Full browser width, proportion locked by the aspect ratio. width:100%
      rather than 100vw: on desktops with a visible scrollbar, 100vw is wider
      than the page and the right edge of the O would be cut off. */
-  .foot-logo img{ display:block; width:100%; height:auto; aspect-ratio:1894 / 614; }
+  .foot-logo picture{ display:block; width:100%; }
+  .foot-logo img{ display:block; width:100%; max-width:none; height:auto; aspect-ratio:1894 / 614; }
 
   /* Short sheets fill the screen. A stop used to line the heading up
      96px from the top and leave the sheet's own height to decide what
@@ -1150,7 +1152,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      and two of them (the risk asymmetry, the incentive mismatch) are
      things nobody else sending these operators an email will say.
      ============================================================ -->
-<section class="conditions" id="s-conditions" data-sheet="02" data-name="Conditions">
+<section class="conditions" id="s-conditions" data-sheet="02" data-name="Conditions" data-dark>
   <div class="grid">
     <div class="head">
       <p class="lede-line"><span>Your first try is built on belief.</span><span>Your second is built on proof.</span></p>
@@ -2556,7 +2558,10 @@ function showResult() {
     // How much taller the rendered image is than the frame holding it.
     // Clamped at zero so an unusually tall viewport just holds still
     // rather than panning the wrong way.
-    travel = Math.max(img.offsetHeight - img.parentElement.offsetHeight, 0);
+    // Measured against .hero-media, not img.parentElement: the parent is
+    // the inline <picture>, which reports 0 height, so the pan used to
+    // run the full image height and drag its bottom edge into view.
+    travel = Math.max(img.offsetHeight - img.closest(".hero-media").offsetHeight, 0);
   }
 
   function run() {

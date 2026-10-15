@@ -72,8 +72,8 @@ self-hosted from `media/fonts/`. It is a commercial face: the web licence
 is per domain, so confirm INCO's licence covers wherever this page is
 hosted before it goes public.
 
-GSAP 3.15.0, self-hosted in `media/vendor/gsap/`: core, ScrollTrigger,
-ScrollSmoother and SplitText (free under GSAP's standard licence since
+GSAP 3.15.0, self-hosted in `media/vendor/gsap/`: core, ScrollTrigger
+and SplitText (free under GSAP's standard licence since
 3.13). Bundled rather than loaded from a CDN so the motion can't be
 knocked out by a blocked or slow CDN, and so it works when `index.html`
 is opened straight from disk. No other libraries. If the scripts still
@@ -97,13 +97,15 @@ What moves, and why:
 
 - **Cover**: the photo opens from a framed viewport to full bleed, the
   title rises line by line, chrome fades in. Plays once on load.
-- **Smooth scroll**: ScrollSmoother on mouse/trackpad only. Touch keeps
-  native momentum. One snap point: when scrolling stops near the top
-  of sheet 08 (the form), it settles square in the frame. Only real
-  scrolling triggers it, and never while a form field has focus.
+- **Scrolling** is native everywhere. A smooth-scroll layer
+  (ScrollSmoother) was tried and removed: after an in-page jump it could
+  drift out of step with the page and leave sheets blank. One snap
+  point: when scrolling stops near the top of sheet 08 (the form), it
+  settles square in the frame. Only real scrolling triggers it, and
+  never while a form field has focus.
 - **In-page links** ("Get the playbook", "Take the readiness check")
-  fade a veil in the target sheet's colour, jump, and lift it, rather
-  than racing through every sheet in between.
+  jump straight to their sheet. Reveals on the sheets jumped over are
+  finished on the way.
 - **Sheet rhythm**: the page background crossfades between slate, stone
   and olive as each sheet arrives; header, counter and progress ink
   follow whatever colour is under them. The sheet counter rolls.
@@ -114,14 +116,11 @@ What moves, and why:
   phones.
 - **Imagery**: the plate and portrait unmask and drift with light
   parallax; the INCO wordmark rises into the footer.
-- **Cursor**: a small dot (fine pointers only) that swells over links
-  except on "Get the playbook" and the quiz answers, which have no
-  hover motion. "Take the readiness check" and "Book a call" are
-  magnetic. The native cursor stays in text fields.
+- **Buttons**: the olive deepens on hover and gives slightly on
+  press, as on the main page. No custom cursor.
 
-`prefers-reduced-motion: reduce` turns off the intro, smoothing,
-parallax, scrubbing, custom cursor and magnetic buttons; everything is
-visible on load and in-page links jump instead of glide.
+`prefers-reduced-motion: reduce` turns off the intro, parallax,
+scrubbing and pinning; everything is visible on load.
 
 ## Browser notes (main page)
 

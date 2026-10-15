@@ -1029,14 +1029,6 @@
     .gate .form{ margin-top:var(--s6); }
     .plumb{ display:none; }
     .readout{ display:none; }
-    /* Text scrolls under the fixed masthead on phones; a soft backing
-       keeps the wordmark and CTA legible over it. */
-    .masthead::before{
-      content:""; position:absolute; z-index:-1; pointer-events:none;
-      inset:calc(-1 * (var(--frame) + 12px)) calc(-1 * (var(--frame) + 14px)) -10px;
-      background:rgba(246,246,246,.9); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
-    }
-    .masthead.on-dark::before{ background:rgba(28,28,26,.82); }
     /* The venue's name is signed across the top of this photograph, and
        on a portrait screen cover-fit shows the whole height of it. Render
        the image 30% taller than its box and anchor it to the floor so the

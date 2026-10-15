@@ -58,1505 +58,769 @@
     window.dataLayer.push(msg);
   };
 </script>
-
-<!--
-  ============================================================
-  DESIGN PLAN (frontend-design.md, two-pass process)
-  ============================================================
-
-  SUBJECT: INCO Studio, Sydney hospitality + retail interior design.
-  Lead magnet page for "The Expansion Playbook". Audience: operators
-  who already run one successful venue and are weighing a second.
-  Primary job: get a qualified email, and route the genuinely-ready
-  ones to a conversation instead of another PDF.
-
-  THE IDEA: the page is built as a DRAWING SET, not a landing page.
-  INCO produces documentation sets for a living - site plans, lease
-  drawings, dimension strings, sheet numbers, revision tables. That
-  vernacular is specific to this studio and this audience (operators
-  read these documents during a fitout), and no previous version of
-  this page used it. Every structural device on the page is borrowed
-  from a drawing sheet and carries real information:
-    - the fixed sheet frame with corner registration ticks
-    - the live sheet readout, bottom-left, which reports which section
-      you are in (wayfinding, not decoration)
-    - dimension lines on the roadmap rows, which extend as a row opens
-    - the grid itself, visible in the gutters
-
-  Why not the previous versions: v1/v2 were a stack of centered
-  full-width bands with near-identical padding, which is the actual
-  reason they read as generated - not the button radius or the label
-  casing. This version composes on a strict 12-column grid with
-  deliberately asymmetric spans (5, 7, 8 columns; content pushed off
-  center) and dramatic spacing contrast (dense annotation clusters
-  against very large voids) instead of one uniform rhythm.
-
-  COLOR: INCO's own palette, brief-mandated, unchanged.
-    slate-black #1c1c1a   stone-grey #cac5bb   stone-dim #bdb7a8
-    olive #666b47         olive-deep #4c5036   terracotta (errors only)
-  Placeholder hexes pending real brand-deck values.
-
-  TYPE: Founders Grotesk alone (Klim, self-hosted), Regular 400 and
-  Semibold 600 only. Originally Archivo 400/500/700/900, with a
-  scale that actually jumps (13 / 15 / 17 / 21 / 30 / 68 / 190) rather
-  than clustering every headline around 40px like the last version.
-
-  MOTION: one orchestrated page-load moment (the hero), plus motion
-  that answers the user's own input - dragging the strip, opening a
-  roadmap row, answering the assessment. Scroll-linked motion is
-  limited to the hero exit and the sheet readout, both of which report
-  position rather than decorate it. No per-section fade-ups.
-
-  Deliberately avoided (frontend-design.md's tells): cream/terracotta
-  AI palette, single-word italic accents, all-caps micro-labels,
-  eyebrows above every heading, middle-dot meta strings, monospace
-  data labels, arrow glyphs on buttons, decorative 01/02/03 where the
-  content isn't sequential, identical rounded cards with matching
-  shadows.
-
-  ------------------------------------------------------------
-  V4 — CREDIBILITY PASS
-  ------------------------------------------------------------
-  Three additions, chosen because they apply Hormozi/Priestley
-  structure using material INCO already owns, without importing the
-  parts of those playbooks that would breach the studio's own
-  "never overselling" rule.
-
-  1. CONDITIONS (sheet 02) + CASE NOTE (sheet 04). The problem is now
-     told twice, deliberately, in two different grammatical persons.
-
-     Conditions is second person and present tense: three statements
-     the reader recognises as their own situation, with no exit. Then
-     the case note is third person and past tense: the Westfield venue
-     that closed after two years, in Jayson's own words from Chapter 2,
-     as evidence of what the recognition costs.
-
-     That order matters. A cautionary tale on its own lets the reader
-     off the hook, because the person in it is a stranger who made a
-     mistake they'd never make. Recognition first closes that exit.
-
-     Publishing a loss is also the one proof mechanism a competitor's
-     testimonial wall can't copy, and it sits inside the studio's
-     stated humility rather than fighting it.
-
-     Both sit directly under the plate's "It rarely fails loudly", so
-     the abstract warning is cashed out before the roadmap offers any
-     fixes. Problem, then the five questions, then the tools.
-
-  2. PRACTICE (sheet 07). The About section, composed as a drawing
-     title block, sitting immediately before the ask. Credentials are
-     tabulated as facts, not adjectives. Real client marks from page
-     15 of the playbook, presented silently with no "trusted by"
-     banner over them.
-
-  3. RESULT DIAGNOSTIC. The assessment now returns a per-dimension
-     read computed from the four answers, names the weak spot, and
-     passes it to the CRM so the first email can open on the thing
-     they're behind on. Priestley's point is that a scorecard should
-     know fit and readiness by the last question; previously this one
-     scored and then told everyone the same thing.
-
-  NOT added, deliberately: a fabricated cohort average. COHORT_AVG in
-  the script is null and the benchmark line stays hidden until a real
-  number replaces it. Also still absent: manufactured scarcity, value
-  stacking with invented dollar figures, and testimonial carousels.
-  ============================================================
--->
-
-<!-- Founders Grotesk (Klim Type Foundry), self-hosted under INCO's web licence.
-     Only the two weights the page uses; preloaded so the hero title doesn't
-     swap visibly after first paint. -->
-<link rel="preload" href="media/fonts/founders-grotesk-semibold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="media/fonts/founders-grotesk-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="media/fonts/founders-grotesk-semibold.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+  // Mark JS on, and hold the cover until the intro plays (failsafe after 3.5s)
+  (function (d) {
+    d.classList.add("js");
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      d.classList.add("is-intro");
+      setTimeout(function () { d.classList.remove("is-intro"); }, 3500);
+    }
+  })(document.documentElement);
+</script>
 <style>
-  :root{
-    /* Palette: INCO brand deck, except where noted. Placeholder hexes,
-       swap for real values.
+  .is-intro .cover h1, .is-intro .cover [data-in], .is-intro .cover-media{ visibility:hidden; }
+</style>
+<style>
+/* ==============================================================
+   THE EXPANSION PLAYBOOK · animated edition
 
-       --stone is NOT the brand deck's Stone Grey any more. Jayson called
-       #cac5bb beige and specified #F6F6F6, a neutral near-white, so the
-       page's light field is now off-palette on purpose. Worth knowing if
-       this ever gets checked against the deck. --stone-dim is its
-       companion step, derived, not brand-sourced. */
-    --slate:#1c1c1a;
-    --stone:#F6F6F6;
-    --stone-dim:#ECECEC;
-    --olive:#666b47;
-    --olive-deep:#4c5036;
-    --terracotta:#b5533c;      /* error states only */
-    --terracotta-on-dark:#e08a72;  /* same role on slate: 6.5:1, the base tone is 3.5:1 there */
-    --light:#f5f3ee;           /* foreground on dark only, never a bg field */
+   Same brand, set in motion. Palette, Founders Grotesk, the INCO
+   wordmark, the photography and the drawing-sheet frame all carry
+   over; what changes is how the page moves.
 
-    /* Alphas rebalanced for the lighter field: the old .45 meta text
-       landed at ~2.8:1 on #F6F6F6, under AA. These are named for their
-       role rather than their alpha so the names stay true if the values
-       move again. */
-    --ink-70:rgba(28,28,26,.70);
-    --ink-soft:rgba(28,28,26,.62);
-    --rule:rgba(28,28,26,.22);
-    --light-80:rgba(245,243,238,.80);
-    --light-50:rgba(245,243,238,.50);
-    --light-18:rgba(245,243,238,.18);
+   Motion idea: a drawing set being issued. Lines draw before text
+   sits on them, images open like a viewport onto the site, type
+   rises off a baseline, and the colour of the sheet changes as you
+   move between sections. One orchestrated moment on load (the
+   cover), one pinned sequence (the five questions), one closing
+   gesture (the wordmark rising out of the last sheet). Everything
+   else is quiet.
 
-    /* Spacing with real contrast, not one uniform rhythm */
-    --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:40px;
-    --s6:64px; --s7:104px; --s8:168px; --s9:264px;
-
-    /* Type scale with actual jumps between steps */
-    /* Stepped up one size for Founders Grotesk: its x-height is well
-       below Archivo's, so the old 17px body read like 15px. */
-    --t-micro:14px;
-    --t-small:16px;
-    --t-body:19px;
-    --t-lead:23px;
-    --t-h3:32px;
-    --t-h2:clamp(40px,5vw,76px);
-    --t-display:clamp(58px,12.5vw,190px);
-
-    --ease:cubic-bezier(.22,1,.36,1);
-    --ease-io:cubic-bezier(.76,0,.24,1);
-    --fast:200ms;
-    --med:520ms;
-    --ui:260ms;      /* user-triggered UI: rows, options, results. Under 300ms. */
-
-    --frame:20px;   /* sheet border inset */
-  }
-
+   Without JavaScript, or with reduced motion, nothing is hidden:
+   every reveal state is applied by the script, never by default.
+   ============================================================== */
   @font-face{ font-family:'Founders Grotesk'; src:url('media/fonts/founders-grotesk-regular.woff2') format('woff2');
               font-weight:400; font-style:normal; font-display:swap; }
   @font-face{ font-family:'Founders Grotesk'; src:url('media/fonts/founders-grotesk-semibold.woff2') format('woff2');
               font-weight:600; font-style:normal; font-display:swap; }
 
-  *{box-sizing:border-box; margin:0; padding:0;}
+  :root{
+    --slate:#1c1c1a;
+    --stone:#F6F6F6;
+    --stone-dim:#ECECEC;
+    --olive:#666b47;
+    --olive-deep:#4c5036;
+    --light:#f5f3ee;
+    --terracotta-on-dark:#e08a72;
 
-  /* ============================================================
-     SNAP — driven in JS, not CSS. See the SNAP STOPS script.
+    --ink:var(--slate);
+    --ink-70:rgba(28,28,26,.72);
+    --ink-soft:rgba(28,28,26,.62);
+    --rule:rgba(28,28,26,.2);
 
-     CSS scroll-snap only offers start / center / end alignment on the
-     snap element itself, and proximity leaves the decision to the
-     browser. The stops this page needs are specific and mixed: some
-     headings at the top of the screen, one caption at the bottom, one
-     heading a third of the way down. CSS can't express that, so it's
-     a defined list of scroll positions instead.
-     ============================================================ */
-  /* overflow-x lives here as `clip`, NOT as `hidden` on body.
-     This was the bug: overflow-x:hidden on body makes body a scroll
-     container, and once it is one, scroll-snap-type declared on html
-     has nothing left to act on — the snap silently did nothing at all.
-     `clip` does the same visual job without creating a scroller.
+    --t-micro:14px;
+    --t-small:16px;
+    --t-body:19px;
+    --t-lead:23px;
+    --t-h3:32px;
+    --t-h2:clamp(44px,6.2vw,104px);
+    --t-display:clamp(72px,15.5vw,250px);
 
-     It's also probably unnecessary now: the only thing that ever moved
-     horizontally off-screen was the hero title dispersal, which was
-     removed. Left in as a cheap guard. */
-  /* scroll-behavior is auto on purpose: the glide() in the snap script
-     animates scrollTop itself, and native smooth scrolling would run
-     on top of it and fight. Anchor links route through glide() too, so
-     they still ease. */
-  html{ overflow-x:clip; }
+    --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:40px; --s6:64px; --s7:104px; --s8:168px;
+    --frame:20px;
+    --gutter:max(var(--s5), calc(var(--frame) + var(--s4)));
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
 
-  /* ============================================================
-     BACKGROUND LAYER — one fixed plane behind everything, whose
-     colour is tweened as each section arrives. Sections themselves
-     are transparent now, so instead of hard-cutting between block
-     colours the page bleeds from one into the next.
-
-     This works because of the content fade: copy is already at zero
-     opacity in the gap between pages, so the colour change happens
-     while there's nothing readable on top of it. The two effects
-     cover for each other.
-     ============================================================ */
-  #bgLayer{ position:fixed; inset:0; z-index:-2; background:var(--stone); }
-  /* Ink for the fixed chrome, recomputed from the live background
-     colour on every scroll tick (see paint()). A class toggle can't
-     do this any more: the background is a continuous crossfade now,
-     so a discrete flip would land mid-blend and be wrong on one side
-     of it. --mh-ink tracks the blend instead. */
-  :root{ --mh-ink:var(--slate); }
-  /* Block colours above are the default and stay correct with no JS,
-     a failed script, or reduced motion. They only step aside once the
-     crossfade is actually running, which the script confirms by
-     setting this class. Getting that the wrong way round would leave
-     dark type on a dark plane for anyone the effect didn't reach. */
-  html.bg-xfade section[data-bg]{ background:transparent; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ overflow-x:clip; background:var(--stone); }
   body{
     font-family:'Founders Grotesk','Helvetica Neue',Arial,sans-serif;
-    background:var(--stone);
-    color:var(--slate);
-    font-size:var(--t-body);
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
+    font-size:var(--t-body); line-height:1.5; color:var(--ink);
+    background:var(--stone); -webkit-font-smoothing:antialiased;
   }
-  ::selection{background:var(--olive); color:var(--light);}
-  h1,h2,h3{ text-wrap:balance; font-weight:600; letter-spacing:-.015em; line-height:.98; }
-  p,blockquote,dd,li{ text-wrap:pretty; }
-  img{ display:block; width:100%; height:100%; object-fit:cover; }
+  ::selection{ background:var(--olive); color:var(--light); }
+  h1,h2,h3{ font-weight:600; letter-spacing:-.02em; line-height:.98; text-wrap:balance; }
+  p,blockquote,li,dd{ text-wrap:pretty; }
+  img{ display:block; max-width:100%; }
   a{ color:inherit; }
+  :focus-visible{ outline:2px solid var(--olive); outline-offset:4px; }
+  [data-theme="dark"] :focus-visible,[data-theme="olive"] :focus-visible{ outline-color:var(--light); }
+  .sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 
-  /* ============================================================
-     GRID — 12 columns. Content spans asymmetric counts deliberately;
-     nothing on this page is centered in a 900px column.
-     ============================================================ */
-  .grid{
-    display:grid; grid-template-columns:repeat(12,1fr);
-    gap:var(--s4); max-width:1440px; margin:0 auto;
-    padding:0 max(var(--s5), calc(var(--frame) + var(--s4)));
-  }
+  /* Sheets. Each section names its theme; the colours below apply on
+     their own, and the script only takes over the background once the
+     crossfade is running (html.bg-live). */
+  section{ position:relative; }
+  [data-theme="light"]{ --bg:var(--stone); color:var(--slate); }
+  [data-theme="dim"]{ --bg:var(--stone-dim); color:var(--slate); }
+  [data-theme="dark"]{ --bg:var(--slate); color:var(--light); --ink-70:rgba(245,243,238,.8); --ink-soft:rgba(245,243,238,.62); --rule:rgba(245,243,238,.2); }
+  [data-theme="olive"]{ --bg:var(--olive); color:var(--light); --ink-70:var(--light); --ink-soft:rgba(245,243,238,.92); --rule:rgba(245,243,238,.28); }
+  section[data-theme]{ background:var(--bg); }
+  html.bg-live section[data-theme]{ background:transparent; }
 
-  /* ============================================================
-     SHEET FRAME — fixed drawing border + corner registration ticks.
-     Structural, not decoration: the ticks mark the sheet edge and the
-     readout (bottom-left) reports which part of the set you're in.
-     ============================================================ */
-  .sheet{ position:fixed; inset:var(--frame); pointer-events:none; z-index:90;
-          border:1px solid var(--rule); mix-blend-mode:multiply; }
-  .sheet::before,.sheet::after{
-    content:""; position:absolute; width:11px; height:11px;
-    border:1px solid var(--rule);
-  }
-  .sheet::before{ top:-1px; left:-1px; border-right:0; border-bottom:0; }
-  .sheet::after{ bottom:-1px; right:-1px; border-left:0; border-top:0; }
-  .sheet-dark{ border-color:var(--light-18); mix-blend-mode:screen; }
+  .wrap{ max-width:1440px; margin:0 auto; padding:0 var(--gutter); }
+  .grid{ display:grid; grid-template-columns:repeat(12,1fr); column-gap:var(--s4); }
 
-  .readout{
-    position:fixed; left:calc(var(--frame) + 14px); bottom:calc(var(--frame) + 12px);
-    z-index:91; font-size:var(--t-micro); color:var(--ink-soft);
-    display:flex; align-items:baseline; gap:10px; pointer-events:none;
-    transition:color var(--fast) ease;
-  }
-  .readout{ color:color-mix(in srgb, var(--mh-ink) 78%, transparent); }
-  .readout.on-photo,
-  html:not(.bg-xfade) .readout.on-dark{ color:var(--light-50); }
-  .readout .rd-num{ font-weight:600; font-variant-numeric:tabular-nums; }
-  .readout .rd-rule{ width:36px; height:1px; background:currentColor; opacity:.5; }
-
-  /* progress: a dimension string down the right edge, not a top bar */
-  .plumb{
-    position:fixed; right:calc(var(--frame) + 14px); top:var(--s8); bottom:var(--s8);
-    width:1px; background:var(--rule); z-index:91; pointer-events:none;
-  }
-  .plumb{ transition:opacity 300ms ease; }
-  .plumb.done{ opacity:0; }
-  .plumb-fill{ width:100%; height:100%; background:var(--olive);
-               transform-origin:top; transform:scaleY(0); }
-  .plumb-bead{
-    position:absolute; left:-3px; width:7px; height:7px; background:var(--olive);
-    top:0; transform:translateY(-50%);
-  }
-
-  /* ============================================================
-     MASTHEAD
-     ============================================================ */
-  .masthead{
-    position:fixed; top:calc(var(--frame) + 12px); left:calc(var(--frame) + 14px);
-    right:calc(var(--frame) + 14px); z-index:92;
-    display:flex; justify-content:space-between; align-items:center;
-    font-size:var(--t-micro); color:var(--ink-soft); pointer-events:none;
-    transition:color var(--fast) ease;
-  }
-  /* The wordmark carries the brand, so it's set at reading size rather
-     than as micro-type in the corner, and it inverts against whatever
-     is behind it. */
-  .mh-mark{
-    font-size:var(--t-lead); font-weight:600; letter-spacing:-.01em;
-    color:var(--mh-ink); transition:color 140ms ease;
-  }
-  /* Photography sections cover the colour layer, so the computed ink
-     would be reading a background nobody can see. Those force light. */
-  /* The wordmark's ink is computed from the crossfading background it
-     actually sits on (--mh-ink). Forcing it light whenever a dark sheet
-     reached mid-screen flipped it to white while a light background was
-     still behind it, which on a phone was most of a screen early. Only
-     photographs, which cover the colour layer, force light. If the
-     crossfade isn't running (no JS), fall back to the sheet's own flag. */
-  .masthead.on-photo .mh-mark,
-  html:not(.bg-xfade) .masthead.on-dark .mh-mark{ color:var(--light); }
-  .masthead.on-dark{ color:var(--light-80); }
-
-  /* Right side swaps once the cover is behind you: the title label is
-     only telling you what you're looking at, which stops being useful
-     the moment you've started reading. After that the same slot earns
-     its keep as the persistent way to get the thing. */
-  .mh-right{ position:relative; display:flex; align-items:center; height:34px; }
-  .mh-label,.mh-cta{
-    transition:opacity var(--med) var(--ease), transform var(--med) var(--ease);
-  }
-  .mh-label{ position:absolute; right:0; white-space:nowrap; }
-  .mh-cta{
-    pointer-events:none; opacity:0; transform:translateY(6px);
-    background:var(--olive); color:var(--light); border-radius:999px;
-    padding:9px 20px; font-size:var(--t-micro); font-weight:600; letter-spacing:-.005em;
-    text-decoration:none; white-space:nowrap;
-  }
-  .mh-cta:active{ transform:scale(.97); }
-  .masthead.past-cover .mh-label{ opacity:0; transform:translateY(-6px); }
-  .masthead.past-cover .mh-cta{ opacity:1; transform:none; pointer-events:auto; }
-
-  /* ============================================================
-     HERO — title sits low-left against the footage, not centered.
-
-     The background is now INCO's own cover video: the line drawing
-     building over the real venue, which is the same device the whole
-     page is built on. It replaces the WebGL gradient (still in v3/v4
-     if you want it back).
-
-     Poster frame carries the first frame, so a slow connection, a
-     blocked autoplay, or reduced-motion all land on a still image
-     rather than a grey box.
-     ============================================================ */
-  /* The footage is pinned as a background while two screens of text
-     travel up over it, then it releases. Structure is the standard
-     sticky-background pattern: the media layer sticks, and the text
-     panels are pulled back over it with a negative margin so they
-     scroll normally while it holds still.
-
-     That replaces the exit-dispersal the title used to do. The words
-     now simply leave upward with the scroll, which is what was asked
-     for and is also the quieter move: the dispersal was choreography
-     competing with footage that's already animating.
-
-     97 frames is a ceiling, not a choice. The source is 4.04s at
-     24fps, so there is nothing more to extract. */
-  .heroScroll{ position:relative; height:240vh; }
-  .heroBg{
-    position:sticky; top:0; height:100dvh; z-index:0; overflow:hidden;
-  }
-  /* The still is portrait (693x987 native, rendered 1600x2278), so at
-     full-bleed it stands taller than any viewport. That surplus height
-     is the effect: scroll pans down the photograph, from the menu
-     being handed across at the top to the base of the fluted marble.
-     A single 142KB image doing what 3.7MB of frames was doing. */
-  .hero-media{ position:absolute; inset:0; background:#2a2a28; overflow:hidden; }
-  .hero-media img{
-    position:absolute; top:0; left:0;
-    width:100%; height:auto; min-height:100%;
-    object-fit:cover; object-position:center top;
-    will-change:transform;
-  }
-  /* Load-bearing, not decoration. Measured across the clip, the region
-     where type sits runs about 140/255 mean grey, which puts white at
-     roughly 3:1 on its own. Weighted to the left because that's where
-     every text block on these panels sits, which protects the type
-     without flattening the whole frame into grey. Don't lighten it
-     without re-measuring. */
-  .hero-media::after{
-    content:""; position:absolute; inset:0;
-    background:
-      linear-gradient(100deg,rgba(10,10,9,.74) 0%,rgba(10,10,9,.52) 46%,rgba(10,10,9,.16) 100%),
-      linear-gradient(190deg,rgba(10,10,9,.28) 0%,rgba(10,10,9,.12) 45%,rgba(10,10,9,.58) 100%);
-  }
-
-  /* Text layer, pulled up over the sticky media. */
-  .heroPanels{ position:relative; z-index:1; margin-top:-100dvh; }
-  .hpanel{
-    min-height:100dvh; display:flex; align-items:flex-end;
-    /* Top padding clears the masthead. Without it a bottom-aligned
-       panel will happily grow up underneath it. */
-    padding-top:calc(var(--frame) + 76px);
-    padding-bottom:var(--s7); color:var(--light);
-  }
-  .hpanel .grid{ width:100%; align-items:end; }
-  /* Final beat: the completed drawing with nothing over it. This is
-     the point of the whole arrangement, so it gets its own screen. */
-  /* Was 80vh. With the video this was the finished drawing getting a
-     screen to itself; with a still photograph there's nothing being
-     completed, so it was just 720px of image and no reason to keep
-     scrolling. Trimmed to a beat that lets the pan finish. */
-  .hpanel-hold{ min-height:40vh; pointer-events:none; }
-
-  .hero-title{ grid-column:1 / 10; }
-  /* Sized by the SHORTER of width and height. --t-display alone is a
-     width-only clamp, so on a wide-but-short window (a laptop with the
-     browser not full height, an external monitor in landscape) three
-     lines at 190px stacked up into the masthead. Capping against vh
-     makes the type respect the space it actually has. */
-  .hero-title h1{
-    font-size:min(var(--t-display), 19vh);
-    line-height:.9; letter-spacing:-.025em;
-  }
-  .hero-title .ln{ display:block; overflow:visible; }
-  .hero-title .ln > span{ display:inline-block; will-change:transform,opacity; }
-  /* Each line carries its own parallax rate on scroll, set in JS: the
-     three words pull apart vertically as you descend rather than
-     travelling as one block. It rhymes with the fluted marble behind
-     them, which is the same idea - parallel verticals at slightly
-     different depths - and it gives the title somewhere to go now
-     that the sideways dispersal is gone. */
-  .hero-title .ln:nth-child(1){ --rate:-0.34; }
-  .hero-title .ln:nth-child(2){ --rate:-0.20; }
-  .hero-title .ln:nth-child(3){ --rate:-0.07; }
-
-  .hero-meta{ grid-column:1 / 8; margin-top:var(--s5); }
-  .hero-meta p{ font-size:var(--t-lead); color:var(--light); line-height:1.35; max-width:30em; }
-
-  .hero-cta{ grid-column:1 / 10; margin-top:var(--s5); display:flex; align-items:center; gap:var(--s5); flex-wrap:wrap; }
-
-  /* Conditions rides over the photograph instead of sitting on its
-     own grey ground. Same grid, repainted for a dark backdrop. The
-     premise used to be a separate panel above it; its line is now the
-     lead of this one. */
-  /* Bottom-aligned, matching the hero panel above it, so the two share
-     a baseline and read as one composition scrolling past rather than
-     two separate slides. */
-  /* Top-aligned, unlike the hero panel above it, and that asymmetry
-     is the point. Snap stop 2 brings this page's first line to the top
-     of the screen. While the content was bottom-aligned in its panel,
-     that scroll position landed 138px past the panel's own end, so the
-     next page bled into the bottom of the view. Content anchored to
-     the top means the snap and the layout agree and the panel fills
-     the screen exactly. */
-  .heroPanels .conditions{
-    background:none; color:var(--light);
-    min-height:100dvh; display:flex; align-items:flex-start;
-    padding:calc(var(--frame) + 76px) 0 var(--s7);
-  }
-  /* This is a full page over a photograph now, not a band between two
-     grey sections, so it carries display weight rather than section
-     weight. Capped against viewport height for the same reason the
-     hero title is. */
-  .heroPanels .conditions .head .lede-line{ color:var(--light); }
-  .heroPanels .conditions .turn{ color:var(--light-80); }
-  .heroPanels .conditions .list,
-  .heroPanels .conditions .list p{ border-color:var(--light-18); background-color:transparent; }
-  .heroPanels .conditions .list{ border-top:1px solid var(--light-18); }
-  .heroPanels .conditions .list p{ border-bottom:1px solid var(--light-18); }
-
-  /* The entrance self-clips via clip-path rather than relying on an
-     overflow:hidden ancestor. That matters: an overflow-hidden wrapper
-     here would clip the horizontal scroll-exit dispersal to the title
-     column instead of letting the words travel the full viewport
-     width. That exact bug bit the first build. */
-  @keyframes rise{
-    from{ clip-path:inset(0 0 100% 0); transform:translateY(.12em); }
-    to{ clip-path:inset(0 0 -20% 0); transform:translateY(0); }
-  }
-  @keyframes soft{ to{ opacity:1; transform:none; } }
-  @keyframes soft-from{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
-  .hero-title .ln > span{ animation:rise .95s var(--ease) both; }
-  .hero-title .ln:nth-child(1) > span{ animation-delay:.10s; }
-  .hero-title .ln:nth-child(2) > span{ animation-delay:.20s; }
-  .hero-title .ln:nth-child(3) > span{ animation-delay:.30s; }
-  .hero-meta,.hero-cta{ opacity:0; transform:translateY(16px); animation:soft var(--med) var(--ease) forwards; }
-  .hero-meta{ animation-delay:.72s; } .hero-cta{ animation-delay:.86s; }
-
-  /* ============================================================
-     BUTTONS — pill. Everything else on the page stays square.
-     ============================================================ */
-  .btn{
-    display:inline-flex; align-items:center; justify-content:center;
-    background:var(--olive); color:var(--light); border:none; border-radius:999px;
-    padding:17px 34px; font-family:inherit; font-size:var(--t-small); font-weight:600;
-    letter-spacing:-.01em; cursor:pointer; text-decoration:none; white-space:nowrap;
-    transition:background var(--fast) ease, transform 140ms var(--ease);
-  }
-  .btn:active{ transform:scale(.97); }
-  /* Hover steps DOWN to the dim tone. It used to step up to --light,
-     which is now within two values of --stone, so the hover would have
-     been invisible after the background change. */
-  .btn-pale{ background:var(--stone); color:var(--slate); }
-  .link{
-    font-size:var(--t-small); color:inherit; opacity:.65; text-decoration:none;
-    padding-bottom:3px; border-bottom:1px solid currentColor;
-    transition:opacity var(--fast) ease;
-  }
-  :focus-visible{ outline:2px solid var(--olive); outline-offset:3px; }
-  #rTitle:focus{ outline:none; }   /* focus lands here programmatically; the heading itself isn't a control */
-  /* Olive on olive is 1.0:1 and olive on slate barely 3:1, so every dark
-     sheet switches the ring to light. */
-  .hero :focus-visible,.heroPanels :focus-visible,.plate :focus-visible,
-  .roadmap :focus-visible,.assess :focus-visible,.gate :focus-visible{ outline-color:var(--light); }
-  .skip{ position:fixed; left:calc(var(--frame) + 14px); top:-80px; z-index:100;
+  /* --------------------------------------------------------------
+     Fixed chrome: drawing frame, masthead, sheet counter, progress
+     -------------------------------------------------------------- */
+  .skip{ position:fixed; left:calc(var(--frame) + 14px); top:-80px; z-index:200;
          background:var(--olive); color:var(--light); padding:12px 20px; border-radius:999px;
          font-size:var(--t-small); font-weight:600; text-decoration:none; }
   .skip:focus{ top:calc(var(--frame) + 12px); }
-  .sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 
+  .frame{ position:fixed; inset:var(--frame); border:1px solid currentColor; opacity:.18;
+          pointer-events:none; z-index:90; color:var(--chrome,var(--slate)); transition:color .5s ease; }
+  .frame::before,.frame::after{ content:""; position:absolute; width:11px; height:11px; border:1px solid currentColor; }
+  .frame::before{ top:-1px; left:-1px; border-right:0; border-bottom:0; }
+  .frame::after{ bottom:-1px; right:-1px; border-left:0; border-top:0; }
 
-  /* ============================================================
-     PLATE — full-bleed image, caption hangs into the margin
-     ============================================================ */
-  /* Full viewport. At 78vh this was a band, not a page: 198px of a
-     neighbouring section stayed on screen no matter where the snap
-     put it. */
-  .plate{ position:relative; height:100dvh; min-height:520px; overflow:hidden; background:var(--slate); }
-  /* object-position pulls the crop down the frame. The venue's signage
-     sits along the top edge of this photograph and this section is
-     headed "It rarely fails loudly" - a legible client name next to
-     that line implies something about that business that isn't being
-     claimed. Keeping the crop on the counter avoids the inference at
-     every viewport ratio. */
-  /* The venue's name is signed across the top of this photograph, and
-     this sheet sits under a failure headline. The image renders taller
-     than its box and is anchored to the floor, so the top band with the
-     sign is always out of frame, at every screen ratio. */
-  .plate img{
-    position:absolute; left:0; top:auto; bottom:0; height:132%;
-    object-position:center bottom;
-    filter:grayscale(.28) contrast(1.05) brightness(.86);
+  .masthead{
+    position:fixed; z-index:100; top:calc(var(--frame) + 12px);
+    left:calc(var(--frame) + 14px); right:calc(var(--frame) + 14px);
+    display:flex; justify-content:space-between; align-items:center;
+    color:var(--chrome,var(--slate)); transition:color .45s ease; pointer-events:none;
   }
-  .plate picture{ position:absolute; inset:0; display:block; }
-  .plate::after{
-    content:""; position:absolute; inset:0;
-    background:linear-gradient(0deg,rgba(28,28,26,.86) 0%,rgba(28,28,26,.05) 62%);
+  .masthead > *{ pointer-events:auto; }
+  .mh-mark{ font-size:var(--t-lead); font-weight:600; letter-spacing:-.01em; text-decoration:none; color:inherit; }
+  .mh-cta{
+    display:inline-flex; align-items:center; min-height:40px; padding:0 20px; border-radius:999px;
+    background:var(--olive); color:var(--light); font-size:var(--t-micro); font-weight:600; text-decoration:none;
+    transition:background .25s ease, opacity .5s var(--ease), transform .5s var(--ease);
   }
-  .plate .cap{
-    position:absolute; left:0; right:0; bottom:var(--s6); z-index:1; color:var(--light);
-  }
-  .plate .cap .grid > div{ grid-column:1 / 8; }
-  /* Optical alignment, not a layout fix. This heading and the
-     belief/proof line both sit at grid column 1, so their boxes
-     already agree - but a capital I is a centred stem carrying about
-     0.08em of sidebearing each side, while the Y's diagonal reaches
-     almost to its edge at 0.015em. At 66px that's a 4.3px difference
-     and the I-line reads as indented. Pulling it back by the
-     difference makes the two look aligned, which is the thing that
-     actually matters. */
-  .plate .cap h2{
-    font-size:var(--t-h2); margin-bottom:var(--s3);
-    margin-left:-0.065em;
-  }
-  .plate .cap p{ font-size:var(--t-body); color:var(--light-80); max-width:52ch; }
+  .mh-cta:hover{ background:var(--olive-deep); }
+  html[data-top="olive"] .mh-cta{ background:var(--slate); }
+  html[data-top="olive"] .mh-cta:hover{ background:var(--olive-deep); }
+  html[data-low="olive"] .progress-fill{ background:var(--light); }
+  html.in-roadmap .progress, html.in-roadmap .progress-fill{ opacity:0; }
+  html.gs .mh-cta{ opacity:0; transform:translateY(-6px); pointer-events:none; }
+  html.gs .masthead.past-cover .mh-cta{ opacity:1; transform:none; pointer-events:auto; }
 
-  /* ============================================================
-     ROADMAP — dimensioned rows. Click opens; the dimension line
-     extends to the measured width as it does. Real accordion, real
-     user-driven motion, not a scroll effect.
-     ============================================================ */
-  .roadmap{ background:var(--slate); color:var(--light); padding:var(--s8) 0 var(--s7); }
-  /* Widened from cols 1-7 and capped a touch below --t-h2 so the
-     heading lands on exactly two lines. At 68px in a 7-column well it
-     ran to three; dropping the type instead would have put it level
-     with the row names below, which would have flattened the
-     hierarchy. Wider and slightly smaller keeps it above them. */
-  .roadmap .head{ grid-column:1 / 10; margin-bottom:var(--s7); }
-  .roadmap .head h2{ font-size:clamp(32px,4.2vw,62px); }
-  /* Break chosen, not left to chance: the ask, then the timing. */
-  .roadmap .head h2 span{ display:block; }
-  .roadmap .head p{ margin-top:var(--s3); font-size:var(--t-small); color:var(--light-50); max-width:40ch; }
-  .rows{ grid-column:1 / 13; border-top:1px solid var(--light-18); }
+  .counter{
+    position:fixed; z-index:100; left:calc(var(--frame) + 14px); bottom:calc(var(--frame) + 12px);
+    display:flex; align-items:baseline; gap:10px; font-size:var(--t-micro);
+    color:var(--chrome-low,var(--slate)); opacity:.78; transition:color .45s ease; pointer-events:none;
+  }
+  .counter b{ font-weight:600; font-variant-numeric:tabular-nums; }
+  .counter i{ width:36px; height:1px; background:currentColor; opacity:.5; align-self:center; }
+  .counter .num-wrap{ display:inline-block; overflow:hidden; height:1.2em; }
+  .counter .num-wrap > b{ display:block; }
 
-  .row{ border-bottom:1px solid var(--light-18); }
-  .row-btn{
-    width:100%; background:none; border:none; color:inherit; font-family:inherit;
-    display:grid; grid-template-columns:52px 1fr minmax(120px,20%) 22px;
-    align-items:center; gap:var(--s4); padding:var(--s5) 0; cursor:pointer; text-align:left;
-  }
-  .row-idx{ font-size:var(--t-micro); color:var(--light-50); font-variant-numeric:tabular-nums; padding-top:6px; align-self:start; }
-  .row-name{ font-size:clamp(28px,3.6vw,52px); font-weight:600; letter-spacing:-.015em; line-height:1;
-             transition:transform var(--ui) var(--ease), color var(--fast) ease; }
-  .row.open .row-name{ color:var(--light); }
-  /* dimension line: ticks at each end, extends on open */
-  .row-dim{ position:relative; height:1px; background:var(--light-18); }
-  .row-dim span{ position:absolute; inset:0; background:var(--light); transform-origin:left; transform:scaleX(0);
-                 transition:transform var(--ui) var(--ease); }
-  .row.open .row-dim span{ transform:scaleX(1); }
-  .row-dim::before,.row-dim::after{ content:""; position:absolute; top:-3px; width:1px; height:7px; background:var(--light-18); }
-  .row-dim::before{ left:0; } .row-dim::after{ right:0; }
-  .row-plus{ position:relative; width:22px; height:22px; }
-  .row-plus::before,.row-plus::after{
-    content:""; position:absolute; background:var(--light-50); transition:transform var(--ui) var(--ease);
-  }
-  .row-plus::before{ left:0; top:10px; width:22px; height:1px; }
-  .row-plus::after{ left:10px; top:0; width:1px; height:22px; }
-  .row.open .row-plus::after{ transform:rotate(90deg); }
-  .row-body{ display:grid; grid-template-rows:0fr; transition:grid-template-rows var(--ui) var(--ease); }
-  .row-body > div{ opacity:0; transition:opacity 160ms ease; }
-  .row.open .row-body > div{ opacity:1; transition-duration:var(--ui); transition-delay:60ms; }
-  .row.open .row-body{ grid-template-rows:1fr; }
-  .row-body > div{ overflow:hidden; }
-  .row-btn:active .row-name{ transform:translateX(4px); }
-  .row-body p{
-    max-width:31em; font-size:var(--t-body); color:var(--light-80);
-    padding:0 0 var(--s6) calc(52px + var(--s4));
-  }
+  .progress{ position:fixed; z-index:90; right:calc(var(--frame) + 14px); top:var(--s8); bottom:var(--s8);
+             width:1px; background:currentColor; opacity:.2; color:var(--chrome-low,var(--slate)); pointer-events:none;
+             transition:opacity .4s ease; }
+  .progress-fill{ position:fixed; z-index:91; right:calc(var(--frame) + 14px); top:var(--s8); bottom:var(--s8);
+                  width:1px; background:var(--olive); transform-origin:top; transform:scaleY(0); pointer-events:none;
+                  transition:opacity .4s ease, background-color .45s ease; }
 
-  /* ============================================================
-     CONDITIONS — the recognition block. Structure borrowed from Laura
-     Higgins' third scroll (reframe headline, a short stack of
-     second-person statements, then a release valve), at INCO's
-     temperature rather than hers: flat and specific, no exclamation
-     marks, no motivational turn.
+  /* Cursor: a small dot that grows into a labelled disc over things
+     you can act on. Fine pointers only, and never with reduced motion;
+     the native cursor stays everywhere text is typed. */
+  .cursor{ position:fixed; left:0; top:0; z-index:300; pointer-events:none; display:none; opacity:0; transition:opacity .3s ease; }
+  html.has-cursor .cursor{ display:block; }
+  .cursor-dot{
+    position:absolute; left:-5px; top:-5px; width:10px; height:10px; border-radius:50%;
+    background:var(--light); mix-blend-mode:difference;
+    transition:transform .35s var(--ease), opacity .25s ease;
+  }
+  .cursor-label{
+    position:absolute; left:0; top:0; translate:-50% -50%; scale:.4; opacity:0;
+    width:88px; height:88px; border-radius:50%; display:grid; place-items:center;
+    background:var(--olive); color:var(--light); font-size:var(--t-micro); font-weight:600;
+    transition:scale .45s var(--ease), opacity .25s ease;
+  }
+  .cursor.is-label .cursor-label{ scale:1; opacity:1; }
+  .cursor.is-label .cursor-dot{ opacity:0; }
+  .cursor.is-text .cursor-dot{ opacity:0; }
+  .cursor.is-hover .cursor-dot{ transform:scale(3.2); }
+  .cursor.is-down .cursor-dot{ transform:scale(.6); }
+  html.has-cursor body, html.has-cursor a, html.has-cursor button{ cursor:none; }
+  html.has-cursor input, html.has-cursor textarea{ cursor:text; }
 
-     Statements are hairline-separated rather than numbered. They're
-     three parallel truths, not a sequence, and numbering them would
-     imply an order that isn't there.
-     ============================================================ */
-  .conditions{ padding:var(--s8) 0; }
-  /* Full width, both of them. The lead line carries display weight;
-     the old heading steps down to a lead-in beneath it so the two read
-     as one statement with a hierarchy rather than two headings
-     competing. Sizes capped against vh because this block plus the
-     three statements now has to clear a single viewport. */
-  .conditions .head{ grid-column:1 / 13; margin-bottom:var(--s5); }
-  .conditions .head .lede-line{
-    font-size:min(clamp(38px,4.6vw,76px), 11vh);
-    font-weight:600; letter-spacing:-.015em; line-height:1.04;
-    margin-bottom:var(--s3);
+  /* --------------------------------------------------------------
+     Shared pieces
+     -------------------------------------------------------------- */
+  .btn{
+    position:relative; display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    min-height:56px; padding:0 32px; border:0; border-radius:999px; cursor:pointer;
+    background:var(--olive); color:var(--light); font:inherit; font-size:var(--t-small); font-weight:600;
+    text-decoration:none; white-space:nowrap; overflow:hidden; isolation:isolate;
+    transition:transform .14s var(--ease);
   }
-  /* Broken deliberately, not left to wrap: the two halves are a
-     parallel construction and the line break is what makes the
-     parallel visible. Spans rather than <br> so it collapses to
-     natural wrapping on narrow screens. */
-  .conditions .head .lede-line span{ display:block; }
-  .conditions .head .sub{
-    font-size:min(var(--t-h3), 4.2vh); font-weight:400;
-    letter-spacing:-.015em; line-height:1.3; color:var(--light-80);
-  }
-  .conditions .list{ grid-column:1 / 11; border-top:1px solid var(--rule); }
-  .conditions .list p{
-    padding:var(--s4) 0; border-bottom:1px solid var(--rule);
-    font-size:min(clamp(19px,2.2vw,29px), 3.6vh); font-weight:400;
-    letter-spacing:-.02em; line-height:1.3; max-width:38ch;
-  }
-  /* No max-width: at 17px this sentence is roughly 710px, so it sits
-     on one line across the full grid and only wraps once the viewport
-     genuinely can't hold it. */
-  .conditions .turn{
-    grid-column:1 / 13; margin-top:var(--s4);
-    font-size:var(--t-body); color:var(--ink-70);
-  }
+  /* Hover: the darker olive rises from the baseline, like ink filling. */
+  .btn::before{ content:""; position:absolute; inset:0; z-index:-1; background:var(--olive-deep);
+                transform:translateY(101%); transition:transform .45s var(--ease); }
+  .btn:active{ transform:scale(.97); }
+  .btn-pale{ background:var(--light); color:var(--slate); }
+  .btn-pale::before{ background:var(--stone-dim); }
+  .btn[disabled]{ opacity:.6; cursor:wait; }
 
-  /* ============================================================
-     CASE NOTE — the venue that closed. Set as a quiet record entry,
-     not a "case study" with a result badge: the credibility comes
-     from publishing a loss, and dressing it up would undo that.
-     Indented off the left edge so it reads as an annotation on the
-     roadmap above rather than a new pitch.
-     ============================================================ */
-  .casenote{ padding:var(--s8) 0; background:var(--stone); }
-  /* Was indented to cols 4-11 to sit beside a 'From the playbook'
-     label column. That label is gone, so the quote takes the well. */
-  .casenote .body{ grid-column:1 / 10; }
-  .casenote blockquote{ font-size:var(--t-h3); font-weight:400; letter-spacing:-.02em; line-height:1.32; }
-  .casenote .after{ margin-top:var(--s5); font-size:var(--t-body); color:var(--ink-70); max-width:31em; }
-  .casenote .sign{ margin-top:var(--s5); font-size:var(--t-micro); color:var(--ink-soft); }
+  .link{
+    position:relative; display:inline-block; background:none; border:0; padding:4px 0;
+    font:inherit; font-size:var(--t-small); color:inherit; text-decoration:none; cursor:pointer;
+  }
+  .link::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:1px; background:currentColor;
+                transform-origin:right; transition:transform .5s var(--ease); }
 
-  /* ============================================================
-     PRACTICE — the About section, built as a drawing title block.
-     A title block is literally the corner of a sheet where a practice
-     states who it is, so credentials belong here as tabulated facts
-     rather than adjectives. Logos sit silent underneath, no "trusted
-     by" headline over the top.
-     ============================================================ */
-  .practice{ padding:var(--s8) 0 var(--s7); background:var(--stone-dim); }
-  /* Explicit rows so the portrait can stand full height beside the
-     text while the fact table tucks under it. Source is 1536x2048, so
-     it's given its native 3:4 and left to be tall - cropping a
-     portrait into a landscape well would waste the one photograph on
-     the page that has a person in it. */
-  .practice .lead{ grid-column:1 / 7; grid-row:1; }
-  .practice .portrait{ grid-column:8 / 12; grid-row:1 / span 2; align-self:start; }
-  .practice .portrait img{ width:100%; height:auto; aspect-ratio:3/4; object-fit:cover; display:block; }
-  .practice .portrait picture{ display:block; will-change:transform; }
-  .practice .portrait .cap{
-    margin-top:var(--s3); font-size:var(--t-micro); color:var(--ink-soft);
-  }
-  .practice .lead h2{ font-size:var(--t-h2); margin-bottom:var(--s4); }
-  /* 72ch lands at ~612px, which is where "Who's behind this." ends at
-     full size — so the body and the heading share a right edge instead
-     of the copy stopping 246px short of it. The old 44ch cap was a
-     readability default applied without checking what it was sitting
-     under. Below ~1200px the column itself is narrower than 72ch and
-     takes over, so this never overruns the well. */
-  .practice .lead p{
-    font-size:var(--t-body); color:var(--ink-70);
-    max-width:32em; margin-bottom:var(--s4);
-  }
-
-  .block{ grid-column:1 / 7; grid-row:2; border-top:1px solid var(--rule); margin-top:var(--s6); }
-  .block dl{ display:grid; grid-template-columns:minmax(88px,32%) 1fr; }
-  .block dt,.block dd{ padding:13px 0; border-bottom:1px solid var(--rule); font-size:var(--t-small); }
-  .block dt{ color:var(--ink-soft); }
-  .block dd{ color:var(--slate); }
-
-  .clients{ grid-column:1 / 13; grid-row:3; margin-top:var(--s7); }
-  .clients .rule{ width:100%; height:1px; background:var(--rule); margin-bottom:var(--s5); }
-  .clients .marks{
-    display:grid; grid-template-columns:repeat(5,1fr); gap:var(--s5) var(--s4); align-items:center;
-  }
-  /* Real client marks. Each asset is pre-processed to a single ink
-     colour on a common 400x140 transparent box, with the mark scaled
-     so every logo carries roughly the same ink area — a wordmark like
-     CLARINS and a stacked lockup like AUTOGRAPH COLLECTION otherwise
-     read at wildly different weights on the same row. Because the
-     padding is baked into the asset, the CSS is just a box: no
-     per-logo exceptions to maintain. */
-  .clients .marks img{
-    display:block; width:100%; max-width:200px; justify-self:center;
-    height:auto; opacity:.60;
-    transition:opacity 260ms var(--ease);
-  }
-  @media (hover:hover) and (pointer:fine){ .clients .marks img:hover{ opacity:1; } }
-  .clients .cohort{
-    font-size:var(--t-micro);
-    color:var(--ink-soft); margin-bottom:var(--s4);
-  }
-  @media (max-width:900px){
-    .clients .marks{ grid-template-columns:repeat(2,1fr); gap:var(--s4) var(--s3); }
-    .clients .marks img{ max-width:150px; }
-  }
-
-  /* ============================================================
-     ASSESSMENT — the qualifying quiz. Kept intact, restaged on the
-     grid: prompt on the left, answers on the right, so it reads as a
-     form being filled rather than a centered card.
-     ============================================================ */
-  /* Olive is mid-tone: even solid light text only reaches 5.0:1 on it,
-     so the usual 80% / 50% steps fail AA (3.9:1 and 2.5:1). On this sheet
-     body copy goes solid and meta text sits at 92% (4.6:1); hierarchy
-     comes from size and weight instead of fading. */
-  .assess{ background:var(--olive); color:var(--light); padding:var(--s8) 0;
-           --light-80:var(--light); --light-50:rgba(245,243,238,.92); }
-  .assess .head{ grid-column:1 / 7; }
-  .assess .head h2{ font-size:var(--t-h2); }
-  .assess .head p{ margin-top:var(--s3); font-size:var(--t-small); color:var(--light-80); max-width:36ch; }
-  .assess .head .count{ margin-top:var(--s6); font-size:var(--t-micro); color:var(--light-50); font-variant-numeric:tabular-nums; }
-  .assess .head .bar{ margin-top:var(--s2); width:120px; height:1px; background:var(--light-18); }
-  .assess .head .bar i{ display:block; height:100%; width:100%; background:var(--light); transform:scaleX(0); transform-origin:left; transition:transform var(--med) var(--ease); }
-
-  .assess .panelwrap{ grid-column:7 / 13; min-height:340px; position:relative; }
-  .qp{ opacity:0; visibility:hidden; position:absolute; inset:0;
-       transition:opacity 140ms ease-out, transform var(--ui) var(--ease); transform:translateY(8px); }
-  .qp.on{ opacity:1; visibility:visible; position:relative; transform:none; }
-  .qp .q{ font-size:var(--t-lead); font-weight:600; letter-spacing:-.02em; margin-bottom:var(--s5); max-width:34ch; line-height:1.3; }
-  .opt{
-    display:block; width:100%; text-align:left; background:none; color:inherit;
-    font-family:inherit; font-size:var(--t-small); padding:18px 0;
-    border:none; border-bottom:1px solid var(--light-18); cursor:pointer;
-    transition:border-color var(--fast) ease;
-  }
-  .opt span{ display:block; transition:transform var(--ui) var(--ease); }
-  .opt:active span{ transform:translateX(6px) scale(.99); }
-  .opt:first-of-type{ border-top:1px solid var(--light-18); }
-  .opt:focus-visible span{ transform:translateX(14px); }
-
-  /* Hover only where hover exists. On touch it fires on tap and sticks. */
   @media (hover:hover) and (pointer:fine){
-    .btn:hover{ background:var(--olive-deep); }
-    .btn-pale:hover{ background:var(--stone-dim); }
-    .mh-cta:hover{ background:var(--olive-deep); }
-    .link:hover{ opacity:1; }
-    .row-btn:hover .row-name{ transform:translateX(10px); }
-    .opt:hover{ border-color:var(--light); }
-    .opt:hover span{ transform:translateX(14px); }
+    .btn:hover::before{ transform:none; }
+    .link:hover::after{ transform-origin:left; animation:redraw .7s var(--ease); }
   }
+  @keyframes redraw{ 0%{ transform:scaleX(1); transform-origin:right; } 45%{ transform:scaleX(0); transform-origin:right; }
+                     55%{ transform:scaleX(0); transform-origin:left; } 100%{ transform:scaleX(1); transform-origin:left; } }
 
-  .result{ display:none; }
-  .result.on{ display:block; animation:soft-from var(--ui) var(--ease) both; }
-  .result.on .diag div{ animation:soft-from var(--ui) var(--ease) both; }
-  .result.on .diag div:nth-child(1){ animation-delay:60ms; }
-  .result.on .diag div:nth-child(2){ animation-delay:100ms; }
-  .result.on .diag div:nth-child(3){ animation-delay:140ms; }
-  .result.on .diag div:nth-child(4){ animation-delay:180ms; }
-  .result.on .diag div:nth-child(5){ animation-delay:220ms; }
-  .result .verdict{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s3); }
-  .result h3{ font-size:var(--t-h3); margin-bottom:var(--s3); }
-  .result p{ font-size:var(--t-small); color:var(--light-80); max-width:44ch; margin-bottom:var(--s5); }
-  .result .scale{ display:flex; align-items:center; gap:var(--s3); margin-bottom:var(--s5); }
-  .result .scale .track2{ flex:1; height:1px; background:var(--light-18); position:relative; }
-  .result .scale .track2 i{ position:absolute; left:0; top:0; height:100%; width:100%; background:var(--light);
-                            transform:scaleX(0); transform-origin:left; transition:transform 700ms var(--ease); }
-  .result .scale b{ font-size:var(--t-micro); font-variant-numeric:tabular-nums; font-weight:600; }
-  /* Per-dimension diagnostic. Computed from the actual answers, so it
-     tells them something they didn't already type in. */
-  .result .diag{ border-top:1px solid var(--light-18); margin-bottom:var(--s5); }
-  .result .diag div{
-    display:flex; justify-content:space-between; align-items:baseline; gap:var(--s3);
-    padding:11px 0; border-bottom:1px solid var(--light-18); font-size:var(--t-small);
-  }
-  .result .diag .lbl{ color:var(--light-50); }
-  .result .diag .val{ font-weight:600; }
-  .result .diag .val.weak{ color:var(--light); }
-  .result .bench{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s5); display:none; }
-  .result .bench.on{ display:block; }
-  .result .acts{ display:flex; align-items:center; gap:var(--s4); flex-wrap:wrap; }
-  .assess .link{ opacity:1; }   /* 65% link text is 3.1:1 on olive; the underline already marks it */
-  .qnav{ background:none; border:0; border-bottom:1px solid currentColor; font-family:inherit; cursor:pointer; }
+  /* A hairline that draws itself (scaleX), used as the structural rule
+     throughout: the same gesture as a pen across a drawing. */
+  .rule{ height:1px; background:var(--rule); transform-origin:left; }
+
+  /* masked line reveals: SplitText wraps each line in .ln-mask */
+  .ln-mask{ overflow:clip; padding-bottom:.08em; margin-bottom:-.08em; }
+
+  /* --------------------------------------------------------------
+     01 COVER
+     -------------------------------------------------------------- */
+  .cover{ height:100svh; min-height:620px; color:var(--light); overflow:hidden; }
+  .cover-media{ position:absolute; inset:0; overflow:hidden; background:#2a2a28; }
+  .cover-media .pan{ position:absolute; inset:-8% 0 0; will-change:transform; }
+  .cover-media img{ width:100%; height:100%; object-fit:cover; object-position:center 30%; }
+  .cover-media::after{ content:""; position:absolute; inset:0;
+    background:linear-gradient(100deg,rgba(10,10,9,.72) 0%,rgba(10,10,9,.45) 50%,rgba(10,10,9,.15) 100%),
+               linear-gradient(0deg,rgba(10,10,9,.55) 0%,rgba(10,10,9,0) 45%); }
+  .cover-inner{ position:relative; height:100%; display:flex; flex-direction:column; justify-content:flex-end;
+                padding-bottom:calc(var(--frame) + var(--s7)); }
+  .cover h1{ font-size:min(var(--t-display), 23vh); line-height:.86; letter-spacing:-.035em; }
+  .cover h1 .ln{ display:block; }
+  .cover-foot{ margin-top:var(--s5); display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:var(--s5); }
+  .cover-lede{ font-size:var(--t-lead); line-height:1.35; max-width:28em; }
+  .cover-cta{ display:flex; align-items:center; gap:var(--s5); flex-wrap:wrap; }
+
+  /* --------------------------------------------------------------
+     02 CONDITIONS
+     -------------------------------------------------------------- */
+  .conditions{ padding:var(--s8) 0; }
+  .statement{ font-size:clamp(40px,5.6vw,92px); line-height:1.02; letter-spacing:-.025em; max-width:15em; }
+  .statement .w{ display:inline-block; }
+  .conditions .sub{ margin-top:var(--s5); font-size:var(--t-lead); color:var(--ink-70); max-width:30em; }
+  .truths{ margin-top:var(--s7); display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s5); }
+  .truth .rule{ background:var(--rule); margin-bottom:var(--s4); }
+  .truth p{ font-size:var(--t-lead); line-height:1.32; }
+  .conditions .turn{ margin-top:var(--s7); font-size:var(--t-body); color:var(--ink-70); }
+
+  /* --------------------------------------------------------------
+     03 PLATE
+     -------------------------------------------------------------- */
+  .plate{ height:100svh; min-height:640px; color:var(--light); overflow:hidden; }
+  .plate-view{ position:absolute; inset:0; overflow:hidden; }
+  .plate-view .zoom{ position:absolute; inset:0; will-change:transform; }
+  /* The venue's name is signed across the top of this photograph and
+     this sheet sits under a failure headline: render it taller than the
+     frame, anchored to the floor, so the sign is always out of view. */
+  .plate-view img{ position:absolute; left:0; bottom:0; width:100%; height:132%; object-fit:cover; object-position:center bottom;
+                   filter:grayscale(.28) contrast(1.05) brightness(.86); }
+  .plate-view::after{ content:""; position:absolute; inset:0; background:linear-gradient(0deg,rgba(28,28,26,.86) 0%,rgba(28,28,26,.05) 62%); }
+  .plate-cap{ position:absolute; left:0; right:0; bottom:calc(var(--frame) + var(--s7)); }
+  .plate-cap h2{ font-size:var(--t-h2); }
+  .plate-cap p{ margin-top:var(--s4); max-width:28em; font-size:var(--t-lead); color:rgba(245,243,238,.86); }
+
+  /* --------------------------------------------------------------
+     04 CASE NOTE
+     -------------------------------------------------------------- */
+  .casenote{ padding:var(--s8) 0; }
+  .casenote blockquote{ grid-column:1 / 11; font-size:clamp(30px,3.4vw,52px); line-height:1.16; letter-spacing:-.02em; }
+  .casenote .after-col{ grid-column:5 / 11; margin-top:var(--s7); }
+  .casenote .after{ font-size:var(--t-body); color:var(--ink-70); max-width:31em; }
+  .casenote .after + .after{ margin-top:var(--s4); }
+  .casenote .sign{ margin-top:var(--s5); font-size:var(--t-micro); color:var(--ink-soft); display:flex; align-items:center; gap:var(--s3); }
+  .casenote .sign .rule{ width:48px; background:currentColor; }
+
+  /* --------------------------------------------------------------
+     05 ROADMAP · pinned horizontal sequence on wide screens
+     -------------------------------------------------------------- */
+  .roadmap{ padding:var(--s8) 0 var(--s7); }
+  .roadmap h2{ font-size:var(--t-h2); max-width:12em; }
+  .roadmap .intro{ margin-top:var(--s4); color:var(--ink-70); max-width:30em; }
+  .q-track{ margin-top:var(--s7); display:grid; gap:var(--s6); }
+  .q-panel{ display:grid; grid-template-columns:72px 1fr; column-gap:var(--s4); align-content:start; }
+  .q-num{ font-size:var(--t-small); color:var(--ink-soft); font-variant-numeric:tabular-nums; padding-top:.6em; }
+  .q-name{ font-size:clamp(48px,7vw,120px); line-height:.95; letter-spacing:-.03em; }
+  .q-body{ grid-column:2; margin-top:var(--s4); max-width:26em; color:var(--ink-70); }
+  .q-dim{ display:none; }
+
+  html.pin-roadmap .roadmap{ height:100svh; padding:0; overflow:hidden; }
+  html.pin-roadmap .roadmap .rm-inner{ height:100%; display:flex; flex-direction:column; padding-top:calc(var(--frame) + 96px); padding-bottom:calc(var(--frame) + 64px); }
+  html.pin-roadmap .q-track{ flex:1; margin-top:var(--s6); display:flex; gap:0; width:max-content; will-change:transform; }
+  html.pin-roadmap .q-panel{ width:min(56vw,820px); padding-right:var(--s7); }
+  html.pin-roadmap .q-dim{ display:block; position:relative; height:24px; margin-top:var(--s5); }
+  .q-dim .base{ position:absolute; left:0; right:0; top:11px; height:1px; background:var(--rule); }
+  .q-dim .fill{ position:absolute; left:0; right:0; top:11px; height:1px; background:currentColor; transform-origin:left; transform:scaleX(0); }
+  .q-dim .tick{ position:absolute; top:6px; width:1px; height:11px; background:currentColor; opacity:.4; transition:opacity .3s ease; }
+  .q-dim .tick.on{ opacity:1; }
+  .q-dim .tick span{ position:absolute; top:16px; left:0; translate:-50% 0; font-size:12px; font-variant-numeric:tabular-nums; }
+
+  /* --------------------------------------------------------------
+     06 READINESS
+     -------------------------------------------------------------- */
+  .assess{ padding:var(--s8) 0; }
+  .assess .head{ grid-column:1 / 6; }
+  .assess h2{ font-size:var(--t-h2); }
+  .assess .head p{ margin-top:var(--s4); max-width:22em; }
+  .assess .count{ margin-top:var(--s6); font-size:var(--t-micro); font-variant-numeric:tabular-nums; }
+  .assess .bar{ margin-top:var(--s2); width:160px; height:1px; background:var(--rule); }
+  .assess .bar i{ display:block; height:100%; width:100%; background:var(--light); transform:scaleX(0); transform-origin:left; transition:transform .6s var(--ease); }
   .assess .head .qnav{ display:block; margin-top:var(--s4); }
   .assess .head .qnav[hidden]{ display:none; }
-  #callCta{ display:none; }
-  #callCta.on{ display:inline-block; }
+  .panelwrap{ grid-column:7 / 13; position:relative; min-height:360px; }
 
-  /* ============================================================
-     GATE — copy left, form right. Not a centered 400px column.
-     ============================================================ */
-  .gate{ background:var(--slate); color:var(--light); padding:var(--s8) 0; }
+  .qp{ position:absolute; inset:0; opacity:0; visibility:hidden; transform:translateY(12px);
+       transition:opacity .2s ease, transform .4s var(--ease), visibility 0s .4s; }
+  .qp.on{ position:relative; opacity:1; visibility:visible; transform:none; transition:opacity .35s ease .1s, transform .55s var(--ease) .1s; }
+  .qp .q{ font-size:var(--t-h3); font-weight:600; line-height:1.15; letter-spacing:-.015em; margin-bottom:var(--s5); max-width:20em; }
+  .opt{ position:relative; display:flex; justify-content:space-between; align-items:center; width:100%;
+        padding:22px 0; border:0; background:none; color:inherit; font:inherit; font-size:var(--t-body); text-align:left; cursor:pointer; }
+  .opt::before{ content:""; position:absolute; left:0; right:0; top:0; height:1px; background:var(--rule); }
+  .opt:last-child::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:1px; background:var(--rule); }
+  .opt span{ transition:transform .45s var(--ease); }
+  /* hover: a light line runs across the top of the option */
+  .opt i{ position:absolute; left:0; right:0; top:0; height:1px; background:var(--light); transform:scaleX(0); transform-origin:left; transition:transform .5s var(--ease); }
+  @media (hover:hover) and (pointer:fine){
+    .opt:hover span{ transform:translateX(14px); }
+    .opt:hover i{ transform:none; }
+  }
+  .opt:focus-visible span{ transform:translateX(14px); }
+
+  .result{ display:none; }
+  .result.on{ display:block; animation:rise .6s var(--ease) both; }
+  @keyframes rise{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:none; } }
+  .result .verdict{ font-size:var(--t-micro); margin-bottom:var(--s3); }
+  .result h3{ font-size:var(--t-h3); margin-bottom:var(--s4); }
+  #rTitle:focus{ outline:none; }
+  .result .scale{ display:flex; align-items:center; gap:var(--s3); margin-bottom:var(--s5); }
+  .result .track2{ flex:1; height:1px; background:var(--rule); position:relative; }
+  .result .track2 i{ position:absolute; inset:0; background:var(--light); transform:scaleX(0); transform-origin:left; transition:transform .9s var(--ease); }
+  .result .scale b{ font-size:var(--t-micro); font-variant-numeric:tabular-nums; }
+  .result .diag{ margin-bottom:var(--s5); }
+  .result .diag div{ display:flex; justify-content:space-between; gap:var(--s3); padding:12px 0; border-top:1px solid var(--rule); font-size:var(--t-small); }
+  .result .diag div:last-child{ border-bottom:1px solid var(--rule); }
+  .result.on .diag div{ animation:rise .5s var(--ease) both; }
+  .result.on .diag div:nth-child(2){ animation-delay:.05s; } .result.on .diag div:nth-child(3){ animation-delay:.1s; }
+  .result.on .diag div:nth-child(4){ animation-delay:.15s; } .result.on .diag div:nth-child(5){ animation-delay:.2s; }
+  .result .diag .val{ font-weight:600; }
+  .result .bench{ display:none; font-size:var(--t-micro); margin-bottom:var(--s4); }
+  .result .bench.on{ display:block; }
+  .result #rDesc{ font-size:var(--t-small); max-width:30em; margin-bottom:var(--s5); }
+  .result .acts{ display:flex; align-items:center; gap:var(--s5); flex-wrap:wrap; }
+  #callCta{ display:none; } #callCta.on{ display:inline-block; }
+
+  /* --------------------------------------------------------------
+     07 PRACTICE
+     -------------------------------------------------------------- */
+  .practice{ padding:var(--s8) 0 var(--s7); }
+  .practice .lead{ grid-column:1 / 7; }
+  .practice h2{ font-size:var(--t-h2); }
+  .practice .lead p{ margin-top:var(--s4); color:var(--ink-70); max-width:32em; }
+  .portrait{ grid-column:8 / 12; grid-row:1 / span 2; align-self:start; }
+  .portrait .view{ overflow:hidden; aspect-ratio:3/4; }
+  .portrait img{ width:100%; height:115%; object-fit:cover; will-change:transform; }
+  .portrait .cap{ margin-top:var(--s3); font-size:var(--t-micro); color:var(--ink-soft); }
+  .facts{ grid-column:1 / 7; margin-top:var(--s6); }
+  .facts .row{ display:grid; grid-template-columns:minmax(110px,30%) 1fr; gap:var(--s4); padding:14px 0; font-size:var(--t-small); position:relative; }
+  .facts .row .rule{ position:absolute; left:0; right:0; top:0; }
+  .facts dt{ color:var(--ink-soft); }
+  .clients{ grid-column:1 / 13; margin-top:var(--s7); }
+  .clients .cohort{ font-size:var(--t-micro); color:var(--ink-soft); margin:var(--s4) 0 var(--s5); }
+  .marks{ display:grid; grid-template-columns:repeat(5,1fr); gap:var(--s5) var(--s4); align-items:center; }
+  .marks img{ width:100%; max-width:200px; height:auto; justify-self:center; opacity:.6; transition:opacity .35s ease; }
+  @media (hover:hover) and (pointer:fine){ .marks img:hover{ opacity:1; } }
+
+  /* --------------------------------------------------------------
+     08 DOWNLOAD
+     -------------------------------------------------------------- */
+  .gate{ padding:var(--s8) 0; }
   .gate .pitch{ grid-column:1 / 6; }
-  .gate .pitch h2{ font-size:var(--t-h2); margin-bottom:var(--s4); }
-  .gate .pitch p{ font-size:var(--t-body); color:var(--light-80); max-width:34ch; }
-  .gate .pitch ul{ list-style:none; margin-top:var(--s6); border-top:1px solid var(--light-18); }
-  .gate .pitch li{ padding:14px 0; border-bottom:1px solid var(--light-18); font-size:var(--t-small); color:var(--light-80); }
+  .gate h2{ font-size:var(--t-h2); }
+  .gate .pitch > p{ margin-top:var(--s4); color:var(--ink-70); max-width:22em; }
+  .gate ul{ list-style:none; margin-top:var(--s6); }
+  .gate li{ position:relative; padding:14px 0; font-size:var(--t-small); color:var(--ink-70); }
+  .gate li .rule{ position:absolute; left:0; right:0; top:0; }
+  .gate li:last-child{ border-bottom:1px solid var(--rule); }
   .gate .form{ grid-column:7 / 12; }
-
-  .field{ margin-bottom:var(--s5); position:relative; }
-  .field label{ display:block; font-size:var(--t-micro); color:var(--light-50); margin-bottom:6px; }
-  .field input{
-    width:100%; background:none; border:none; border-bottom:1px solid var(--light-18);
-    color:var(--light); caret-color:var(--light); font-family:inherit; font-size:var(--t-lead); padding:8px 0; outline:none;
-    transition:border-color var(--fast) ease;
-  }
-  .field input::placeholder{ color:var(--light-50); }
-  .field input:focus{ border-color:var(--light); }
-  .err{ font-size:var(--t-micro); color:var(--terracotta-on-dark); margin-top:8px; display:none; }
+  .field{ position:relative; margin-bottom:var(--s5); }
+  .field label{ display:block; font-size:var(--t-micro); color:var(--ink-soft); margin-bottom:6px; }
+  .field input{ width:100%; min-height:44px; background:none; border:0; border-bottom:1px solid var(--rule); border-radius:0;
+                color:var(--light); caret-color:var(--light); font:inherit; font-size:var(--t-lead); padding:8px 0; outline:none; }
+  .field input::placeholder{ color:var(--ink-soft); }
+  /* focus: a full-strength line draws across from the left */
+  .field::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:1px; background:var(--light);
+                 transform:scaleX(0); transform-origin:left; transition:transform .5s var(--ease); }
+  .field:focus-within::after{ transform:none; }
+  .err{ display:none; font-size:var(--t-micro); color:var(--terracotta-on-dark); margin-top:8px; }
   .field.bad .err{ display:block; }
-  .field.bad input{ border-color:var(--terracotta-on-dark); }
-
-  /* Four fields plus the s8 gutters run the gate sheet to roughly 830px.
-     That clears a 900px viewport but overflows a 768-800px laptop, and
-     this sheet is a snap stop - an overflowing stop scrolls to the wrong
-     place. Tighten the rhythm rather than let the stop drift. */
-  @media (min-width:901px) and (max-height:860px){
-    .gate{ padding:var(--s7) 0; }
-    .field{ margin-bottom:var(--s4); }
-    .gate .pitch ul{ margin-top:var(--s5); }
-  }
+  .field.bad::after{ background:var(--terracotta-on-dark); transform:none; }
   .submit{ width:100%; margin-top:var(--s3); }
-  /* ADDED: button looks inactive while the form is sending */
-  .btn[disabled]{ opacity:.6; cursor:wait; }
-  /* ADDED: honeypot field, hidden from people. Bots fill it in and get ignored. */
-  .hp{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
-  /* ADDED: message shown if sending fails */
+  .hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
   .form-err{ display:none; margin-top:var(--s3); font-size:var(--t-small); color:var(--terracotta-on-dark); }
   .form-err.on{ display:block; }
-  /* ADDED: privacy link inside the fine print */
-  .fineprint a{ color:var(--light-80); }
-  .fineprint{ margin-top:var(--s4); font-size:var(--t-micro); color:var(--light-50); max-width:36em; }
-
+  .fineprint{ margin-top:var(--s4); font-size:var(--t-micro); color:var(--ink-soft); max-width:36em; }
+  .fineprint a{ color:var(--ink-70); }
   .sent{ display:none; }
-  .sent.on{ display:block; animation:soft-from var(--ui) var(--ease) both; }
+  .sent.on{ display:block; animation:rise .6s var(--ease) both; }
   .sent h3{ font-size:var(--t-h3); margin-bottom:var(--s3); }
-  .sent p{ font-size:var(--t-small); color:var(--light-80); margin-bottom:var(--s5); max-width:38ch; }
+  .sent p{ color:var(--ink-70); }
 
-  /* ============================================================
-     TAILPIECE
-     ============================================================ */
-  .tail{ padding:var(--s8) 0 var(--s7); background:var(--stone); }
-  .tail .msg{ grid-column:1 / 8; }
-  .tail h2{ font-size:var(--t-h2); margin-bottom:var(--s4); }
-  .tail p{ font-size:var(--t-body); color:var(--ink-70); max-width:38ch; margin-bottom:var(--s5); }
-  /* Footer, per the mockup: social icons sit right above the hairline,
-     the studio line hangs under it, and the wordmark runs the full
-     width of the grid as the last thing on the page. The bottom padding
-     keeps the wordmark clear of the sheet readout. */
-  footer{ padding:var(--s7) 0 0; }
-  .tail-foot{ row-gap:0; }   /* spacing in this block is set explicitly, not by the grid gap */
-  .tail-foot > div{ grid-column:1 / 13; }
-  /* The Contact sheet is one full screen on desktop: message at the top,
-     icons and studio line at the bottom, all inside the border. */
-  @media (min-width:901px){
-    .tail{ min-height:100dvh; display:flex; flex-direction:column; justify-content:center; }
-    .tail-foot{ margin-top:var(--s6); }
-    .tail > .grid{ width:100%; }
-  }
-  footer .grid > div{ grid-column:1 / 13; }
-  .foot-social{ display:flex; justify-content:flex-end; margin-right:-8px; padding-bottom:var(--s1); }
-  .foot-social a{
-    display:grid; place-items:center; width:40px; height:40px;
-    color:var(--ink-soft); border-radius:999px;
-    transition:color var(--fast) ease, transform 140ms var(--ease);
-  }
-  .foot-social a:active{ transform:scale(.94); }
+  /* --------------------------------------------------------------
+     09 CONTACT + the wordmark
+     -------------------------------------------------------------- */
+  .tail{ padding:var(--s8) 0 var(--s6); }
+  .tail h2{ font-size:var(--t-h2); max-width:11em; }
+  .tail .msg p{ margin-top:var(--s4); color:var(--ink-70); max-width:24em; }
+  .tail .btn{ margin-top:var(--s5); }
+  .tail-foot{ margin-top:var(--s8); }
+  .foot-social{ display:flex; justify-content:flex-end; margin-right:-10px; padding-bottom:var(--s1); }
+  .foot-social a{ display:grid; place-items:center; width:44px; height:44px; color:var(--ink-soft); transition:color .25s ease, transform .4s var(--ease); }
   .foot-social svg{ width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
   .foot-social svg .dot{ fill:currentColor; stroke:none; }
-  @media (hover:hover) and (pointer:fine){ .foot-social a:hover{ color:var(--slate); } }
-  .foot-line{
-    border-top:1px solid var(--rule); padding-top:var(--s3);
-    display:flex; flex-wrap:wrap; gap:var(--s2) var(--s5);
-    font-size:var(--t-micro); color:var(--ink-soft);
-  }
-  .foot-line a{ text-decoration:none; border-bottom:1px solid var(--rule); transition:border-color var(--fast) ease; }
-  @media (hover:hover) and (pointer:fine){ .foot-line a:hover{ border-color:currentColor; } }
-  /* The wordmark sits OUTSIDE the sheet border. The border, masthead,
-     plumb line and counter are fixed to the screen, so as the wordmark
-     scrolls in they slide up together (transform, set in JS) to
-     keep the border's bottom edge a fixed distance above it. */
-  /* Side gap matches the grid's own gutter, so the I lines up with the
-     text edge above it: 44px on desktop, 24px on phones. */
-  .foot-logo{ margin-top:0; padding:0 max(var(--s5), calc(var(--frame) + var(--s4))); }
-  /* Full browser width, proportion locked by the aspect ratio. width:100%
-     rather than 100vw: on desktops with a visible scrollbar, 100vw is wider
-     than the page and the right edge of the O would be cut off. */
-  .foot-logo picture{ display:block; width:100%; }
-  .foot-logo img{ display:block; width:100%; max-width:none; height:auto; aspect-ratio:1894 / 614; }
+  @media (hover:hover) and (pointer:fine){ .foot-social a:hover{ color:var(--slate); transform:translateY(-3px); } }
+  .foot-line{ position:relative; padding-top:var(--s3); display:flex; flex-wrap:wrap; gap:var(--s2) var(--s5); font-size:var(--t-micro); color:var(--ink-soft); }
+  .foot-line .rule{ position:absolute; left:0; right:0; top:0; }
+  .foot-line a{ text-decoration:none; }
+  .wordmark{ padding:var(--s7) var(--gutter) 0; overflow:hidden; }
+  .wordmark img{ width:100%; height:auto; aspect-ratio:1894 / 614; will-change:transform; }
 
-  /* Short sheets fill the screen. A stop used to line the heading up
-     96px from the top and leave the sheet's own height to decide what
-     showed underneath, so a sheet shorter than the viewport let the NEXT
-     page bleed in along the bottom (37px to 270px depending on the
-     screen). Each of these is now at least one full screen with its
-     content centred, and its stop is the sheet's top edge. Taller than
-     the screen is still fine: the stop's range carries on to the last
-     control. Desktop only, phones scroll freely. */
-  @media (min-width:901px){
-    .casenote,.assess,.gate{ min-height:100dvh; display:flex; align-items:center; }
-    .casenote > .grid,.assess > .grid,.gate > .grid{ width:100%; }
-  }
-
-  /* Touch devices: grow the hit area to 44px without changing how
-     anything looks. Pseudo-elements extend the reach of text links;
-     the controls that have a visible box simply get taller. */
-  @media (pointer:coarse){
-    .mh-cta{ display:inline-flex; align-items:center; min-height:44px; padding-top:0; padding-bottom:0; }
-    .link,.fineprint a,.foot-line a{ position:relative; }
-    .link::before,.fineprint a::before,.foot-line a::before{ content:""; position:absolute; inset:-15px -8px; }
-    .field input{ min-height:44px; }
-    .foot-social a{ width:44px; height:44px; }
-  }
-
-  /* ============================================================
-     RESPONSIVE — asymmetric spans collapse to single column.
-     ============================================================ */
+  /* --------------------------------------------------------------
+     Narrow screens: no pinning, one column, same sequence
+     -------------------------------------------------------------- */
   @media (max-width:900px){
-    :root{ --frame:12px; }
-    .grid{ gap:var(--s3); padding:0 var(--s4); }
-    .hero-title,.hero-meta,.hero-cta,
-    .conditions .head,.conditions .list,.conditions .turn,
-    .casenote .body,
-    .roadmap .head,.rows,
-    .assess .head,.assess .panelwrap,
-    .practice .lead,.practice .block,.practice .clients,.practice .portrait,
-    .gate .pitch,.gate .form,
-    .tail .msg,
-    .plate .cap .grid > div,
-    footer .grid > div{ grid-column:1 / 13; }
-    .conditions,.casenote,.practice{ padding-top:var(--s7); padding-bottom:var(--s6); }
-    /* Explicit rows are a desktop-only arrangement; let them reflow. */
-    .practice .lead,.practice .portrait,.practice .block,.practice .clients{ grid-row:auto; }
-    .practice .portrait{ max-width:300px; margin-bottom:var(--s5); }
-    .conditions .head{ margin-bottom:var(--s5); }
-    .casenote .body{ margin-top:var(--s4); }
-    .practice .block{ margin-top:var(--s6); }
-    .practice .clients{ margin-top:var(--s6); }
-    .roadmap,.assess,.gate,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
-    .tail{ padding-bottom:var(--s5); }
-    .tail-foot{ margin-top:var(--s7); }
-    .foot-logo{ padding:0 var(--s4); }
-    .roadmap .head{ margin-bottom:var(--s5); }
-    .row-btn{ grid-template-columns:38px 1fr 22px; }
-    .row-dim{ display:none; }
-    .row-body p{ padding-left:calc(38px + var(--s3)); }
-    .assess .panelwrap{ margin-top:var(--s6); min-height:0; }
+    :root{ --frame:12px; --gutter:24px; }
+    .grid{ column-gap:var(--s3); }
+    .cover h1{ font-size:clamp(52px,19.5vw,140px); }
+    .cover-inner{ padding-bottom:calc(var(--frame) + var(--s6)); }
+    .truths{ grid-template-columns:1fr; gap:var(--s5); }
+    .casenote blockquote,.casenote .after-col,.assess .head,.panelwrap,.practice .lead,.portrait,.facts,.gate .pitch,.gate .form{ grid-column:1 / 13; grid-row:auto; }
+    .panelwrap{ margin-top:var(--s6); min-height:0; }
+    .portrait{ max-width:320px; margin-top:var(--s6); }
+    .marks{ grid-template-columns:repeat(2,1fr); }
+    .marks img{ max-width:150px; }
     .gate .form{ margin-top:var(--s6); }
-    .plumb{ display:none; }
-    /* The venue's name is signed across the top of this photograph, and
-       on a portrait screen cover-fit shows the whole height of it. Render
-       the image 30% taller than its box and anchor it to the floor so the
-       top quarter, with the sign, sits above the visible area. */
-    /* No scrub on phones. 3.7MB of frames on mobile data for a
-       background, plus a pinned section fighting the address bar,
-       isn't a trade worth making. Mobile collapses the scroll region
-       and plays the 0.5MB looping cut instead. */
-    .heroScroll{ height:auto; }
-    .heroBg{ position:relative; height:100dvh; }
-    .heroPanels{ margin-top:-100dvh; }
-    .hpanel-hold{ display:none; }
-    /* Only the title panel still sits over the footage here. The two
-       below it scroll past the video entirely, so they carry their own
-       dark ground rather than leaving light type on a light page. */
-    .heroPanels .conditions{
-      min-height:0; display:block; background:var(--slate);
-      padding:var(--s7) 0 var(--s6);
-    }
+    .q-panel{ grid-template-columns:44px 1fr; }
+    .progress,.progress-fill{ display:none; }
+    .conditions,.casenote,.roadmap,.assess,.practice,.gate,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
+  }
+  @media (pointer:coarse){
+    .link{ padding:12px 0; }
+    .foot-line a{ padding:12px 0; margin:-12px 0; }
   }
 
-  /* ============================================================
-     REDUCED MOTION
-     ============================================================ */
-  /* Reduced motion means fewer and gentler, not none. Movement goes:
-     entrances, slides, nudges, presses, parallax (the scripts skip the
-     scroll effects). Short opacity and colour fades stay, because they
-     are what tells you a panel changed or a row opened. */
-  @keyframes fade-only{ from{ opacity:0; } to{ opacity:1; } }
+  /* Reduced motion: no smooth scroll, no pinning, no cursor, no reveals.
+     Short fades that confirm a change (quiz panels, result) stay. */
   @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{ animation-iteration-count:1 !important; scroll-behavior:auto !important; }
-    section[data-fade]{ opacity:1 !important; }
-    .hero-title .ln > span{ animation:none !important; transform:none !important; clip-path:none !important; }
-    .hero-meta,.hero-cta{ animation:none !important; opacity:1 !important; transform:none !important; }
-    .result.on,.sent.on,.result.on .diag div{ animation:fade-only 180ms ease-out both !important; }
-    .masthead .mh-label,.masthead .mh-cta{ transform:none !important; }
-    .qp{ transform:none !important; }
-    .btn:active,.mh-cta:active,.foot-social a:active,.opt:active span,.row-btn:active .row-name{ transform:none !important; }
-    .row-name,.opt span{ transition:none !important; }
-    .row-btn:hover .row-name,.opt:hover span,.opt:focus-visible span{ transform:none !important; }
-    .row-plus::after{ transition:none !important; }
-    .row-body{ transition:none !important; }
-    .row-dim span{ transition:none !important; }
-    .assess .head .bar i,.result .scale .track2 i{ transition-duration:.01ms !important; }
-    .plumb-fill{ transform:scaleY(1); }
+    .qp,.qp.on{ transform:none !important; transition:opacity .2s ease !important; }
+    .result.on,.sent.on,.result.on .diag div{ animation:fade .2s ease both !important; }
+    .btn::before,.link::after,.field::after,.opt span,.opt i{ transition:none !important; animation:none !important; }
+    .opt:hover span,.opt:focus-visible span{ transform:none !important; }
   }
+  @keyframes fade{ from{ opacity:0; } to{ opacity:1; } }
 </style>
 </head>
 <body>
 
-<!-- ADDED: Google Tag Manager (noscript). Optional backup for visitors with JavaScript off.
-     To use it, replace GTM-XXXXXXX with your container ID and remove the comment marks around it.
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
--->
-
-<div id="bgLayer" aria-hidden="true"></div>
-
 <a class="skip" href="#s-gate">Skip to the form</a>
 
-<div class="sheet" id="sheet" aria-hidden="true"></div>
-<div class="plumb" aria-hidden="true"><div class="plumb-fill" id="plumbFill"></div><div class="plumb-bead" id="plumbBead"></div></div>
-
-<div class="masthead" id="masthead">
-  <span class="mh-mark">INCO Studio</span>
-  <span class="mh-right">
-    <span class="mh-label">The Expansion Playbook</span>
-    <a class="mh-cta" href="#s-gate">Get the playbook</a>
-  </span>
+<!-- Fixed chrome: outside the smooth-scroll wrapper so it stays put. -->
+<div class="frame" aria-hidden="true"></div>
+<header class="masthead" id="masthead">
+  <a class="mh-mark" href="#s-hero">INCO Studio</a>
+  <a class="mh-cta" href="#s-gate" data-cursor="Get it">Get the playbook</a>
+</header>
+<div class="counter" id="counter" aria-hidden="true">
+  <span class="num-wrap"><b id="cNum">01</b></span><i></i><span id="cName">Cover</span>
 </div>
+<div class="progress" aria-hidden="true"></div>
+<div class="progress-fill" id="progressFill" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"><div class="cursor-dot"></div><div class="cursor-label" id="cursorLabel"></div></div>
 
-<div class="readout" id="readout" aria-hidden="true">
-  <span class="rd-num" id="rdNum">01</span>
-  <span class="rd-rule"></span>
-  <span id="rdName">Cover</span>
-</div>
-
-<!-- ============================================================
-     HERO — the title sits low and left against the gradient Jayson
-     tuned himself (speed .14 / grain .01 / warp .85). Kept from the
-     earlier build because it's his call and it works; everything
-     around it is recomposed.
-     ============================================================ -->
+<div id="smooth-wrapper">
+<div id="smooth-content">
 <main id="main">
-<div class="heroScroll" id="heroScroll">
 
-  <!-- Sticky media layer. One portrait still, taller than the
-       viewport, panned by scroll. Replaces the 97-frame AVIF sequence
-       and the video fallback that went with it; the frames and mp4s
-       are still on disk if you ever want them back. -->
-  <div class="heroBg">
-    <div class="hero-media">
-      <picture>
-        <source media="(max-width:900px)" srcset="media/hero-still-1000.webp" type="image/webp">
-        <source media="(max-width:900px)" srcset="media/hero-still-1000.jpg">
-        <source srcset="media/hero-still-1600.webp" type="image/webp">
-        <img id="heroStill" src="media/hero-still-1600.jpg" alt="" fetchpriority="high" decoding="async">
-      </picture>
+  <!-- 01 COVER -->
+  <section class="cover" id="s-hero" data-theme="dark" data-photo data-sheet="01" data-name="Cover">
+    <div class="cover-media" aria-hidden="true">
+      <div class="pan">
+        <picture>
+          <source media="(max-width:900px)" srcset="media/hero-still-1000.webp" type="image/webp">
+          <source media="(max-width:900px)" srcset="media/hero-still-1000.jpg">
+          <source srcset="media/hero-still-1600.webp" type="image/webp">
+          <img src="media/hero-still-1600.jpg" alt="" fetchpriority="high" decoding="async">
+        </picture>
+      </div>
     </div>
-  </div>
-
-  <!-- Text layer, pulled back over the sticky media. These panels
-       scroll normally; the footage underneath does not move. -->
-  <div class="heroPanels">
-
-<section class="hero hpanel" id="s-hero" data-sheet="01" data-name="Cover" data-dark data-photo>
-  <div class="grid">
-    <div class="hero-title">
-      <h1>
-        <span class="ln"><span>The</span></span>
-        <span class="ln"><span>Expansion</span></span>
-        <span class="ln"><span>Playbook</span></span>
+    <div class="wrap cover-inner">
+      <h1 id="coverTitle">
+        <span class="ln">The</span>
+        <span class="ln">Expansion</span>
+        <span class="ln">Playbook</span>
       </h1>
-    </div>
-    <div class="hero-meta">
-      <p>A free 16-page guide for operators planning a second venue. What we'd want you to know before you sign.</p>
-    </div>
-    <div class="hero-cta">
-      <a href="#s-assess" class="btn">Take the readiness check</a>
-      <a href="#s-gate" class="link">Just send me the playbook</a>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     CONDITIONS — the recognition block, and the reason the case note
-     below now works harder. A third-person cautionary tale lets the
-     reader off the hook ("that guy picked a bad site, I wouldn't").
-     These three
-     statements are second person, present tense, and offer no exit.
-     Recognition first, then evidence.
-
-     Content is Jayson's selection. All three are true of the audience
-     and two of them (the risk asymmetry, the incentive mismatch) are
-     things nobody else sending these operators an email will say.
-     ============================================================ -->
-<section class="conditions" id="s-conditions" data-sheet="02" data-name="Conditions" data-dark data-photo>
-  <div class="grid">
-    <div class="head">
-      <h2 class="lede-line"><span>Your first try is built on belief.</span><span>Your second is built on proof.</span></h2>
-      <p class="sub">Opening one venue and running two are different businesses.</p>
-    </div>
-    <div class="list">
-      <p>If the second site doesn't work, it doesn't fail on its own. It takes the first one's cash down with it.</p>
-      <p>Everyone at that table gets paid whether it works or not. The agent, the shopfitter, the lawyer. You're the only one signing the lease.</p>
-      <p>The agents who didn't return your calls three years ago are calling you now. That's flattering enough to be dangerous.</p>
-    </div>
-    <p class="turn">None of this means don't do it. It means doing it deliberately, instead of on momentum.</p>
-  </div>
-</section>
-
-  <!-- Final beat: the finished drawing, alone, nothing over it.
-       This is what "utilise the full extent of the video" buys - the
-       completed linework gets a screen of its own before the pin
-       releases, instead of being covered by type the whole way. -->
-  <div class="hpanel hpanel-hold" aria-hidden="true"></div>
-</div>
-</div>
-
-
-<!-- ============================================================
-     PLATE — real agitation copy from Chapter 1, trimmed.
-     Photography is still a picsum placeholder pending real INCO
-     project images (the book has usable shots).
-     ============================================================ -->
-<section class="plate" id="s-plate" data-bg="slate" data-snap data-sheet="03" data-name="Reality check" data-dark data-photo>
-  <picture>
-    <source media="(max-width:900px)" srcset="media/plate-1000.webp" type="image/webp">
-    <source media="(max-width:900px)" srcset="media/plate-1000.jpg">
-    <source srcset="media/plate-1600.webp" type="image/webp">
-    <img src="media/plate-1600.jpg" alt="Interior of a completed INCO hospitality fitout" decoding="async">
-  </picture>
-  <div class="cap">
-    <div class="grid">
-      <div>
-        <h2>It rarely fails loudly.</h2>
-        <p>It creeps. Your operations start straining, your margins thin, and you quietly absorb the difference. By the time it's obvious enough to act on, you've already paid for it.</p>
+      <div class="cover-foot">
+        <p class="cover-lede" data-in>A free 16-page guide for operators planning a second venue. What we'd want you to know before you sign.</p>
+        <div class="cover-cta" data-in>
+          <a href="#s-assess" class="btn" data-magnetic>Take the readiness check</a>
+          <a href="#s-gate" class="link">Just send me the playbook</a>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
+  <!-- 02 CONDITIONS -->
+  <section class="conditions" id="s-conditions" data-theme="dark" data-sheet="02" data-name="Conditions">
+    <div class="wrap">
+      <h2 class="statement" data-scrub-words>Your first try is built on belief. Your second is built on proof.</h2>
+      <p class="sub" data-rise>Opening one venue and running two are different businesses.</p>
+      <div class="truths">
+        <div class="truth"><div class="rule" data-draw></div><p data-rise>If the second site doesn't work, it doesn't fail on its own. It takes the first one's cash down with it.</p></div>
+        <div class="truth"><div class="rule" data-draw></div><p data-rise>Everyone at that table gets paid whether it works or not. The agent, the shopfitter, the lawyer. You're the only one signing the lease.</p></div>
+        <div class="truth"><div class="rule" data-draw></div><p data-rise>The agents who didn't return your calls three years ago are calling you now. That's flattering enough to be dangerous.</p></div>
+      </div>
+      <p class="turn" data-rise>None of this means don't do it. It means doing it deliberately, instead of on momentum.</p>
+    </div>
+  </section>
 
-<!-- ============================================================
-     CASE NOTE — the venue that closed. Jayson's own account, from
-     Chapter 2 ("The postcode syndrome"), still in his voice.
+  <!-- 03 PLATE -->
+  <section class="plate" id="s-plate" data-theme="dark" data-photo data-sheet="03" data-name="Reality check">
+    <div class="plate-view" id="plateView">
+      <div class="zoom">
+        <picture>
+          <source media="(max-width:900px)" srcset="media/plate-1000.webp" type="image/webp">
+          <source media="(max-width:900px)" srcset="media/plate-1000.jpg">
+          <source srcset="media/plate-1600.webp" type="image/webp">
+          <img src="media/plate-1600.jpg" alt="Interior of a completed INCO hospitality fitout" loading="lazy" decoding="async">
+        </picture>
+      </div>
+    </div>
+    <div class="plate-cap">
+      <div class="wrap">
+        <h2 data-lines>It rarely fails loudly.</h2>
+        <p data-rise>It creeps. Your operations start straining, your margins thin, and you quietly absorb the difference. By the time it's obvious enough to act on, you've already paid for it.</p>
+      </div>
+    </div>
+  </section>
 
-     Moved up to sit directly under "It rarely fails loudly" so the
-     pain lands before the roadmap rather than after it: the abstract
-     claim on the plate above is immediately cashed out as a specific
-     business that shut. Spelled out further than the book does, but
-     only with facts the book supplies - seven years, four profitable
-     venues, a premium address, closed in two - because the frightening
-     part is that the operator was experienced, not that he was
-     careless. No invented figures.
-
-     This is also the strongest credibility asset on the page precisely
-     because it's a loss: proof INCO says the inconvenient thing, which
-     no testimonial wall can imitate.
-     ============================================================ -->
-<section class="casenote" id="s-case" data-fade data-bg="stone" data-snap data-sheet="04" data-name="Case note">
-  <div class="grid">
-    <div class="body">
+  <!-- 04 CASE NOTE -->
+  <section class="casenote" id="s-case" data-theme="light" data-sheet="04" data-name="Case note">
+    <div class="wrap grid">
       <h2 class="sr-only">Case note: the fifth venue</h2>
-      <blockquote>A client of mine had four successful venues in the Sydney CBD. After seven years he opened a fifth, in a premium Westfield food hall. That venue closed after two years.</blockquote>
-      <p class="after">He wasn't guessing. Seven years of trading, four profitable sites, a product people already queued for, and the best address he'd ever signed for. None of that was enough.</p>
-      <p class="after">The tenancy inside the centre was tucked away, and the foot traffic that walked past it was not the traffic his product was built for. The address looked impressive on paper and did nothing at the till. By the time that was obvious, the fitout was spent, two years of trading had gone, and the lease didn't end just because the doors did.</p>
-      <p class="after">Status is not a strategy. Working out why a site is the right one is a cheap question to answer before you sign, and an expensive one afterwards.</p>
-      <p class="sign">Jayson Lee, Director</p>
+      <blockquote data-lines>A client of mine had four successful venues in the Sydney CBD. After seven years he opened a fifth, in a premium Westfield food hall. That venue closed after two years.</blockquote>
+      <div class="after-col">
+        <p class="after" data-rise>He wasn't guessing. Seven years of trading, four profitable sites, a product people already queued for, and the best address he'd ever signed for. None of that was enough.</p>
+        <p class="after" data-rise>The tenancy inside the centre was tucked away, and the foot traffic that walked past it was not the traffic his product was built for. The address looked impressive on paper and did nothing at the till. By the time that was obvious, the fitout was spent, two years of trading had gone, and the lease didn't end just because the doors did.</p>
+        <p class="after" data-rise>Status is not a strategy. Working out why a site is the right one is a cheap question to answer before you sign, and an expensive one afterwards.</p>
+        <p class="sign" data-rise><span class="rule" data-draw></span>Jayson Lee, Director</p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ============================================================
-     ROADMAP — the book's five pressure-test ideas, as dimensioned
-     rows. Opening a row is a user action, so the motion is answering
-     input rather than performing on scroll.
-     ============================================================ -->
-<section class="roadmap" id="s-roadmap" data-fade data-bg="slate" data-snap data-sheet="05" data-name="The roadmap" data-dark>
-  <div class="grid">
-    <div class="head">
-      <h2><span>Five questions worth answering</span><span>before you sign anything.</span></h2>
-      <p>These are the ones we'd put to you before you commit to a site.</p>
+  <!-- 05 ROADMAP -->
+  <section class="roadmap" id="s-roadmap" data-theme="dark" data-sheet="05" data-name="The roadmap">
+    <div class="wrap rm-inner">
+      <h2 data-lines>Five questions worth answering before you sign anything.</h2>
+      <p class="intro" data-rise>These are the ones we'd put to you before you commit to a site.</p>
+      <div class="q-track" id="qTrack">
+        <article class="q-panel"><span class="q-num">01</span><h3 class="q-name">Brand</h3><p class="q-body">Know where the brand is going before you know where the site is. A clear three or five year direction turns site decisions into assessments instead of reactions to whatever the agent just called about.</p></article>
+        <article class="q-panel"><span class="q-num">02</span><h3 class="q-name">Systems</h3><p class="q-body">Growth doesn't fix weak systems, it amplifies them. If parts of the business depend on you being physically present, a second site puts pressure on exactly those parts. Build the back end and hire your second-in-charge before you need them.</p></article>
+        <article class="q-panel"><span class="q-num">03</span><h3 class="q-name">Numbers</h3><p class="q-body">Confidence and instinct get you started. Hard numbers keep you open. Lease cost as a percentage of the revenue you're forecasting, average sale value, and a real payback period, worked out before capital is committed rather than after.</p></article>
+        <article class="q-panel"><span class="q-num">04</span><h3 class="q-name">Market</h3><p class="q-body">Your offer doesn't automatically travel. Every neighbourhood has its own habits and spending patterns, and a product thriving in the CBD can struggle in the suburbs. The site needs a demographic that fits what you sell, not just an address that sounds impressive.</p></article>
+        <article class="q-panel"><span class="q-num">05</span><h3 class="q-name">Identity</h3><p class="q-body">Same brand or a fresh one. Repetition builds trust but demands consistency; a separate identity buys flexibility but doubles the work. Decide deliberately which one you're building before the signage goes up.</p></article>
+      </div>
+      <!-- A dimension string: ticks for the five questions, filled as you travel. -->
+      <div class="q-dim" id="qDim" aria-hidden="true"><div class="base"></div><div class="fill" id="qDimFill"></div></div>
     </div>
-    <div class="rows" id="rows">
+  </section>
 
-      <div class="row open">
-        <button class="row-btn" aria-expanded="true">
-          <span class="row-idx">01</span>
-          <span class="row-name">Brand</span>
-          <span class="row-dim"><span></span></span>
-          <span class="row-plus"></span>
-        </button>
-        <div class="row-body"><div><p>Know where the brand is going before you know where the site is. A clear three or five year direction turns site decisions into assessments instead of reactions to whatever the agent just called about.</p></div></div>
+  <!-- 06 READINESS -->
+  <section class="assess" id="s-assess" data-theme="olive" data-sheet="06" data-name="Readiness">
+    <div class="wrap grid">
+      <div class="head">
+        <h2 data-lines>Are you actually ready?</h2>
+        <p data-rise>Four questions, no email until the end. Answer honestly. The flattering answer won't help you.</p>
+        <div class="count"><span id="qCount" aria-live="polite">Question 1 of 4</span></div>
+        <div class="bar"><i id="qBar"></i></div>
+        <button type="button" class="link qnav" id="qBack" hidden>Back to the previous question</button>
       </div>
 
-      <div class="row">
-        <button class="row-btn" aria-expanded="false">
-          <span class="row-idx">02</span>
-          <span class="row-name">Systems</span>
-          <span class="row-dim"><span></span></span>
-          <span class="row-plus"></span>
-        </button>
-        <div class="row-body"><div><p>Growth doesn't fix weak systems, it amplifies them. If parts of the business depend on you being physically present, a second site puts pressure on exactly those parts. Build the back end and hire your second-in-charge before you need them.</p></div></div>
-      </div>
-
-      <div class="row">
-        <button class="row-btn" aria-expanded="false">
-          <span class="row-idx">03</span>
-          <span class="row-name">Numbers</span>
-          <span class="row-dim"><span></span></span>
-          <span class="row-plus"></span>
-        </button>
-        <div class="row-body"><div><p>Confidence and instinct get you started. Hard numbers keep you open. Lease cost as a percentage of the revenue you're forecasting, average sale value, and a real payback period, worked out before capital is committed rather than after.</p></div></div>
-      </div>
-
-      <div class="row">
-        <button class="row-btn" aria-expanded="false">
-          <span class="row-idx">04</span>
-          <span class="row-name">Market</span>
-          <span class="row-dim"><span></span></span>
-          <span class="row-plus"></span>
-        </button>
-        <div class="row-body"><div><p>Your offer doesn't automatically travel. Every neighbourhood has its own habits and spending patterns, and a product thriving in the CBD can struggle in the suburbs. The site needs a demographic that fits what you sell, not just an address that sounds impressive.</p></div></div>
-      </div>
-
-      <div class="row">
-        <button class="row-btn" aria-expanded="false">
-          <span class="row-idx">05</span>
-          <span class="row-name">Identity</span>
-          <span class="row-dim"><span></span></span>
-          <span class="row-plus"></span>
-        </button>
-        <div class="row-body"><div><p>Same brand or a fresh one. Repetition builds trust but demands consistency; a separate identity buys flexibility but doubles the work. Decide deliberately which one you're building before the signage goes up.</p></div></div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     ASSESSMENT — the qualifying quiz, logic unchanged from the
-     previous build, restaged across the grid. Ready-now scorers get
-     a route to a conversation as well as the download.
-     ============================================================ -->
-<section class="assess" id="s-assess" data-fade data-bg="olive" data-snap data-sheet="06" data-name="Readiness" data-dark>
-  <div class="grid">
-    <div class="head">
-      <h2>Are you actually ready?</h2>
-      <p>Four questions, no email until the end. Answer honestly. The flattering answer won't help you.</p>
-      <div class="count"><span id="qCount" aria-live="polite">Question 1 of 4</span></div>
-      <div class="bar"><i id="qBar"></i></div>
-      <button type="button" class="link qnav" id="qBack" hidden>Back to the previous question</button>
-    </div>
-
-    <div class="panelwrap">
-      <div class="qp on" data-q="1" role="group" aria-labelledby="q1">
-        <p class="q" id="q1">Does your first venue run profitably when you're not physically there?</p>
-        <button class="opt" data-score="2"><span>Yes, it holds up without me</span></button>
-        <button class="opt" data-score="1"><span>Mostly, with some hands-on days</span></button>
-        <button class="opt" data-score="0"><span>No, I'm still the glue</span></button>
-      </div>
-      <div class="qp" data-q="2" role="group" aria-labelledby="q2">
-        <p class="q" id="q2">Is your brand written down, or does it live in your head?</p>
-        <button class="opt" data-score="2"><span>Documented properly</span></button>
-        <button class="opt" data-score="1"><span>Partly, some of it</span></button>
-        <button class="opt" data-score="0"><span>In my head</span></button>
-      </div>
-      <div class="qp" data-q="3" role="group" aria-labelledby="q3">
-        <p class="q" id="q3">Have you scoped a real budget for site two, or is it still a guess?</p>
-        <button class="opt" data-score="2"><span>Quoted and scoped</span></button>
-        <button class="opt" data-score="1"><span>A rough range</span></button>
-        <button class="opt" data-score="0"><span>Not yet</span></button>
-      </div>
-      <div class="qp" data-q="4" role="group" aria-labelledby="q4">
-        <p class="q" id="q4">When would you want the next site open?</p>
-        <button class="opt" data-score="2"><span>Within six months</span></button>
-        <button class="opt" data-score="1"><span>Six to eighteen months</span></button>
-        <button class="opt" data-score="0"><span>No fixed timeline</span></button>
-      </div>
-
-      <div class="result" id="result">
-        <p class="verdict" id="verdict">Result</p>
-        <h3 id="rTitle" tabindex="-1"></h3>
-        <div class="scale">
-          <div class="track2"><i id="rFill"></i></div>
-          <b id="rScore">0/8</b>
+      <div class="panelwrap" data-rise>
+        <div class="qp on" data-q="1" role="group" aria-labelledby="q1">
+          <p class="q" id="q1">Does your first venue run profitably when you're not physically there?</p>
+          <button class="opt" data-score="2" data-cursor="Select"><i></i><span>Yes, it holds up without me</span></button>
+          <button class="opt" data-score="1" data-cursor="Select"><i></i><span>Mostly, with some hands-on days</span></button>
+          <button class="opt" data-score="0" data-cursor="Select"><i></i><span>No, I'm still the glue</span></button>
         </div>
-        <!-- Per-dimension breakdown, built from the four answers. This is
-             the part that makes the result worth reading: it tells them
-             which of the roadmap's dimensions is their weak one, which
-             they didn't explicitly type in. -->
-        <div class="diag" id="rDiag"></div>
-        <!-- Cohort benchmark. Stays hidden until COHORT_AVG is set to a
-             real number in the script below; nothing invented ships. -->
-        <p class="bench" id="rBench"></p>
-        <p id="rDesc"></p>
-        <div class="acts">
-          <a href="#s-gate" class="btn btn-pale">Get the playbook</a>
-          <a href="#" class="link" id="callCta" target="_blank" rel="noopener">Book a call</a>
-          <button type="button" class="link qnav" id="qRetake">Retake the check</button>
+        <div class="qp" data-q="2" role="group" aria-labelledby="q2">
+          <p class="q" id="q2">Is your brand written down, or does it live in your head?</p>
+          <button class="opt" data-score="2" data-cursor="Select"><i></i><span>Documented properly</span></button>
+          <button class="opt" data-score="1" data-cursor="Select"><i></i><span>Partly, some of it</span></button>
+          <button class="opt" data-score="0" data-cursor="Select"><i></i><span>In my head</span></button>
+        </div>
+        <div class="qp" data-q="3" role="group" aria-labelledby="q3">
+          <p class="q" id="q3">Have you scoped a real budget for site two, or is it still a guess?</p>
+          <button class="opt" data-score="2" data-cursor="Select"><i></i><span>Quoted and scoped</span></button>
+          <button class="opt" data-score="1" data-cursor="Select"><i></i><span>A rough range</span></button>
+          <button class="opt" data-score="0" data-cursor="Select"><i></i><span>Not yet</span></button>
+        </div>
+        <div class="qp" data-q="4" role="group" aria-labelledby="q4">
+          <p class="q" id="q4">When would you want the next site open?</p>
+          <button class="opt" data-score="2" data-cursor="Select"><i></i><span>Within six months</span></button>
+          <button class="opt" data-score="1" data-cursor="Select"><i></i><span>Six to eighteen months</span></button>
+          <button class="opt" data-score="0" data-cursor="Select"><i></i><span>No fixed timeline</span></button>
+        </div>
+
+        <div class="result" id="result">
+          <p class="verdict" id="verdict">Result</p>
+          <h3 id="rTitle" tabindex="-1"></h3>
+          <div class="scale">
+            <div class="track2"><i id="rFill"></i></div>
+            <b id="rScore">0/8</b>
+          </div>
+          <div class="diag" id="rDiag"></div>
+          <p class="bench" id="rBench"></p>
+          <p id="rDesc"></p>
+          <div class="acts">
+            <a href="#s-gate" class="btn btn-pale" data-magnetic>Get the playbook</a>
+            <a href="#" class="link" id="callCta" target="_blank" rel="noopener">Book a call</a>
+            <button type="button" class="link qnav" id="qRetake">Retake the check</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ============================================================
-     PRACTICE — the About section, as a drawing title block. Sits
-     immediately before the ask, which is where proof does the most
-     work. Credentials are tabulated as facts (founded, based,
-     recognition) rather than written as claims: "two Better Future
-     Australia design awards" carries more than "award-winning", and
-     the studio's own voice rule is specificity over declaration.
-
-     The client marks below are the real supplied logos, flattened to
-     one ink colour and optically size-matched. Labelled
-     "Collaborators" rather than "Trusted by": the first is a
-     statement of fact, the second asks the reader to feel something
-     about it.
-     ============================================================ -->
-<section class="practice" id="s-practice" data-fade data-bg="stone-dim" data-snap data-sheet="07" data-name="Practice">
-  <div class="grid">
-    <div class="portrait">
-      <picture>
-        <source srcset="media/portrait-900.webp" type="image/webp">
-        <img src="media/portrait-900.jpg" alt="Jayson Lee, Director of INCO Studio" loading="lazy" decoding="async">
-      </picture>
-      <p class="cap">Jayson Lee, Director</p>
-    </div>
-
-    <div class="lead">
-      <h2>Who you'd be working with.</h2>
-      <p>Founder and Design Leader of INCO Studio, Jayson draws from his diverse background and years of experience in Europe, Asia and Australia. His projects stretch across multiple sectors.</p>
-      <p>Over the past 15 years, Jayson has honed his craft across Sydney and London, specialising in multi-faceted design disciplines including branding, hospitality, retail, and residential projects.</p>
-      <p>His dedication to understanding the interplay between design and human behaviour has guided his projects towards fostering meaningful connections and creating spaces where individual stories can unfold.</p>
-    </div>
-
-    <div class="block">
-      <dl>
-        <dt>Founded</dt><dd>2019, Sydney</dd>
-        <dt>Practice</dt><dd>Hospitality design, interior architecture, brand strategy, expansion planning</dd>
-        <dt>Recognition</dt><dd>Two-time winner, Better Future Australia Design Awards (Hospitality)</dd>
-        <dt>Director</dt><dd>Jayson Lee</dd>
+  <!-- 07 PRACTICE -->
+  <section class="practice" id="s-practice" data-theme="dim" data-sheet="07" data-name="Practice">
+    <div class="wrap grid">
+      <div class="lead">
+        <h2 data-lines>Who you'd be working with.</h2>
+        <p data-rise>Founder and Design Leader of INCO Studio, Jayson draws from his diverse background and years of experience in Europe, Asia and Australia. His projects stretch across multiple sectors.</p>
+        <p data-rise>Over the past 15 years, Jayson has honed his craft across Sydney and London, specialising in multi-faceted design disciplines including branding, hospitality, retail, and residential projects.</p>
+        <p data-rise>His dedication to understanding the interplay between design and human behaviour has guided his projects towards fostering meaningful connections and creating spaces where individual stories can unfold.</p>
+      </div>
+      <figure class="portrait">
+        <div class="view" id="portraitView">
+          <picture>
+            <source srcset="media/portrait-900.webp" type="image/webp">
+            <img src="media/portrait-900.jpg" alt="Jayson Lee, Director of INCO Studio" loading="lazy" decoding="async">
+          </picture>
+        </div>
+        <figcaption class="cap">Jayson Lee, Director</figcaption>
+      </figure>
+      <dl class="facts">
+        <div class="row"><span class="rule" data-draw></span><dt>Founded</dt><dd>2019, Sydney</dd></div>
+        <div class="row"><span class="rule" data-draw></span><dt>Practice</dt><dd>Hospitality design, interior architecture, brand strategy, expansion planning</dd></div>
+        <div class="row"><span class="rule" data-draw></span><dt>Recognition</dt><dd>Two-time winner, Better Future Australia Design Awards (Hospitality)</dd></div>
+        <div class="row"><span class="rule" data-draw></span><dt>Director</dt><dd>Jayson Lee</dd></div>
       </dl>
-    </div>
-
-    <div class="clients">
-      <div class="rule"></div>
-      <p class="cohort">Collaborators</p>
-      <div class="marks">
-        <img src="media/logos/luxottica.png"  width="400" height="140" alt="Luxottica" loading="lazy" decoding="async">
-        <img src="media/logos/panpacific.png" width="400" height="140" alt="Pan Pacific" loading="lazy" decoding="async">
-        <img src="media/logos/autograph.png"  width="400" height="140" alt="Autograph Collection Hotels" loading="lazy" decoding="async">
-        <img src="media/logos/laderach.png"   width="400" height="140" alt="Läderach Switzerland" loading="lazy" decoding="async">
-        <img src="media/logos/qic.png"        width="400" height="140" alt="QIC" loading="lazy" decoding="async">
-        <img src="media/logos/peninsula.png"  width="400" height="140" alt="The Peninsula Hotels" loading="lazy" decoding="async">
-        <img src="media/logos/scentre.png"    width="400" height="140" alt="Scentre Group" loading="lazy" decoding="async">
-        <img src="media/logos/clarins.png"    width="400" height="140" alt="Clarins" loading="lazy" decoding="async">
-        <img src="media/logos/dulcet.png"     width="400" height="140" alt="Dulcet" loading="lazy" decoding="async">
-        <img src="media/logos/duoduo.png"     width="400" height="140" alt="Duo Duo" loading="lazy" decoding="async">
+      <div class="clients">
+        <div class="rule" data-draw></div>
+        <p class="cohort">Collaborators</p>
+        <div class="marks" data-stagger>
+          <img src="media/logos/luxottica.png"  width="400" height="140" alt="Luxottica" loading="lazy" decoding="async">
+          <img src="media/logos/panpacific.png" width="400" height="140" alt="Pan Pacific" loading="lazy" decoding="async">
+          <img src="media/logos/autograph.png"  width="400" height="140" alt="Autograph Collection Hotels" loading="lazy" decoding="async">
+          <img src="media/logos/laderach.png"   width="400" height="140" alt="Läderach Switzerland" loading="lazy" decoding="async">
+          <img src="media/logos/qic.png"        width="400" height="140" alt="QIC" loading="lazy" decoding="async">
+          <img src="media/logos/peninsula.png"  width="400" height="140" alt="The Peninsula Hotels" loading="lazy" decoding="async">
+          <img src="media/logos/scentre.png"    width="400" height="140" alt="Scentre Group" loading="lazy" decoding="async">
+          <img src="media/logos/clarins.png"    width="400" height="140" alt="Clarins" loading="lazy" decoding="async">
+          <img src="media/logos/dulcet.png"     width="400" height="140" alt="Dulcet" loading="lazy" decoding="async">
+          <img src="media/logos/duoduo.png"     width="400" height="140" alt="Duo Duo" loading="lazy" decoding="async">
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ============================================================
-     GATE — copy left, form right.
-     ============================================================ -->
-<section class="gate" id="s-gate" data-fade data-bg="slate" data-snap data-sheet="08" data-name="Download" data-dark>
-  <div class="grid">
-    <div class="pitch">
-      <h2>Where should we send it?</h2>
-      <p>Sixteen pages, drawn from real projects, including the ones that didn't work.</p>
-      <ul>
-        <li>The five questions to answer before you sign</li>
-        <li>The site-fit checklist</li>
-        <li>The A-team roster and go-to contacts</li>
-      </ul>
-    </div>
-
-    <div class="form">
-      <div id="formWrap">
-        <form id="playbookForm" novalidate>
-          <div class="field" id="fName">
-            <label for="iName">Name</label>
-            <input id="iName" type="text" name="name" autocomplete="name" placeholder="Your name" required>
-            <div class="err">Enter your name.</div>
-          </div>
-          <div class="field" id="fEmail">
-            <label for="iEmail">Email</label>
-            <input id="iEmail" type="email" name="email" autocomplete="email" placeholder="you@venue.com" required>
-            <div class="err">Enter a valid email.</div>
-          </div>
-          <div class="field" id="fPhone">
-            <label for="iPhone">Phone</label>
-            <input id="iPhone" type="tel" name="phone" inputmode="tel" autocomplete="tel"
-                   placeholder="04XX XXX XXX" required aria-describedby="ePhone">
-            <div class="err" id="ePhone">Enter a contact number.</div>
-          </div>
-          <div class="field" id="fCo">
-            <label for="iCo">Venue or company</label>
-            <input id="iCo" type="text" name="company" autocomplete="organization" placeholder="Where you operate" required>
-            <div class="err">Enter your venue or company.</div>
-          </div>
-          <!-- ADDED: honeypot field, hidden from people. If it comes back filled in, it's a bot. -->
-          <div class="hp" aria-hidden="true">
-            <label for="iWebsite">Website</label>
-            <input id="iWebsite" type="text" name="website" tabindex="-1" autocomplete="off">
-          </div>
-          <button type="submit" class="btn submit" id="submitBtn">Email me the playbook</button>
-          <!-- ADDED: error message if sending fails -->
-          <p class="form-err" id="formErr" role="alert"></p>
-          <p class="fineprint">We'll email you the playbook and may follow up about it. Unsubscribe any time. Read our <a href="#" id="privacyLink" target="_blank" rel="noopener">privacy policy</a>.</p>
-        </form>
-        <!-- Hidden: the quiz result travels with the lead to the CRM.
-             A visitor doesn't need to read their own scoring tag. -->
-        <p style="display:none;">Segment: <strong id="segTag">not-taken</strong></p>
+  <!-- 08 DOWNLOAD -->
+  <section class="gate" id="s-gate" data-theme="dark" data-sheet="08" data-name="Download">
+    <div class="wrap grid">
+      <div class="pitch">
+        <h2 data-lines>Where should we send it?</h2>
+        <p data-rise>Sixteen pages, drawn from real projects, including the ones that didn't work.</p>
+        <ul>
+          <li><span class="rule" data-draw></span>The five questions to answer before you sign</li>
+          <li><span class="rule" data-draw></span>The site-fit checklist</li>
+          <li><span class="rule" data-draw></span>The A-team roster and go-to contacts</li>
+        </ul>
       </div>
 
-      <div class="sent" id="sent">
-        <h3>Sent.</h3>
-        <p>Check your inbox. The playbook is on its way.</p>
-        <!-- CHANGED: playbook is delivered by email only, so the download button is switched off.
-        <a class="btn btn-pale" id="pdfLink" href="#" target="_blank" rel="noopener">Download now</a>
-        -->
+      <div class="form" data-rise>
+        <div id="formWrap">
+          <form id="playbookForm" novalidate>
+            <div class="field" id="fName">
+              <label for="iName">Name</label>
+              <input id="iName" type="text" name="name" autocomplete="name" placeholder="Your name" required>
+              <div class="err">Enter your name.</div>
+            </div>
+            <div class="field" id="fEmail">
+              <label for="iEmail">Email</label>
+              <input id="iEmail" type="email" name="email" autocomplete="email" placeholder="you@venue.com" required>
+              <div class="err">Enter a valid email.</div>
+            </div>
+            <div class="field" id="fPhone">
+              <label for="iPhone">Phone</label>
+              <input id="iPhone" type="tel" name="phone" inputmode="tel" autocomplete="tel"
+                     placeholder="04XX XXX XXX" required aria-describedby="ePhone">
+              <div class="err" id="ePhone">Enter a contact number.</div>
+            </div>
+            <div class="field" id="fCo">
+              <label for="iCo">Venue or company</label>
+              <input id="iCo" type="text" name="company" autocomplete="organization" placeholder="Where you operate" required>
+              <div class="err">Enter your venue or company.</div>
+            </div>
+            <div class="hp" aria-hidden="true">
+              <label for="iWebsite">Website</label>
+              <input id="iWebsite" type="text" name="website" tabindex="-1" autocomplete="off">
+            </div>
+            <button type="submit" class="btn submit" id="submitBtn">Email me the playbook</button>
+            <p class="form-err" id="formErr" role="alert"></p>
+            <p class="fineprint">We'll email you the playbook and may follow up about it. Unsubscribe any time. Read our <a href="#" id="privacyLink" target="_blank" rel="noopener">privacy policy</a>.</p>
+          </form>
+          <p style="display:none;">Segment: <strong id="segTag">not-taken</strong></p>
+        </div>
+        <div class="sent" id="sent">
+          <h3>Sent.</h3>
+          <p>Check your inbox. The playbook is on its way.</p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ============================================================
-     TAILPIECE — the other readiness path.
-     ============================================================ -->
-<section class="tail" id="s-tail" data-fade="in" data-bg="stone" data-snap data-sheet="09" data-name="Contact">
-  <div class="grid">
-    <div class="msg">
-      <h2>Already deep in a lease negotiation?</h2>
-      <p>Then skip the download. If you're testing a site this week, it's faster to just talk it through.</p>
-      <a href="#" class="btn" id="tailCall" target="_blank" rel="noopener">Book a call</a>
+  <!-- 09 CONTACT -->
+  <section class="tail" id="s-tail" data-theme="light" data-sheet="09" data-name="Contact">
+    <div class="wrap">
+      <div class="msg">
+        <h2 data-lines>Already deep in a lease negotiation?</h2>
+        <p data-rise>Then skip the download. If you're testing a site this week, it's faster to just talk it through.</p>
+        <a href="#" class="btn" id="tailCall" target="_blank" rel="noopener" data-magnetic>Book a call</a>
+      </div>
+      <div class="tail-foot">
+        <div class="foot-social">
+          <a href="https://www.linkedin.com/company/incostudio/" target="_blank" rel="noopener noreferrer" aria-label="INCO Studio on LinkedIn" data-network="linkedin">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10.5V17M12 17v-6.5M12 13.4c0-1.8 1.2-2.9 2.8-2.9S17.5 11.6 17.5 13.4V17"/><circle class="dot" cx="8" cy="7.4" r="1"/></svg>
+          </a>
+          <a href="https://www.instagram.com/_incostudio/" target="_blank" rel="noopener noreferrer" aria-label="INCO Studio on Instagram" data-network="instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle class="dot" cx="17.2" cy="6.8" r="1"/></svg>
+          </a>
+        </div>
+        <div class="foot-line">
+          <span class="rule" data-draw></span>
+          <span>INCO Studio, Sydney</span>
+          <a href="mailto:hello@incostudio.co" class="link">hello@incostudio.co</a>
+          <a href="privacy.html" class="link">Privacy policy</a>
+        </div>
+      </div>
     </div>
-  </div>
-  <!-- Bottom of the Contact sheet, inside the border. The wordmark
-       below it, in the footer, sits outside. -->
-  <div class="grid tail-foot">
-    <div class="foot-social">
-      <a href="https://www.linkedin.com/company/incostudio/" target="_blank" rel="noopener noreferrer" aria-label="INCO Studio on LinkedIn" data-network="linkedin">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10.5V17M12 17v-6.5M12 13.4c0-1.8 1.2-2.9 2.8-2.9S17.5 11.6 17.5 13.4V17"/><circle class="dot" cx="8" cy="7.4" r="1"/></svg>
-      </a>
-      <a href="https://www.instagram.com/_incostudio/" target="_blank" rel="noopener noreferrer" aria-label="INCO Studio on Instagram" data-network="instagram">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle class="dot" cx="17.2" cy="6.8" r="1"/></svg>
-      </a>
+    <div class="wordmark" id="wordmark">
+      <picture>
+        <source srcset="media/inco-logo.webp" type="image/webp">
+        <img src="media/inco-logo.png" width="1894" height="614" alt="INCO" loading="lazy" decoding="async">
+      </picture>
     </div>
-    <div class="foot-line">
-      <span>INCO Studio, Sydney</span>
-      <a href="mailto:hello@incostudio.co">hello@incostudio.co</a>
-      <a href="privacy.html">Privacy policy</a>
-    </div>
-  </div>
-</section>
+  </section>
 
 </main>
+</div>
+</div>
 
-<footer data-sheet="09" data-name="Contact">
-  <!-- Edge to edge: outside the grid on purpose, so the wordmark spans the
-       whole browser width at any size. The asset is trimmed to its ink, so
-       the letters themselves meet both edges. -->
-  <div class="foot-logo">
-    <picture>
-      <source srcset="media/inco-logo.webp" type="image/webp">
-      <img src="media/inco-logo.png" width="1894" height="614" alt="INCO" loading="lazy" decoding="async">
-    </picture>
-  </div>
-</footer>
-
-<!-- ============================================================
-     ADDED: LINKS. Fills in the booking, PDF and privacy links from the
-     settings block. Runs before the snap script on purpose, so real
-     links aren't picked up as on-page jumps.
-     ============================================================ -->
 <script>
 (function () {
   var c = window.INCO;
@@ -1583,11 +847,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   setLink("tailCall",    c.bookingUrl, bookClick);
   setLink("privacyLink", c.privacyUrl);
 
-  // Skip link: after the page glides to the form, put the keyboard there too
-  var skip = document.querySelector(".skip");
-  if (skip) skip.addEventListener("click", function () {
-    setTimeout(function () { var f = document.getElementById("iName"); if (f) f.focus({ preventScroll: true }); }, 800);
-  });
 
   // Send social clicks to GTM
   document.querySelectorAll(".foot-social a").forEach(function (a) {
@@ -1597,636 +856,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 })();
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
-
 <script>
-var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
-
-/* ============================================================
-   SHEET READOUT + FRAME INVERSION
-   The frame, masthead and readout invert over dark sections. The
-   readout reports which sheet you're on: wayfinding, not chrome.
-   ============================================================ */
-(function () {
-  var sections = Array.prototype.slice.call(document.querySelectorAll("section[data-sheet], footer[data-sheet]"));
-  var rdNum = document.getElementById("rdNum");
-  var rdName = document.getElementById("rdName");
-  var sheet = document.getElementById("sheet");
-  var masthead = document.getElementById("masthead");
-  var readout = document.getElementById("readout");
-  var plumb = document.querySelector(".plumb");
-  if (!sections.length || !("IntersectionObserver" in window)) return;
-
-  var current = null;
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      if (current === e.target) return;
-      current = e.target;
-      rdNum.textContent = e.target.dataset.sheet;
-      plumb.classList.toggle("done", e.target.dataset.sheet === "09");
-      rdName.textContent = e.target.dataset.name;
-      var dark = e.target.hasAttribute("data-dark");
-      sheet.classList.toggle("sheet-dark", dark);
-      masthead.classList.toggle("on-dark", dark);
-      readout.classList.toggle("on-dark", dark);
-    });
-  }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
-  sections.forEach(function (s) { obs.observe(s); });
-})();
-
-
-/* ============================================================
-   WHAT'S UNDER THE CHROME — the header and the page counter each
-   check the sheet directly beneath them, not the middle of the screen.
-   Over a photograph (or the phone's solid Conditions panel) they go
-   light; everywhere else they follow the crossfading colour layer.
-   Deciding by mid-screen flipped the header a whole screen early on
-   phones, in both directions.
-   ============================================================ */
-(function () {
-  var masthead = document.getElementById("masthead");
-  var readout = document.getElementById("readout");
-  var mark = masthead && masthead.querySelector(".mh-mark");
-  var sheets = Array.prototype.slice.call(document.querySelectorAll("section[data-sheet], footer[data-sheet]"));
-  if (!masthead || !readout || !mark || !sheets.length) return;
-  var queued = false;
-
-  function sheetAt(y) {
-    for (var i = 0; i < sheets.length; i++) {
-      var r = sheets[i].getBoundingClientRect();
-      if (r.top <= y && r.bottom > y) return sheets[i];
-    }
-    return null;
-  }
-  function overPhoto(y) {
-    var s = sheetAt(y);
-    return !!(s && s.hasAttribute("data-photo"));
-  }
-  function update() {
-    queued = false;
-    var m = mark.getBoundingClientRect(), r = readout.getBoundingClientRect();
-    masthead.classList.toggle("on-photo", overPhoto(m.top + m.height / 2));
-    readout.classList.toggle("on-photo", r.height ? overPhoto(r.top + r.height / 2) : false);
-  }
-  function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
-  window.addEventListener("scroll", queue, { passive: true });
-  window.addEventListener("resize", queue);
-  update();
-})();
-
-/* ============================================================
-   BACKGROUND CROSSFADE + CONTENT FADE + MASTHEAD SWAP
-
-   Three effects that only work because they run together. The
-   background bleeds from one section's colour to the next over a
-   band of scroll; the content of each section fades up as it arrives
-   and back down as it leaves; and because the copy is at zero in the
-   gap between pages, the colour change and the light/dark text
-   switch both happen while there is nothing readable on top of them.
-   Done separately, any one of the three would show its seams.
-   ============================================================ */
-(function () {
-  if (!window.gsap || !window.ScrollTrigger) return;
-
-  var css = getComputedStyle(document.documentElement);
-  function hex(name) {
-    var h = css.getPropertyValue(name).trim().replace("#", "");
-    if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
-    return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
-  }
-  var COLORS = {
-    "stone": hex("--stone"), "stone-dim": hex("--stone-dim"),
-    "slate": hex("--slate"), "olive": hex("--olive")
-  };
-
-  var bgLayer = document.getElementById("bgLayer");
-
-  /* ------------------------------------------------------------
-     CONTENT FADE
-
-     One trigger per section spanning its whole passage through the
-     viewport, with opacity COMPUTED from progress rather than
-     animated toward a target.
-
-     The earlier version used two tweens per section, a fade-in and a
-     fade-out, both writing opacity on the same element. GSAP records
-     a tween's start value on first render and holds its end value
-     outside its own range, so going down worked and coming back up
-     the fade-out pinned the section at zero and the text vanished.
-     Two animations owning one property is the bug; a single pure
-     function of scroll position cannot have it, because up and down
-     are the same code path.
-     ------------------------------------------------------------ */
-  if (!reduce) {
-    document.querySelectorAll("[data-fade]").forEach(function (sec) {
-      var band = 0, total = 0;
-
-      function measure() {
-        total = window.innerHeight + sec.offsetHeight;
-        band = (window.innerHeight * 0.34) / total;   // fade distance as a fraction
-      }
-
-      function apply(p) {
-        var o;
-        if (p < band) o = p / band;                 // arriving
-        else if (p > 1 - band && sec.getAttribute("data-fade") !== "in") o = (1 - p) / band;  // leaving (the last sheet only fades in)
-        else o = 1;                                 // holding
-        sec.style.opacity = Math.max(0, Math.min(o, 1)).toFixed(3);
-      }
-
-      measure();
-      ScrollTrigger.create({
-        trigger: sec,
-        start: "top bottom",
-        end: "bottom top",
-        onRefresh: function (self) { measure(); apply(self.progress); },
-        onUpdate: function (self) { apply(self.progress); }
-      });
-    });
-
-    // The plate owns a photograph, so only its caption fades.
-    var cap = document.querySelector(".plate .cap");
-    if (cap) {
-      ScrollTrigger.create({
-        trigger: ".plate",
-        start: "top bottom",
-        end: "bottom top",
-        onRefresh: capFade,
-        onUpdate: capFade
-      });
-    }
-    function capFade(self) {
-      var p = self.progress, o;
-      if (p < 0.3) o = p / 0.3; else if (p > 0.85) o = (1 - p) / 0.15; else o = 1;
-      cap.style.opacity = Math.max(0, Math.min(o, 1)).toFixed(3);
-    }
-  }
-
-  /* ------------------------------------------------------------
-     BACKGROUND CROSSFADE
-
-     Same principle: one controller that works out the colour for the
-     current scroll position, instead of eight tweens all writing
-     backgroundColor and fighting over it on the way back up.
-
-     Each coloured section contributes a stop. The layer holds a
-     colour while that section owns the viewport centre, then blends
-     to the next over the last stretch before the handover.
-     ------------------------------------------------------------ */
-  if (bgLayer && !reduce) {
-    document.documentElement.classList.add("bg-xfade");
-
-    var stops = [];
-    function build() {
-      stops = [];
-      document.querySelectorAll("[data-bg]").forEach(function (sec) {
-        var c = COLORS[sec.dataset.bg];
-        if (!c) return;
-        stops.push({ y: sec.getBoundingClientRect().top + window.scrollY, c: c });
-      });
-      stops.sort(function (a, b) { return a.y - b.y; });
-      sizeBand();
-    }
-
-    /* Fixed-length, eased crossfade STRADDLING each boundary.
-
-       Two earlier attempts at this were wrong in instructive ways.
-       First: blending over "the last 45% of the gap between sections"
-       — but the roadmap runs 160vh and the tail 70vh, so the same 45%
-       meant 72vh of blend in one place and 31vh in another, and the
-       short ones read as a snap. Second: a fixed band, but measured
-       only on the approach to the boundary, so the colour reached
-       halfway and then jumped the rest the instant the segment
-       lookup advanced.
-
-       This version centres the band on the boundary: the blend starts
-       half a band before it and finishes half a band after, so the
-       same curve covers both sides and there is no seam at the
-       crossing. Smoothstepped rather than linear, because a linear
-       ramp has hard corners at both ends and the eye catches them.
-
-       The band is also clamped below the shortest gap on the page, so
-       two transitions can never overlap and fight. */
-    var band = 0;
-    function sizeBand() {
-      var vh = window.innerHeight;
-      var smallest = Infinity;
-      for (var i = 0; i < stops.length - 1; i++) {
-        smallest = Math.min(smallest, stops[i + 1].y - stops[i].y);
-      }
-      band = Math.min(vh * 0.9, smallest * 0.9);
-    }
-
-    function smooth(k) { return k * k * (3 - 2 * k); }
-
-    function paint() {
-      if (!stops.length) return;
-      var vh = window.innerHeight;
-      var mid = window.scrollY + vh * 0.5;
-
-      // which segment are we in
-      var i = 0;
-      while (i < stops.length - 1 && mid >= stops[i + 1].y) i++;
-      var col = stops[i].c;
-
-      // still finishing the blend that began before this boundary
-      if (i > 0 && mid - stops[i].y < band * 0.5) {
-        var kIn = (mid - (stops[i].y - band * 0.5)) / band;
-        col = mix(stops[i - 1].c, stops[i].c, smooth(Math.min(Math.max(kIn, 0), 1)));
-      }
-      // beginning the blend toward the next boundary
-      if (i < stops.length - 1 && stops[i + 1].y - mid < band * 0.5) {
-        var kOut = (mid - (stops[i + 1].y - band * 0.5)) / band;
-        col = mix(stops[i].c, stops[i + 1].c, smooth(Math.min(Math.max(kOut, 0), 1)));
-      }
-      rgb(col);
-      ink(col);
-    }
-
-    /* Fixed chrome ink, derived from the background it's actually
-       sitting on rather than from which section we're nominally in.
-
-       The threshold is where white-ish and slate give equal contrast
-       against the background: solving contrast(light, L) ==
-       contrast(slate, L) puts it at relative luminance 0.189. Above
-       that, dark type wins; below it, light type does. Blended over a
-       narrow window either side so the flip isn't a hard snap, but
-       kept narrow deliberately - a wide blend would park the wordmark
-       at mid-grey, which is the one value that reads against nothing. */
-    var INK_DARK = "rgb(28,28,26)", INK_LIGHT = "rgb(245,243,238)";
-    var inkNow = null;
-    function lum(c) {
-      var a = c.map(function (v) {
-        v /= 255;
-        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-      });
-      return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
-    }
-    function ink(bg) {
-      // Step, not blend. Interpolating the ink was the obvious move and
-      // it was wrong: the ink reached mid-grey at precisely the moment
-      // the background did, and contrast collapsed to 1.1:1 in the
-      // middle of every crossfade. So the value switches outright at
-      // the threshold and the SOFTENING happens in time instead, via
-      // the CSS transition on .mh-mark. Passing through mid-grey for
-      // 140ms is invisible; parking there for 800px of scroll is not.
-      //
-      // 0.179 is where light and slate give equal contrast against the
-      // background, so the switch happens at the least-bad moment and
-      // the worst case either side is about 3.9:1 - fine for type this
-      // size and weight, and only in passing.
-      var next = lum(bg) > 0.179 ? INK_DARK : INK_LIGHT;
-      if (next === inkNow) return;
-      inkNow = next;
-      document.documentElement.style.setProperty("--mh-ink", next);
-    }
-
-    function mix(a, b, k) {
-      return [
-        Math.round(a[0] + (b[0] - a[0]) * k),
-        Math.round(a[1] + (b[1] - a[1]) * k),
-        Math.round(a[2] + (b[2] - a[2]) * k)
-      ];
-    }
-    function rgb(c) { bgLayer.style.backgroundColor = "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")"; }
-
-    build();
-    paint();
-    ScrollTrigger.create({
-      trigger: document.body,
-      start: "top top",
-      end: "bottom bottom",
-      onRefresh: function () { build(); paint(); },
-      onUpdate: paint
-    });
-  }
-
-  /* --- masthead: label becomes a CTA once the cover is behind you --- */
-  var masthead = document.getElementById("masthead");
-  var heroScroll = document.getElementById("heroScroll");
-  if (masthead && heroScroll) {
-    ScrollTrigger.create({
-      trigger: heroScroll,
-      start: "bottom 85%",
-      onEnter: function () { masthead.classList.add("past-cover"); },
-      onLeaveBack: function () { masthead.classList.remove("past-cover"); }
-    });
-  }
-})();
-
-/* ============================================================
-   CHROME SHIFT — lifts the fixed border, masthead, plumb line and
-   counter off the bottom of the screen as the footer wordmark arrives,
-   so the wordmark sits outside the border. The border's bottom edge is
-   held GAP px above the wordmark's top; before the wordmark is near,
-   the shift is zero and nothing moves. Positional, not decorative, so
-   it stays on under reduced motion.
-   ============================================================ */
-(function () {
-  var logo = document.querySelector(".foot-logo");
-  if (!logo) return;
-  var root = document.documentElement, GAP = 90, queued = false, last = null;
-  // Written straight onto the elements. A custom property on <html> would
-  // restyle the whole document on every scroll frame.
-  var chrome = Array.prototype.slice.call(document.querySelectorAll(".sheet, .plumb, .masthead, .readout"));
-
-  function update() {
-    queued = false;
-    var frame = parseFloat(getComputedStyle(root).getPropertyValue("--frame")) || 20;
-    var d = Math.max(0, (window.innerHeight - frame) - (logo.getBoundingClientRect().top - GAP));
-    var t = d ? "translateY(" + (-Math.round(d)) + "px)" : "";
-    if (t === last) return;
-    last = t;
-    chrome.forEach(function (el) { el.style.transform = t; });
-  }
-  function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
-
-  window.addEventListener("scroll", queue, { passive: true });
-  window.addEventListener("resize", queue);
-  window.addEventListener("load", queue);
-  update();
-})();
-
-/* ============================================================
-   SNAP STOPS — nine defined scroll positions, driven here rather
-   than by CSS.
-
-   CSS scroll-snap was the wrong tool and was replaced. It aligns a
-   snap element's start, centre or end to the container, and with
-   `proximity` the browser decides whether to act at all. The stops
-   below are specific and mixed: most headings sit at the top of the
-   screen, the plate caption sits at the bottom, and the readiness
-   heading sits a third of the way down. None of that is expressible
-   in scroll-snap-align.
-
-   Behaviour: after scrolling stops for 140ms, glide to the nearest
-   stop — but only if it's within 45% of a viewport. Past that you're
-   deliberately reading something (the roadmap runs taller than a
-   screen), so it leaves you alone. Any wheel, touch or key input
-   during a glide cancels it immediately; the page never fights you.
-   ============================================================ */
-(function () {
-  if (reduce) return;
-  if (window.matchMedia("(max-width:900px)").matches) return;
-
-  var TOP_PAD = 96;     // clears the fixed masthead
-  var BOT_PAD = 56;     // keeps the last control clear of the frame and readout
-  var SLACK = 140;      // extra rest room past a range's end: one wheel notch overshoots by up to ~100px,
-                        // and without this it jumps on to the next page instead of resting at the last control
-
-  // align: 'top'    element top sits just below the masthead
-  //        'bottom' element bottom sits just above the viewport floor
-  //        'third'  element top sits a third of the way down
-  // end:   the last thing on the sheet that has to be reachable. A stop
-  //        is a RANGE, not a point: it runs from the aligned position down
-  //        to the scroll where `end` clears the bottom of the screen.
-  //        Inside that range the page never pulls you back, so a sheet
-  //        taller than the viewport (roadmap rows, the quiz result, the
-  //        logos) can be read and clicked to the bottom.
-  var SPEC = [
-    { sel: null,                     align: "page",  end: null },                  //  1 cover
-    { sel: ".conditions .lede-line", align: "top",   end: ".conditions .turn" },   //  2 belief / proof
-    { sel: ".plate",                 align: "flush", end: null },                  //  3 it rarely fails loudly (caption sits at its base)
-    { sel: "#s-case",                align: "flush", end: ".casenote .sign" },     //  4 case note
-    { sel: ".roadmap .head h2",      align: "top",   end: ".roadmap .rows" },      //  5 five questions
-    { sel: "#s-assess",              align: "flush", end: ".assess .panelwrap" },  //  6 are you actually ready
-    { sel: ".practice .lead h2",     align: "top",   end: ".practice .clients" },  //  7 who's behind this
-    { sel: "#s-gate",                align: "flush", end: ".gate .form" },         //  8 unlock your copy
-    { sel: "#s-tail",                align: "flush", end: "footer .foot-logo" }    //  9 lease negotiation + footer
-  ];
-
-  var stops = [];   // [{ a: first scroll position, b: last }]
-  function build() {
-    var vh = window.innerHeight;
-    var max = document.documentElement.scrollHeight - vh;
-    stops = [];
-    SPEC.forEach(function (s) {
-      var y;
-      if (s.align === "page") { y = 0; }
-      else {
-        var el = document.querySelector(s.sel);
-        if (!el) return;
-        var r = el.getBoundingClientRect();
-        var top = r.top + window.scrollY;
-        if (s.align === "top")         y = top - TOP_PAD;
-        else if (s.align === "flush")  y = top;
-        else if (s.align === "bottom") y = top + r.height - vh + BOT_PAD;
-        else                           y = top - vh / 3;
-      }
-      y = Math.max(0, Math.min(Math.round(y), max));
-      var hold = 0, endEl = s.end && document.querySelector(s.end);
-      if (endEl) {
-        var bottom = endEl.getBoundingClientRect().bottom + window.scrollY;
-        hold = Math.max(0, Math.round(bottom - y - (vh - BOT_PAD)));
-      }
-      stops.push({ a: y, b: Math.min(y + hold + (hold ? SLACK : 0), max) });
-    });
-    stops.sort(function (m, n) { return m.a - n.a; });
-  }
-
-  var gliding = false, raf = null, idle = null;
-
-  function stop() {
-    if (raf) cancelAnimationFrame(raf);
-    raf = null; gliding = false;
-  }
-
-  function glide(to) {
-    var from = window.scrollY, delta = to - from;
-    if (Math.abs(delta) < 2) return;
-    var t0 = performance.now(), dur = Math.min(220 + Math.abs(delta) * 0.35, 720);
-    gliding = true;
-    (function step(now) {
-      if (!gliding) return;
-      var p = Math.min((now - t0) / dur, 1);
-      var e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
-      window.scrollTo(0, from + delta * e);
-      if (p < 1) raf = requestAnimationFrame(step);
-      else { raf = null; setTimeout(function () { gliding = false; }, 40); }
-    })(t0);
-  }
-
-  /* Direction-aware. Snapping to whichever stop is nearest means one
-     wheel notch (about 100px) from a stop is always nearer the stop it
-     left than the next one, so the page pulls you straight back and a
-     one-notch-at-a-time scroller can never leave a page. Instead:
-       - resting inside a sheet's own range: stay put
-       - between sheets: continue in the direction you were travelling,
-         to the next range start going down, or the previous range end
-         going up
-     lastRest is where the page last settled, which is what "direction"
-     is measured from. */
-  var lastRest = window.scrollY;
-
-  function settle() {
-    if (gliding || !stops.length) return;
-    var y = window.scrollY;
-    // already at the very bottom: leave the footer reachable
-    if (y >= document.documentElement.scrollHeight - window.innerHeight - 2) { lastRest = y; return; }
-
-    var i;
-    for (i = 0; i < stops.length; i++) {
-      if (y >= stops[i].a - 2 && y <= stops[i].b + 2) { lastRest = y; return; }   // inside a sheet's range
-    }
-
-    var dir = y > lastRest + 6 ? 1 : (y < lastRest - 6 ? -1 : 0);
-    var to = null, vh = window.innerHeight;
-    /* Next sheet in the direction of travel, counted from where the
-       visitor LEFT, not from where momentum dropped them. A trackpad
-       swipe off the cover can coast past the whole of sheet 02 before
-       scrolling stops; measured from the current position, the next
-       stop down is sheet 03 and 02 is skipped. Only when the scroll has
-       carried a full screen beyond that sheet is it a deliberate jump,
-       and then the nearest sheet ahead wins. */
-    if (dir === 1) {
-      for (i = 0; i < stops.length; i++) if (stops[i].a > lastRest + 2) { to = stops[i]; break; }
-      if (to && y - to.b > vh) { to = null; for (i = 0; i < stops.length; i++) if (stops[i].a > y) { to = stops[i]; break; } }
-      to = to ? to.a : null;
-    } else if (dir === -1) {
-      for (i = stops.length - 1; i >= 0; i--) if (stops[i].b < lastRest - 2) { to = stops[i]; break; }
-      if (to && to.a - y > vh) { to = null; for (i = stops.length - 1; i >= 0; i--) if (stops[i].b < y) { to = stops[i]; break; } }
-      to = to ? to.b : null;
-    } else {
-      var bestD = Infinity;
-      stops.forEach(function (st) {
-        var t = y < st.a ? st.a : st.b, d = Math.abs(t - y);
-        if (d < bestD) { bestD = d; to = t; }
-      });
-    }
-    if (to === null) { lastRest = y; return; }   // past the last sheet: leave it
-    lastRest = to;
-    glide(to);
-  }
-
-  /* Only scrolling the visitor caused may snap. The page also scrolls on
-     its own: scroll anchoring when form errors make a sheet taller, focus
-     bringing a field into view, a resize. Read as travel, those would
-     glide the visitor off the form they were fixing. Wheel, touch, keys
-     outside form fields and a scrollbar drag count as input; trackpad
-     momentum keeps firing wheel events, so it counts too. */
-  var lastInput = -Infinity;
-
-  window.addEventListener("scroll", function () {
-    if (gliding) return;
-    clearTimeout(idle);
-    if (performance.now() - lastInput > 900) { lastRest = window.scrollY; return; }
-    idle = setTimeout(settle, 140);
-  }, { passive: true });
-
-  function isScrollInput(e) {
-    // A press on a button or link isn't scrolling, but a press on the
-    // scrollbar lands on <html>. Keys typed into a field aren't scrolling
-    // either, and as errors clear the sheet changes height under them.
-    if (e.type === "mousedown") return e.target === document.documentElement;
-    if (e.type === "keydown") return !(e.target.closest && e.target.closest("input, textarea, select, [contenteditable]"));
-    return true;
-  }
-  ["wheel", "touchstart", "touchmove", "keydown", "mousedown"].forEach(function (ev) {
-    window.addEventListener(ev, function (e) {
-      if (isScrollInput(e)) lastInput = performance.now();
-      stop();
-    }, { passive: true });
-  });
-
-  // Anchor links glide too, since native smooth scrolling is off.
-  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-    a.addEventListener("click", function (e) {
-      var id = a.getAttribute("href");
-      if (id === "#" || id.length < 2) return;
-      var el = document.querySelector(id);
-      if (!el) return;
-      e.preventDefault();
-      clearTimeout(idle);
-      // Full-screen sheets land flush; anything else clears the masthead.
-      var top = el.getBoundingClientRect().top + window.scrollY;
-      var full = el.offsetHeight >= window.innerHeight - 2 && el.matches("section");
-      glide(Math.max(0, full ? top : top - TOP_PAD));
-    });
-  });
-
-  build();
-  window.addEventListener("resize", function () { clearTimeout(idle); build(); });
-  if ("ResizeObserver" in window) {
-    var rebuildT = null;
-    new ResizeObserver(function () { clearTimeout(rebuildT); rebuildT = setTimeout(build, 60); }).observe(document.body);
-  }
-  window.addEventListener("load", build);
-  if (window.ScrollTrigger) ScrollTrigger.addEventListener("refresh", build);
-})();
-
-/* ============================================================
-   PLUMB LINE — scroll position as a dimension string down the right
-   edge, with a bead that travels it. Reports position; it isn't a
-   decorative progress bar at the top of the page.
-   ============================================================ */
-(function () {
-  if (reduce || !window.gsap || !window.ScrollTrigger) return;
-  var fill = document.getElementById("plumbFill");
-  var bead = document.getElementById("plumbBead");
-  if (!fill || !bead) return;
-  gsap.to(fill, {
-    scaleY: 1, ease: "none",
-    scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: true }
-  });
-  var plumb = bead.parentNode;
-  gsap.to(bead, {
-    y: function () { return plumb.offsetHeight; }, ease: "none",
-    scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: true, invalidateOnRefresh: true }
-  });
-})();
-
-/* ============================================================
-   HERO EXIT — removed.
-
-   The title used to disperse sideways on scroll. It now simply
-   travels up and out with its panel, because the panels scroll
-   normally over a held background. Two pieces of choreography on the
-   same words, one of them fighting footage that is already animating,
-   was one too many.
-   ============================================================ */
-
-/* ============================================================
-   DEPTH — one quiet move, off when motion is reduced. The portrait
-   drifts slower than the page around it (parallax).
-   ============================================================ */
-(function () {
-  if (reduce || !window.gsap || !window.ScrollTrigger) return;
-  var pic = document.querySelector(".practice .portrait picture");
-  if (pic && !window.matchMedia("(max-width:900px)").matches) {
-    gsap.fromTo(pic, { y: 28 }, {
-      y: -28, ease: "none",
-      scrollTrigger: { trigger: ".practice", start: "top bottom", end: "bottom top", scrub: 0.6 }
-    });
-  }
-})();
-
-/* ============================================================
-   ROADMAP ROWS — click to open. One open at a time. The dimension
-   line extends as the row opens, which is why it's a dimension line
-   and not a decorative rule.
-   ============================================================ */
-(function () {
-  var rows = Array.prototype.slice.call(document.querySelectorAll(".row"));
-  rows.forEach(function (row) {
-    var btn = row.querySelector(".row-btn");
-    btn.addEventListener("click", function () {
-      var isOpen = row.classList.contains("open");
-      rows.forEach(function (r) {
-        r.classList.remove("open");
-        r.querySelector(".row-btn").setAttribute("aria-expanded", "false");
-      });
-      if (!isOpen) {
-        row.classList.add("open");
-        btn.setAttribute("aria-expanded", "true");
-      }
-    });
-  });
-})();
-
 /* ============================================================
    ASSESSMENT
    ============================================================ */
@@ -2615,121 +1245,369 @@ function showResult() {
     document.getElementById("sent").classList.add("on");
   }
 })();
-
-/* ============================================================
-   MAGNETIC BUTTONS — desktop, fine pointer, motion allowed only.
-   Transform-only, outside any layout write.
-   ============================================================ */
-(function () {
-  var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  if (!fine || reduce) return;
-
-  document.querySelectorAll(".btn").forEach(function (btn) {
-    var tx = 0, ty = 0, cx = 0, cy = 0, live = false, raf = null;
-
-    btn.addEventListener("mouseenter", function () {
-      live = true;
-      if (!raf) raf = requestAnimationFrame(loop);
-    });
-    btn.addEventListener("mousemove", function (e) {
-      var r = btn.getBoundingClientRect();
-      tx = (e.clientX - (r.left + r.width / 2)) * 0.22;
-      ty = (e.clientY - (r.top + r.height / 2)) * 0.38;
-    });
-    btn.addEventListener("mouseleave", function () { live = false; tx = 0; ty = 0; });
-
-    function loop() {
-      cx += (tx - cx) * 0.16;
-      cy += (ty - cy) * 0.16;
-      btn.style.transform = "translate(" + cx.toFixed(2) + "px," + cy.toFixed(2) + "px)";
-      if (!live && Math.abs(cx) < 0.05 && Math.abs(cy) < 0.05) {
-        btn.style.transform = ""; raf = null; return;
-      }
-      raf = requestAnimationFrame(loop);
-    }
-  });
-})();
 </script>
-
-
-<!-- ============================================================
-     HERO STILL — one photograph, panned by scroll.
-
-     Replaces the 97-frame AVIF scrub. That worked, but 3.7MB of
-     frames plus a preloading scheme plus a video fallback plus an
-     AVIF capability probe was a lot of machinery to keep alive for a
-     background. This is a single 142KB image and about twenty lines
-     of JS, and it does the same job: scroll moves you through the
-     picture rather than past it.
-
-     The image is portrait, so at full-bleed width it stands roughly
-     2278px tall against a viewport of 800-1000px. The surplus is the
-     travel. Scrolling pans from the menu changing hands at the top,
-     down the fluted marble, to the base.
-
-     Everything transform-only, so it stays on the compositor.
-     ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollSmoother.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
 <script>
+/* ==============================================================
+   MOTION
+
+   Built only on what the page already loads: GSAP, with its own
+   ScrollTrigger, ScrollSmoother and SplitText plugins. No other
+   libraries.
+
+   Rules this file keeps:
+   - transforms, opacity and clip-path only; no layout properties
+   - every hidden state is set here, never in CSS, so a page that
+     loses its scripts is simply a readable page
+   - reduced motion: no smooth scroll, no pin, no cursor, no reveals,
+     no scrubbing; the content is just there
+   - phones and touch: native scrolling, no pin, no cursor; reveals stay
+   ============================================================== */
 (function () {
-  var img = document.getElementById("heroStill");
-  var scroller = document.getElementById("heroScroll");
-  var lines = document.querySelectorAll(".hero-title .ln");
-  if (!img || !scroller || reduce || !window.gsap || !window.ScrollTrigger) return;
-  if (window.matchMedia("(max-width:900px)").matches) return;
+  var html = document.documentElement;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var wide = window.matchMedia("(min-width: 901px)").matches;
+  var g = window.gsap, ST = window.ScrollTrigger;
 
-  var travel = 0;
+  var sheets = Array.prototype.slice.call(document.querySelectorAll("section[data-sheet]"));
+  var masthead = document.getElementById("masthead");
+  var cover = document.getElementById("s-hero");
+  var smoother = null;
 
-  function measure() {
-    // How much taller the rendered image is than the frame holding it.
-    // Clamped at zero so an unusually tall viewport just holds still
-    // rather than panning the wrong way.
-    // Measured against .hero-media, not img.parentElement: the parent is
-    // the inline <picture>, which reports 0 height, so the pan used to
-    // run the full image height and drag its bottom edge into view.
-    travel = Math.max(img.offsetHeight - img.closest(".hero-media").offsetHeight, 0);
+  function endIntro() { html.classList.remove("is-intro"); }
+
+  /* ------------------------------------------------------------
+     Chrome that works with or without GSAP: header and counter ink
+     follow whatever sheet is directly beneath them; the counter
+     reports the sheet in the middle of the screen.
+     ------------------------------------------------------------ */
+  var cNum = document.getElementById("cNum"), cName = document.getElementById("cName");
+  var lastTop = null, lastLow = null, lastSheet = null;
+  function onDark(s) { return s && (s.dataset.theme === "dark" || s.dataset.theme === "olive" || s.hasAttribute("data-photo")); }
+  function sheetAt(y) {
+    for (var i = 0; i < sheets.length; i++) {
+      var r = sheets[i].getBoundingClientRect();
+      if (r.top <= y && r.bottom > y) return sheets[i];
+    }
+    return sheets[sheets.length - 1];
+  }
+  function updateChrome() {
+    var vh = window.innerHeight;
+    // With the live background, a plain sheet's colour is the body
+    // colour, which follows the sheet crossing 55%; photos sit on top.
+    var bgSheet = html.classList.contains("bg-live") ? sheetAt(vh * .55) : null;
+    function inkSheet(y) { var s = sheetAt(y); return bgSheet && !s.hasAttribute("data-photo") ? bgSheet : s; }
+    var topS = inkSheet(44), lowS = inkSheet(vh - 32);
+    html.setAttribute("data-top", topS.dataset.theme);
+    html.setAttribute("data-low", lowS.dataset.theme);
+    var top = onDark(topS) ? "light" : "dark";
+    var low = onDark(lowS) ? "light" : "dark";
+    if (top !== lastTop) { lastTop = top; html.style.setProperty("--chrome", top === "light" ? "var(--light)" : "var(--slate)"); }
+    if (low !== lastLow) { lastLow = low; html.style.setProperty("--chrome-low", low === "light" ? "var(--light)" : "var(--slate)"); }
+    var mid = sheetAt(vh / 2);
+    if (mid && mid !== lastSheet) {
+      var first = lastSheet === null;
+      lastSheet = mid;
+      if (g && !reduce && !first) {
+        g.timeline()
+          .to(cNum, { yPercent: -100, duration: .22, ease: "power2.in" })
+          .add(function () { cNum.textContent = mid.dataset.sheet; cName.textContent = mid.dataset.name; })
+          .fromTo(cNum, { yPercent: 100 }, { yPercent: 0, duration: .4, ease: "power3.out" });
+      } else {
+        cNum.textContent = mid.dataset.sheet; cName.textContent = mid.dataset.name;
+      }
+    }
+    masthead.classList.toggle("past-cover", cover.getBoundingClientRect().bottom < vh * 0.25);
   }
 
-  function run() {
-    measure();
+  /* In-page links: through the smoother when it's running. The skip
+     link also moves keyboard focus into the form once it arrives. */
+  function wireAnchors() {
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        var id = a.getAttribute("href");
+        if (id.length < 2) return;
+        var el = document.querySelector(id);
+        if (!el) return;
+        e.preventDefault();
+        if (smoother) smoother.scrollTo(el, true, "top top");
+        else el.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+        if (a.classList.contains("skip")) {
+          setTimeout(function () { document.getElementById("iName").focus({ preventScroll: true }); }, smoother ? 1300 : 700);
+        }
+      });
+    });
+  }
 
-    gsap.to(img, {
-      y: function () { return -travel; },
-      ease: "none",
-      scrollTrigger: {
-        trigger: scroller, start: "top top", end: "bottom bottom",
-        scrub: 0.4, invalidateOnRefresh: true
+  if (!g || !ST) {
+    // GSAP didn't load: plain page, live chrome, nothing hidden.
+    endIntro();
+    wireAnchors();
+    window.addEventListener("scroll", updateChrome, { passive: true });
+    window.addEventListener("resize", updateChrome);
+    updateChrome();
+    return;
+  }
+
+  html.classList.add("gs");
+  g.registerPlugin(ST);
+  if (window.ScrollSmoother) g.registerPlugin(window.ScrollSmoother);
+  if (window.SplitText) g.registerPlugin(window.SplitText);
+
+  /* ------------------------------------------------------------
+     Smooth scroll: desktop pointers only. Touch keeps native
+     momentum, which is better than anything a script can fake.
+     ------------------------------------------------------------ */
+  if (!reduce && fine && window.ScrollSmoother) {
+    smoother = window.ScrollSmoother.create({
+      wrapper: "#smooth-wrapper", content: "#smooth-content",
+      smooth: 1.1, effects: false, smoothTouch: 0
+    });
+  }
+  wireAnchors();
+  g.ticker.add(updateChrome);
+
+  /* progress line down the right edge */
+  g.to("#progressFill", { scaleY: 1, ease: "none",
+    scrollTrigger: { start: 0, end: "max", scrub: true } });
+
+  if (reduce) { endIntro(); updateChrome(); return; }
+
+  /* ------------------------------------------------------------
+     Page colour: one sheet colour bleeds into the next as each
+     section takes the middle of the screen. Sections go transparent
+     only once this is running.
+     ------------------------------------------------------------ */
+  var COLOURS = { light: "#F6F6F6", dim: "#ECECEC", dark: "#1c1c1a", olive: "#666b47" };
+  html.classList.add("bg-live");
+  g.set(document.body, { backgroundColor: COLOURS[sheets[0].dataset.theme] });
+  sheets.forEach(function (s) {
+    ST.create({
+      trigger: s, start: "top 55%", end: "bottom 55%",
+      onToggle: function (self) {
+        if (self.isActive) g.to(document.body, { backgroundColor: COLOURS[s.dataset.theme], duration: .9, ease: "power2.out", overwrite: true });
       }
     });
+  });
 
-    /* Per-line parallax on the title. Each line has its own --rate in
-       the CSS, so the three words separate vertically as you descend
-       instead of moving as one block. Rates are fractions of the
-       first panel's height, negative meaning upward. */
+  var ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+  ready.then(build);
+
+  function build() {
+    var hasSplit = !!window.SplitText;
+
+    /* ----------------------------------------------------------
+       01 COVER: the one orchestrated moment. The photograph opens
+       from a framed viewport to full bleed, like a drawing being
+       unrolled; the title rises line by line off its baseline.
+       ---------------------------------------------------------- */
+    var lines = document.querySelectorAll("#coverTitle .ln");
     lines.forEach(function (ln) {
-      var rate = parseFloat(getComputedStyle(ln).getPropertyValue("--rate")) || 0;
-      gsap.to(ln, {
-        y: function () { return window.innerHeight * rate; },
-        ease: "none",
-        scrollTrigger: {
-          trigger: scroller, start: "top top",
-          end: "+=" + window.innerHeight,
-          scrub: 0.4, invalidateOnRefresh: true
+      ln.innerHTML = '<span class="ln-in" style="display:inline-block">' + ln.innerHTML + "</span>";
+      ln.style.overflow = "clip"; ln.style.paddingBottom = ".06em"; ln.style.marginBottom = "-.06em";
+    });
+    var media = cover.querySelector(".cover-media"), pan = cover.querySelector(".pan");
+    var intro = g.timeline({ defaults: { ease: "expo.out" } });
+    intro
+      .set(media, { clipPath: "inset(16% 24% 16% 24%)" })
+      .set(pan, { scale: 1.22 })
+      .set("#coverTitle .ln-in", { yPercent: 115 })
+      .set(cover.querySelectorAll("[data-in]"), { y: 24, opacity: 0 })
+      .add(endIntro)
+      .to(media, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.7, ease: "expo.inOut" })
+      .to(pan, { scale: 1, duration: 2.2 }, "<")
+      .to("#coverTitle .ln-in", { yPercent: 0, duration: 1.25, stagger: .09 }, "-=1.05")
+      .to(cover.querySelectorAll("[data-in]"), { y: 0, opacity: 1, duration: .9, ease: "power3.out", stagger: .1 }, "-=.85")
+      // chrome fades back to its own CSS opacity, then lets go of it
+      .from([".masthead", ".counter", ".frame", ".progress"], { opacity: 0, duration: .8, ease: "power2.out", clearProps: "opacity" }, "-=.6");
+
+    // leaving the cover: photo drifts down, title lifts away a little faster
+    g.to(pan, { yPercent: 10, ease: "none", scrollTrigger: { trigger: cover, start: "top top", end: "bottom top", scrub: true } });
+    g.to("#coverTitle", { yPercent: -22, ease: "none", scrollTrigger: { trigger: cover, start: "top top", end: "bottom top", scrub: true } });
+
+    /* ----------------------------------------------------------
+       Headings: lines rise out of a mask as they arrive.
+       ---------------------------------------------------------- */
+    document.querySelectorAll("[data-lines]").forEach(function (el) {
+      if (!hasSplit) { revealRise(el); return; }
+      window.SplitText.create(el, {
+        type: "lines", mask: "lines", autoSplit: true, linesClass: "ln",
+        onSplit: function (self) {
+          return g.from(self.lines, {
+            yPercent: 108, duration: 1.15, ease: "expo.out", stagger: .08,
+            scrollTrigger: { trigger: el, start: "top 86%", once: true }
+          });
         }
       });
     });
 
-    ScrollTrigger.refresh();
+    /* The statement on sheet 02 reads itself in as you scroll: each
+       word comes up from 16% to full ink, tied to scroll position, so
+       the pace is the reader's. */
+    document.querySelectorAll("[data-scrub-words]").forEach(function (el) {
+      if (!hasSplit) return;
+      window.SplitText.create(el, {
+        type: "words", wordsClass: "w", autoSplit: true,
+        onSplit: function (self) {
+          return g.fromTo(self.words, { opacity: .16 }, {
+            opacity: 1, ease: "none", stagger: .1,
+            scrollTrigger: { trigger: el, start: "top 78%", end: "bottom 38%", scrub: true }
+          });
+        }
+      });
+    });
+
+    /* paragraphs and blocks: a short rise as they arrive */
+    function revealRise(el) {
+      g.from(el, { y: 26, opacity: 0, duration: 1, ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 90%", once: true } });
+    }
+    g.set("[data-rise]", { y: 26, opacity: 0 });
+    ST.batch("[data-rise]", {
+      start: "top 90%", once: true,
+      onEnter: function (batch) { g.to(batch, { y: 0, opacity: 1, duration: 1, ease: "power3.out", stagger: .08 }); }
+    });
+
+    /* hairlines draw in, left to right */
+    g.set("[data-draw]", { scaleX: 0, transformOrigin: "left center" });
+    ST.batch("[data-draw]", {
+      start: "top 92%", once: true,
+      onEnter: function (batch) { g.to(batch, { scaleX: 1, duration: 1.3, ease: "expo.inOut", stagger: .06 }); }
+    });
+
+    /* client marks: one quiet stagger */
+    document.querySelectorAll("[data-stagger]").forEach(function (wrap) {
+      g.from(wrap.children, { y: 18, opacity: 0, duration: .8, ease: "power3.out", stagger: .05,
+        scrollTrigger: { trigger: wrap, start: "top 88%", once: true } });
+    });
+
+    /* ----------------------------------------------------------
+       03 PLATE: the photograph opens from a framed view to full
+       bleed as the sheet arrives, and settles from a slight zoom.
+       ---------------------------------------------------------- */
+    var plate = document.getElementById("s-plate");
+    g.fromTo("#plateView", { clipPath: "inset(14% 9% 14% 9%)" }, { clipPath: "inset(0% 0% 0% 0%)", ease: "none",
+      scrollTrigger: { trigger: plate, start: "top bottom", end: "top 15%", scrub: true } });
+    g.fromTo("#plateView .zoom", { scale: 1.18 }, { scale: 1, ease: "none",
+      scrollTrigger: { trigger: plate, start: "top bottom", end: "bottom top", scrub: true } });
+
+    /* 07 PRACTICE: portrait unveils upward, then drifts slower than the page */
+    g.fromTo("#portraitView", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.5, ease: "expo.inOut",
+      scrollTrigger: { trigger: "#portraitView", start: "top 85%", once: true } });
+    g.fromTo("#portraitView img", { yPercent: -10 }, { yPercent: 0, ease: "none",
+      scrollTrigger: { trigger: "#portraitView", start: "top bottom", end: "bottom top", scrub: true } });
+
+    /* 09: the wordmark rises out of the bottom of the last sheet */
+    g.fromTo("#wordmark img", { yPercent: 62 }, { yPercent: 0, ease: "none",
+      scrollTrigger: { trigger: "#wordmark", start: "top bottom", end: "bottom bottom", scrub: true } });
+
+    roadmap();
+    cursor();
+    magnetic();
+    ST.refresh();
   }
 
-  if (img.complete) run();
-  else img.addEventListener("load", run, { once: true });
+  /* ----------------------------------------------------------
+     05 ROADMAP: on wide screens the five questions travel past
+     horizontally while the sheet holds still, measured along a
+     dimension string with a tick for each question. Elsewhere they
+     stack and rise like the rest of the page.
+     ---------------------------------------------------------- */
+  function roadmap() {
+    var track = document.getElementById("qTrack");
+    var panels = track.querySelectorAll(".q-panel");
+    if (!wide) {
+      g.set(panels, { y: 26, opacity: 0 });
+      ST.batch(panels, { start: "top 88%", once: true,
+        onEnter: function (b) { g.to(b, { y: 0, opacity: 1, duration: 1, ease: "power3.out", stagger: .08 }); } });
+      return;
+    }
+    html.classList.add("pin-roadmap");
+    var dim = document.getElementById("qDim");
+    var ticks = [];
+    for (var i = 0; i < panels.length; i++) {
+      var t = document.createElement("span");
+      t.className = "tick" + (i === 0 ? " on" : "");
+      t.style.left = (i / (panels.length - 1) * 100) + "%";
+      t.innerHTML = "<span>" + ("0" + (i + 1)) + "</span>";
+      dim.appendChild(t); ticks.push(t);
+    }
+    var section = document.getElementById("s-roadmap");
+    function distance() { return Math.max(0, track.scrollWidth - track.parentElement.clientWidth); }
 
-  window.addEventListener("resize", function () {
-    measure();
-    ScrollTrigger.refresh();
-  });
+    var travel = g.timeline({
+      scrollTrigger: {
+        trigger: section, start: "top top", end: function () { return "+=" + (distance() + window.innerHeight * .4); },
+        pin: true, scrub: 1, invalidateOnRefresh: true,
+        // the ruler below the questions is the progress line here
+        onToggle: function (self) { html.classList.toggle("in-roadmap", self.isActive); },
+        onUpdate: function (self) {
+          var idx = Math.round(self.progress * (panels.length - 1));
+          ticks.forEach(function (tk, k) { tk.classList.toggle("on", k <= idx); });
+        }
+      }
+    });
+    travel.to(track, { x: function () { return -distance(); }, ease: "none" }, 0)
+          .to("#qDimFill", { scaleX: 1, ease: "none" }, 0);
+
+    // each question comes up to full ink as it reaches reading position
+    panels.forEach(function (p, k) {
+      if (k === 0) return;
+      g.fromTo(p, { opacity: .22 }, { opacity: 1, ease: "none",
+        scrollTrigger: { trigger: p, containerAnimation: travel.getChildren()[0], start: "left 80%", end: "left 45%", scrub: true } });
+    });
+  }
+
+  /* ----------------------------------------------------------
+     CURSOR: a dot that trails the pointer, swells over anything
+     clickable, and becomes a labelled disc where the action needs
+     naming. Fine pointers only.
+     ---------------------------------------------------------- */
+  function cursor() {
+    if (!fine) return;
+    var el = document.getElementById("cursor"), label = document.getElementById("cursorLabel");
+    html.classList.add("has-cursor");
+    var xTo = g.quickTo(el, "x", { duration: .45, ease: "power3" });
+    var yTo = g.quickTo(el, "y", { duration: .45, ease: "power3" });
+    var shown = false;
+    window.addEventListener("pointermove", function (e) {
+      if (!shown) { g.set(el, { x: e.clientX, y: e.clientY }); shown = true; el.style.opacity = 1; }
+      xTo(e.clientX); yTo(e.clientY);
+    }, { passive: true });
+    document.addEventListener("pointerleave", function () { el.style.opacity = 0; shown = false; });
+    window.addEventListener("pointerdown", function () { el.classList.add("is-down"); });
+    window.addEventListener("pointerup", function () { el.classList.remove("is-down"); });
+    document.addEventListener("pointerover", function (e) {
+      var t = e.target.closest ? e.target : null; if (!t) return;
+      var labelled = t.closest("[data-cursor]");
+      var clickable = t.closest("a, button, label");
+      var typing = t.closest("input, textarea");
+      el.classList.toggle("is-label", !!labelled);
+      el.classList.toggle("is-hover", !labelled && !!clickable);
+      el.classList.toggle("is-text", !!typing);
+      if (labelled) label.textContent = labelled.getAttribute("data-cursor");
+    });
+  }
+
+  /* MAGNETIC: primary buttons lean toward the pointer and spring back */
+  function magnetic() {
+    if (!fine) return;
+    document.querySelectorAll("[data-magnetic]").forEach(function (btn) {
+      var xTo = g.quickTo(btn, "x", { duration: .6, ease: "elastic.out(1, .45)" });
+      var yTo = g.quickTo(btn, "y", { duration: .6, ease: "elastic.out(1, .45)" });
+      btn.addEventListener("pointermove", function (e) {
+        var r = btn.getBoundingClientRect();
+        xTo((e.clientX - (r.left + r.width / 2)) * .28);
+        yTo((e.clientY - (r.top + r.height / 2)) * .4);
+      });
+      btn.addEventListener("pointerleave", function () { xTo(0); yTo(0); });
+    });
+  }
 })();
 </script>
-
 </body>
 </html>

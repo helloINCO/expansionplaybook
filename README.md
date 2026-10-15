@@ -72,11 +72,49 @@ self-hosted from `media/fonts/`. It is a commercial face: the web licence
 is per domain, so confirm INCO's licence covers wherever this page is
 hosted before it goes public.
 
-GSAP 3.15 and ScrollTrigger, loaded from jsDelivr. The page degrades
-gracefully if they fail — scroll animation stops, content stays readable.
-Everything else is vanilla JS.
+GSAP 3.15 from jsDelivr: core, ScrollTrigger, ScrollSmoother and
+SplitText (all four ship free in the standard `gsap` package since 3.13).
+No other libraries. If the CDN fails, the page renders as a plain
+scrolling document with working chrome, quiz and form.
 
-## Browser notes
+## Animated edition (branch `claude/animated-landing`)
+
+Same content, brand and integrations as `main`'s page; rebuilt around
+motion. Preview locally:
+
+```
+git checkout claude/animated-landing
+python3 -m http.server 8000
+# open http://localhost:8000
+```
+
+Serve it rather than opening the file directly, so the fonts load.
+
+What moves, and why:
+
+- **Cover**: the photo opens from a framed viewport to full bleed, the
+  title rises line by line, chrome fades in. Plays once on load.
+- **Smooth scroll**: ScrollSmoother on mouse/trackpad only. Touch keeps
+  native momentum. No scroll snapping on this edition.
+- **Sheet rhythm**: the page background crossfades between slate, stone
+  and olive as each sheet arrives; header, counter and progress ink
+  follow whatever colour is under them. The sheet counter rolls.
+- **Text**: headings rise out of a line mask (SplitText); the
+  "Conditions" statement fills in word by word as you scroll.
+- **Roadmap**: on wide screens the five questions are pinned and travel
+  horizontally, with a ruler that ticks off each question. Stacked on
+  phones.
+- **Imagery**: the plate and portrait unmask and drift with light
+  parallax; the INCO wordmark rises into the footer.
+- **Cursor**: a small dot (fine pointers only) that swells over links
+  and becomes a labelled disc over quiz answers. Primary buttons are
+  magnetic. The native cursor stays in text fields.
+
+`prefers-reduced-motion: reduce` turns off the intro, smoothing,
+parallax, scrubbing, custom cursor and magnetic buttons; everything is
+visible on load and in-page links jump instead of glide.
+
+## Browser notes (main page)
 
 - Scroll snapping is JS-driven, not CSS `scroll-snap`. Wheel, touch and
   keyboard input all cancel an in-flight glide.

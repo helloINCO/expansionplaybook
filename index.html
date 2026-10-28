@@ -388,6 +388,8 @@
     text-decoration:none; white-space:nowrap;
   }
   .mh-cta:active{ transform:scale(.97); }
+  /* An olive pill on the olive sheet would vanish; go slate there */
+  .masthead.on-olive .mh-cta{ background:var(--slate); }
   .masthead.past-cover .mh-label{ opacity:0; transform:translateY(-6px); }
   .masthead.past-cover .mh-cta{ opacity:1; transform:none; pointer-events:auto; }
 
@@ -563,7 +565,7 @@
   /* Olive on olive is 1.0:1 and olive on slate barely 3:1, so every dark
      sheet switches the ring to light. */
   .hero :focus-visible,.heroPanels :focus-visible,.plate :focus-visible,
-  .roadmap :focus-visible,.assess :focus-visible,.gate :focus-visible{ outline-color:var(--light); }
+  .roadmap :focus-visible,.assess :focus-visible{ outline-color:var(--light); }
   .skip{ position:fixed; left:calc(var(--frame) + 14px); top:-80px; z-index:100;
          background:var(--olive); color:var(--light); padding:12px 20px; border-radius:999px;
          font-size:var(--t-small); font-weight:600; text-decoration:none; }
@@ -868,7 +870,6 @@
   .result .diag .val.weak{ color:var(--light); }
   .result .bench{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s5); display:none; }
   .result .bench.on{ display:block; }
-  .result .acts{ display:flex; align-items:center; gap:var(--s4); flex-wrap:wrap; }
   .assess .link{ opacity:1; }   /* 65% link text is 3.1:1 on olive; the underline already marks it */
   .qnav{ background:none; border:0; border-bottom:1px solid currentColor; font-family:inherit; cursor:pointer; }
   .assess .head .qnav{ display:block; margin-top:var(--s4); }
@@ -879,13 +880,19 @@
   /* ============================================================
      GATE — copy left, form right. Not a centered 400px column.
      ============================================================ */
-  .gate{ background:var(--slate); color:var(--light); padding:var(--s8) 0; }
-  .gate .pitch{ grid-column:1 / 6; }
-  .gate .pitch h2{ font-size:var(--t-h2); margin-bottom:var(--s4); }
-  .gate .pitch p{ font-size:var(--t-body); color:var(--light-80); max-width:34ch; }
-  .gate .pitch ul{ list-style:none; margin-top:var(--s6); border-top:1px solid var(--light-18); }
-  .gate .pitch li{ padding:14px 0; border-bottom:1px solid var(--light-18); font-size:var(--t-small); color:var(--light-80); }
-  .gate .form{ grid-column:7 / 12; }
+  /* The claim: the form, shown under the result on the olive sheet */
+  .claim{ display:none; margin-top:var(--s4); padding-top:var(--s5); border-top:1px solid var(--light-18); }
+  .claim.on{ display:block; animation:soft-from var(--ui) var(--ease) both; }
+  .claim-title{ font-size:var(--t-h3); margin-bottom:var(--s5); }
+  .claim .acts{ display:flex; align-items:center; gap:var(--s4); flex-wrap:wrap; margin-top:var(--s5); }
+  /* Terracotta is 2.2:1 on olive; errors here are light, bold, and the
+     underline thickens, so the field still reads as the one at fault. */
+  .assess .err,.assess .form-err{ color:var(--light); font-weight:600; }
+  .assess .field.bad input{ border-color:var(--light); border-bottom-width:2px; }
+  .hero-note{ font-size:var(--t-small); color:var(--light-80); }
+  /* Desktop: the heading and progress stay beside the result and form
+     as they scroll, instead of leaving an empty column */
+  @media (min-width:901px){ .assess .head{ position:sticky; top:calc(var(--frame) + 96px); align-self:start; } }
 
   .field{ margin-bottom:var(--s5); position:relative; }
   .field label{ display:block; font-size:var(--t-micro); color:var(--light-50); margin-bottom:6px; }
@@ -900,14 +907,8 @@
   .field.bad .err{ display:block; }
   .field.bad input{ border-color:var(--terracotta-on-dark); }
 
-  /* Four fields plus the s8 gutters run the gate sheet to roughly 830px.
-     That clears a 900px viewport but overflows a 768-800px laptop, and
-     this sheet is a snap stop - an overflowing stop scrolls to the wrong
-     place. Tighten the rhythm rather than let the stop drift. */
   @media (min-width:901px) and (max-height:860px){
-    .gate{ padding:var(--s7) 0; }
     .field{ margin-bottom:var(--s4); }
-    .gate .pitch ul{ margin-top:var(--s5); }
   }
   .submit{ width:100%; margin-top:var(--s3); }
   /* ADDED: button looks inactive while the form is sending */
@@ -987,8 +988,8 @@
      the screen is still fine: the stop's range carries on to the last
      control. Desktop only, phones scroll freely. */
   @media (min-width:901px){
-    .casenote,.assess,.gate{ min-height:100dvh; display:flex; align-items:center; }
-    .casenote > .grid,.assess > .grid,.gate > .grid{ width:100%; }
+    .casenote,.assess{ min-height:100dvh; display:flex; align-items:center; }
+    .casenote > .grid,.assess > .grid{ width:100%; }
   }
 
   /* Touch devices: grow the hit area to 44px without changing how
@@ -1014,7 +1015,6 @@
     .roadmap .head,.rows,
     .assess .head,.assess .panelwrap,
     .practice .lead,.practice .block,.practice .clients,.practice .portrait,
-    .gate .pitch,.gate .form,
     .tail .msg,
     .plate .cap .grid > div,
     footer .grid > div{ grid-column:1 / 13; }
@@ -1026,7 +1026,7 @@
     .casenote .body{ margin-top:var(--s4); }
     .practice .block{ margin-top:var(--s6); }
     .practice .clients{ margin-top:var(--s6); }
-    .roadmap,.assess,.gate,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
+    .roadmap,.assess,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
     .tail{ padding-bottom:var(--s5); }
     .tail-foot{ margin-top:var(--s7); }
     .foot-logo{ padding:0 var(--s4); }
@@ -1035,7 +1035,6 @@
     .row-dim{ display:none; }
     .row-body p{ padding-left:calc(38px + var(--s3)); }
     .assess .panelwrap{ margin-top:var(--s6); min-height:0; }
-    .gate .form{ margin-top:var(--s6); }
     .plumb{ display:none; }
     /* The venue's name is signed across the top of this photograph, and
        on a portrait screen cover-fit shows the whole height of it. Render
@@ -1071,7 +1070,7 @@
     section[data-fade]{ opacity:1 !important; }
     .hero-title .ln > span{ animation:none !important; transform:none !important; clip-path:none !important; }
     .hero-meta,.hero-cta{ animation:none !important; opacity:1 !important; transform:none !important; }
-    .result.on,.sent.on,.result.on .diag div{ animation:fade-only 180ms ease-out both !important; }
+    .result.on,.claim.on,.sent.on,.result.on .diag div{ animation:fade-only 180ms ease-out both !important; }
     .masthead .mh-label,.masthead .mh-cta{ transform:none !important; }
     .qp{ transform:none !important; }
     .btn:active,.mh-cta:active,.foot-social a:active,.opt:active span,.row-btn:active .row-name{ transform:none !important; }
@@ -1095,7 +1094,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div id="bgLayer" aria-hidden="true"></div>
 
-<a class="skip" href="#s-gate">Skip to the form</a>
+<a class="skip" href="#s-assess">Skip to the readiness check</a>
 
 <div class="sheet" id="sheet" aria-hidden="true"></div>
 <div class="plumb" aria-hidden="true"><div class="plumb-fill" id="plumbFill"></div><div class="plumb-bead" id="plumbBead"></div></div>
@@ -1104,7 +1103,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <span class="mh-mark">INCO Studio</span>
   <span class="mh-right">
     <span class="mh-label">The Expansion Playbook</span>
-    <a class="mh-cta" href="#s-gate">Get the playbook</a>
+    <a class="mh-cta" href="#s-assess">Get the playbook</a>
   </span>
 </div>
 
@@ -1155,8 +1154,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p>A free 16-page guide for operators planning a second venue. What we'd want you to know before you sign.</p>
     </div>
     <div class="hero-cta">
-      <a href="#s-assess" class="btn">Take the readiness check</a>
-      <a href="#s-gate" class="link">Just send me the playbook</a>
+      <a href="#s-assess" class="btn">Get the playbook</a>
+      <span class="hero-note">Four quick questions, then it's yours.</span>
     </div>
   </div>
 </section>
@@ -1317,16 +1316,78 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+
 <!-- ============================================================
-     ASSESSMENT — the qualifying quiz, logic unchanged from the
-     previous build, restaged across the grid. Ready-now scorers get
-     a route to a conversation as well as the download.
+     PRACTICE — the About section, as a drawing title block. Sits
+     immediately before the readiness check and the ask, which is where proof does the most
+     work. Credentials are tabulated as facts (founded, based,
+     recognition) rather than written as claims: "two Better Future
+     Australia design awards" carries more than "award-winning", and
+     the studio's own voice rule is specificity over declaration.
+
+     The client marks below are the real supplied logos, flattened to
+     one ink colour and optically size-matched. Labelled
+     "Collaborators" rather than "Trusted by": the first is a
+     statement of fact, the second asks the reader to feel something
+     about it.
      ============================================================ -->
-<section class="assess" id="s-assess" data-fade data-bg="olive" data-snap data-sheet="06" data-name="Readiness" data-dark>
+<section class="practice" id="s-practice" data-fade data-bg="stone-dim" data-snap data-sheet="06" data-name="Practice">
+  <div class="grid">
+    <div class="portrait">
+      <picture>
+        <source srcset="media/portrait-900.webp" type="image/webp">
+        <img src="media/portrait-900.jpg" alt="Jayson Lee, Director of INCO Studio" loading="lazy" decoding="async">
+      </picture>
+      <p class="cap">Jayson Lee, Director</p>
+    </div>
+
+    <div class="lead">
+      <h2>Who you'd be working with.</h2>
+      <p>Founder and Design Leader of INCO Studio, Jayson draws from his diverse background and years of experience in Europe, Asia and Australia. His projects stretch across multiple sectors.</p>
+      <p>Over the past 15 years, Jayson has honed his craft across Sydney and London, specialising in multi-faceted design disciplines including branding, hospitality, retail, and residential projects.</p>
+      <p>His dedication to understanding the interplay between design and human behaviour has guided his projects towards fostering meaningful connections and creating spaces where individual stories can unfold.</p>
+    </div>
+
+    <div class="block">
+      <dl>
+        <dt>Founded</dt><dd>2019, Sydney</dd>
+        <dt>Practice</dt><dd>Hospitality design, interior architecture, brand strategy, expansion planning</dd>
+        <dt>Recognition</dt><dd>Two-time winner, Better Future Australia Design Awards (Hospitality)</dd>
+        <dt>Director</dt><dd>Jayson Lee</dd>
+      </dl>
+    </div>
+
+    <div class="clients">
+      <div class="rule"></div>
+      <p class="cohort">Collaborators</p>
+      <div class="marks">
+        <img src="media/logos/luxottica.png"  width="400" height="140" alt="Luxottica" loading="lazy" decoding="async">
+        <img src="media/logos/panpacific.png" width="400" height="140" alt="Pan Pacific" loading="lazy" decoding="async">
+        <img src="media/logos/autograph.png"  width="400" height="140" alt="Autograph Collection Hotels" loading="lazy" decoding="async">
+        <img src="media/logos/laderach.png"   width="400" height="140" alt="Läderach Switzerland" loading="lazy" decoding="async">
+        <img src="media/logos/qic.png"        width="400" height="140" alt="QIC" loading="lazy" decoding="async">
+        <img src="media/logos/peninsula.png"  width="400" height="140" alt="The Peninsula Hotels" loading="lazy" decoding="async">
+        <img src="media/logos/scentre.png"    width="400" height="140" alt="Scentre Group" loading="lazy" decoding="async">
+        <img src="media/logos/clarins.png"    width="400" height="140" alt="Clarins" loading="lazy" decoding="async">
+        <img src="media/logos/dulcet.png"     width="400" height="140" alt="Dulcet" loading="lazy" decoding="async">
+        <img src="media/logos/duoduo.png"     width="400" height="140" alt="Duo Duo" loading="lazy" decoding="async">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ASSESSMENT + DOWNLOAD — the only route to the playbook. Four
+     answers, then the result, then the details form directly under
+     it. Every lead arrives qualified: the quiz segment, score and
+     weakest area travel with the form. Ready-now scorers also get a
+     route to a conversation.
+     ============================================================ -->
+<section class="assess" id="s-assess" data-fade data-bg="olive" data-snap data-sheet="07" data-name="Readiness" data-dark>
   <div class="grid">
     <div class="head">
       <h2>Are you actually ready?</h2>
-      <p>Four questions, no email until the end. Answer honestly. The flattering answer won't help you.</p>
+      <p>Four questions, then the 16-page playbook is yours. Answer honestly. The flattering answer won't help you.</p>
       <div class="count"><span id="qCount" aria-live="polite">Question 1 of 4</span></div>
       <div class="bar"><i id="qBar"></i></div>
       <button type="button" class="link qnav" id="qBack" hidden>Back to the previous question</button>
@@ -1374,92 +1435,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
              real number in the script below; nothing invented ships. -->
         <p class="bench" id="rBench"></p>
         <p id="rDesc"></p>
-        <div class="acts">
-          <a href="#s-gate" class="btn btn-pale">Get the playbook</a>
-          <a href="#" class="link" id="callCta" target="_blank" rel="noopener">Book a call</a>
-          <button type="button" class="link qnav" id="qRetake">Retake the check</button>
-        </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- ============================================================
-     PRACTICE — the About section, as a drawing title block. Sits
-     immediately before the ask, which is where proof does the most
-     work. Credentials are tabulated as facts (founded, based,
-     recognition) rather than written as claims: "two Better Future
-     Australia design awards" carries more than "award-winning", and
-     the studio's own voice rule is specificity over declaration.
-
-     The client marks below are the real supplied logos, flattened to
-     one ink colour and optically size-matched. Labelled
-     "Collaborators" rather than "Trusted by": the first is a
-     statement of fact, the second asks the reader to feel something
-     about it.
-     ============================================================ -->
-<section class="practice" id="s-practice" data-fade data-bg="stone-dim" data-snap data-sheet="07" data-name="Practice">
-  <div class="grid">
-    <div class="portrait">
-      <picture>
-        <source srcset="media/portrait-900.webp" type="image/webp">
-        <img src="media/portrait-900.jpg" alt="Jayson Lee, Director of INCO Studio" loading="lazy" decoding="async">
-      </picture>
-      <p class="cap">Jayson Lee, Director</p>
-    </div>
-
-    <div class="lead">
-      <h2>Who you'd be working with.</h2>
-      <p>Founder and Design Leader of INCO Studio, Jayson draws from his diverse background and years of experience in Europe, Asia and Australia. His projects stretch across multiple sectors.</p>
-      <p>Over the past 15 years, Jayson has honed his craft across Sydney and London, specialising in multi-faceted design disciplines including branding, hospitality, retail, and residential projects.</p>
-      <p>His dedication to understanding the interplay between design and human behaviour has guided his projects towards fostering meaningful connections and creating spaces where individual stories can unfold.</p>
-    </div>
-
-    <div class="block">
-      <dl>
-        <dt>Founded</dt><dd>2019, Sydney</dd>
-        <dt>Practice</dt><dd>Hospitality design, interior architecture, brand strategy, expansion planning</dd>
-        <dt>Recognition</dt><dd>Two-time winner, Better Future Australia Design Awards (Hospitality)</dd>
-        <dt>Director</dt><dd>Jayson Lee</dd>
-      </dl>
-    </div>
-
-    <div class="clients">
-      <div class="rule"></div>
-      <p class="cohort">Collaborators</p>
-      <div class="marks">
-        <img src="media/logos/luxottica.png"  width="400" height="140" alt="Luxottica" loading="lazy" decoding="async">
-        <img src="media/logos/panpacific.png" width="400" height="140" alt="Pan Pacific" loading="lazy" decoding="async">
-        <img src="media/logos/autograph.png"  width="400" height="140" alt="Autograph Collection Hotels" loading="lazy" decoding="async">
-        <img src="media/logos/laderach.png"   width="400" height="140" alt="Läderach Switzerland" loading="lazy" decoding="async">
-        <img src="media/logos/qic.png"        width="400" height="140" alt="QIC" loading="lazy" decoding="async">
-        <img src="media/logos/peninsula.png"  width="400" height="140" alt="The Peninsula Hotels" loading="lazy" decoding="async">
-        <img src="media/logos/scentre.png"    width="400" height="140" alt="Scentre Group" loading="lazy" decoding="async">
-        <img src="media/logos/clarins.png"    width="400" height="140" alt="Clarins" loading="lazy" decoding="async">
-        <img src="media/logos/dulcet.png"     width="400" height="140" alt="Dulcet" loading="lazy" decoding="async">
-        <img src="media/logos/duoduo.png"     width="400" height="140" alt="Duo Duo" loading="lazy" decoding="async">
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     GATE — copy left, form right.
-     ============================================================ -->
-<section class="gate" id="s-gate" data-fade data-bg="slate" data-snap data-sheet="08" data-name="Download" data-dark>
-  <div class="grid">
-    <div class="pitch">
-      <h2>Where should we send it?</h2>
-      <p>Sixteen pages, drawn from real projects, including the ones that didn't work.</p>
-      <ul>
-        <li>The five questions to answer before you sign</li>
-        <li>The site-fit checklist</li>
-        <li>The A-team roster and go-to contacts</li>
-      </ul>
-    </div>
-
-    <div class="form">
-      <div id="formWrap">
+      <!-- The claim: shown with the result. Same form, fields and CRM
+           hookup as the old standalone download sheet. -->
+      <div class="claim" id="claim">
+        <h3 class="claim-title">Where should we send it?</h3>
+        <div id="formWrap">
         <form id="playbookForm" novalidate>
           <div class="field" id="fName">
             <label for="iName">Name</label>
@@ -1487,7 +1469,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <label for="iWebsite">Website</label>
             <input id="iWebsite" type="text" name="website" tabindex="-1" autocomplete="off">
           </div>
-          <button type="submit" class="btn submit" id="submitBtn">Email me the playbook</button>
+          <button type="submit" class="btn btn-pale submit" id="submitBtn">Email me the playbook</button>
           <!-- ADDED: error message if sending fails -->
           <p class="form-err" id="formErr" role="alert"></p>
           <p class="fineprint">We'll email you the playbook and may follow up about it. Unsubscribe any time. Read our <a href="#" id="privacyLink" target="_blank" rel="noopener">privacy policy</a>.</p>
@@ -1503,15 +1485,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- CHANGED: playbook is delivered by email only, so the download button is switched off.
         <a class="btn btn-pale" id="pdfLink" href="#" target="_blank" rel="noopener">Download now</a>
         -->
+        <div class="acts">
+          <a href="#" class="link" id="callCta" target="_blank" rel="noopener">Or book a call</a>
+          <button type="button" class="link qnav" id="qRetake">Retake the check</button>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+
 <!-- ============================================================
      TAILPIECE — the other readiness path.
      ============================================================ -->
-<section class="tail" id="s-tail" data-fade="in" data-bg="stone" data-snap data-sheet="09" data-name="Contact">
+<section class="tail" id="s-tail" data-fade="in" data-bg="stone" data-snap data-sheet="08" data-name="Contact">
   <div class="grid">
     <div class="msg">
       <h2>Already deep in a lease negotiation?</h2>
@@ -1540,7 +1527,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 </main>
 
-<footer data-sheet="09" data-name="Contact">
+<footer data-sheet="08" data-name="Contact">
   <!-- Edge to edge: outside the grid on purpose, so the wordmark spans the
        whole browser width at any size. The asset is trimmed to its ink, so
        the letters themselves meet both edges. -->
@@ -1583,10 +1570,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   setLink("tailCall",    c.bookingUrl, bookClick);
   setLink("privacyLink", c.privacyUrl);
 
-  // Skip link: after the page glides to the form, put the keyboard there too
+  // Skip link: after the page glides to the check, put the keyboard on
+  // the current question's first answer (or the form, once it's showing)
   var skip = document.querySelector(".skip");
   if (skip) skip.addEventListener("click", function () {
-    setTimeout(function () { var f = document.getElementById("iName"); if (f) f.focus({ preventScroll: true }); }, 800);
+    setTimeout(function () {
+      var f = document.querySelector(".claim.on #iName") || document.querySelector(".qp.on .opt");
+      if (f) f.focus({ preventScroll: true });
+    }, 800);
   });
 
   // Send social clicks to GTM
@@ -1627,11 +1618,12 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       if (current === e.target) return;
       current = e.target;
       rdNum.textContent = e.target.dataset.sheet;
-      plumb.classList.toggle("done", e.target.dataset.sheet === "09");
+      plumb.classList.toggle("done", e.target.dataset.sheet === "08");
       rdName.textContent = e.target.dataset.name;
       var dark = e.target.hasAttribute("data-dark");
       sheet.classList.toggle("sheet-dark", dark);
       masthead.classList.toggle("on-dark", dark);
+      masthead.classList.toggle("on-olive", e.target.dataset.bg === "olive");
       readout.classList.toggle("on-dark", dark);
     });
   }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
@@ -1993,10 +1985,9 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     { sel: ".plate",                 align: "flush", end: null },                  //  3 it rarely fails loudly (caption sits at its base)
     { sel: "#s-case",                align: "flush", end: ".casenote .sign" },     //  4 case note
     { sel: ".roadmap .head h2",      align: "top",   end: ".roadmap .rows" },      //  5 five questions
-    { sel: "#s-assess",              align: "flush", end: ".assess .panelwrap" },  //  6 are you actually ready
-    { sel: ".practice .lead h2",     align: "top",   end: ".practice .clients" },  //  7 who's behind this
-    { sel: "#s-gate",                align: "flush", end: ".gate .form" },         //  8 unlock your copy
-    { sel: "#s-tail",                align: "flush", end: "footer .foot-logo" }    //  9 lease negotiation + footer
+    { sel: ".practice .lead h2",     align: "top",   end: ".practice .clients" },  //  6 who's behind this
+    { sel: "#s-assess",              align: "flush", end: ".assess .panelwrap" },  //  7 readiness check + the form
+    { sel: "#s-tail",                align: "flush", end: "footer .foot-logo" }    //  8 lease negotiation + footer
   ];
 
   var stops = [];   // [{ a: first scroll position, b: last }]
@@ -2269,6 +2260,7 @@ function goTo(n, focus) {
   score = sumScore();
   panels.forEach(function (p) { p.classList.remove("on"); });
   document.getElementById("result").classList.remove("on");
+  document.getElementById("claim").classList.remove("on");
   var panel = document.querySelector('.qp[data-q="' + n + '"]');
   panel.classList.add("on");
   qCount.textContent = "Question " + n + " of " + totalQ;
@@ -2281,6 +2273,8 @@ document.querySelectorAll(".opt").forEach(function (btn) {
   btn.addEventListener("click", function () {
     var panel = btn.closest(".qp");
     var idx = parseInt(panel.dataset.q, 10);
+    // ADDED: first answer of the visit, so GTM can show start vs finish vs lead
+    if (!window.__quizStarted) { window.__quizStarted = true; window.trackEvent("quiz_start"); }
     answers[idx] = parseInt(btn.dataset.score, 10);
     score = sumScore();
 
@@ -2337,6 +2331,7 @@ function showResult() {
   document.getElementById("rScore").textContent = score + "/" + max;
   document.getElementById("segTag").textContent = seg;
   document.getElementById("result").classList.add("on");
+  document.getElementById("claim").classList.add("on");
 
   requestAnimationFrame(function () {
     document.getElementById("rFill").style.transform = "scaleX(" + (score / max) + ")";
@@ -2728,8 +2723,25 @@ function showResult() {
     measure();
     ScrollTrigger.refresh();
   });
+
 })();
 </script>
 
+<script>
+(function () {
+  // The readiness sheet grows when the result and form appear (and
+  // shrinks on a retake). Everything measured below it, the colour
+  // stops, section fades and snap ranges, has to be measured again.
+  if (window.ScrollTrigger && "ResizeObserver" in window) {
+    var assessT, assessH = 0, assess = document.getElementById("s-assess");
+    new ResizeObserver(function () {
+      if (assess.offsetHeight === assessH) return;
+      assessH = assess.offsetHeight;
+      clearTimeout(assessT);
+      assessT = setTimeout(function () { ScrollTrigger.refresh(); }, 80);
+    }).observe(assess);
+  }
+})();
+</script>
 </body>
 </html>

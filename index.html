@@ -336,11 +336,12 @@
   }
   .plumb{ transition:opacity 300ms ease; }
   .plumb.done{ opacity:0; }
+  /* --p (0 to 1) is set from the scroll position by the script below */
   .plumb-fill{ width:100%; height:100%; background:var(--olive);
-               transform-origin:top; transform:scaleY(0); }
+               transform-origin:top; transform:scaleY(var(--p,0)); }
   .plumb-bead{
     position:absolute; left:-3px; width:7px; height:7px; background:var(--olive);
-    top:0; transform:translateY(-50%);
+    top:calc(var(--p,0) * 100%); transform:translateY(-50%);
   }
 
   /* ============================================================
@@ -1080,7 +1081,6 @@
     .row-body{ transition:none !important; }
     .row-dim span{ transition:none !important; }
     .assess .head .bar i,.result .scale .track2 i{ transition-duration:.01ms !important; }
-    .plumb-fill{ transform:scaleY(1); }
   }
 </style>
 </head>
@@ -2155,19 +2155,26 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
    decorative progress bar at the top of the page.
    ============================================================ */
 (function () {
-  if (reduce || !window.gsap || !window.ScrollTrigger) return;
-  var fill = document.getElementById("plumbFill");
-  var bead = document.getElementById("plumbBead");
-  if (!fill || !bead) return;
-  gsap.to(fill, {
-    scaleY: 1, ease: "none",
-    scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: true }
-  });
-  var plumb = bead.parentNode;
-  gsap.to(bead, {
-    y: function () { return plumb.offsetHeight; }, ease: "none",
-    scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: true, invalidateOnRefresh: true }
-  });
+  /* Read straight from the scroll position on every scroll, with the
+     page length taken fresh each time. An earlier version used a
+     ScrollTrigger measured in advance; in some browsers that
+     measurement came out far too long and the bead sat near the top
+     however far you scrolled. Nothing here can go stale. */
+  var plumb = document.querySelector(".plumb");
+  if (!plumb) return;
+  var queued = false, last = -1;
+  function paint() {
+    queued = false;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    p = Math.round(p * 1000) / 1000;
+    if (p !== last) { last = p; plumb.style.setProperty("--p", p); }
+  }
+  function queue() { if (!queued) { queued = true; requestAnimationFrame(paint); } }
+  window.addEventListener("scroll", queue, { passive: true });
+  window.addEventListener("resize", queue);
+  if ("ResizeObserver" in window) new ResizeObserver(queue).observe(document.body);
+  paint();
 })();
 
 /* ============================================================

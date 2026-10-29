@@ -566,7 +566,7 @@
   /* Olive on olive is 1.0:1 and olive on slate barely 3:1, so every dark
      sheet switches the ring to light. */
   .hero :focus-visible,.heroPanels :focus-visible,.plate :focus-visible,
-  .roadmap :focus-visible,.assess :focus-visible{ outline-color:var(--light); }
+  .roadmap :focus-visible,.gate :focus-visible{ outline-color:var(--light); }
   .skip{ position:fixed; left:calc(var(--frame) + 14px); top:-80px; z-index:100;
          background:var(--olive); color:var(--light); padding:12px 20px; border-radius:999px;
          font-size:var(--t-small); font-weight:600; text-decoration:none; }
@@ -798,40 +798,6 @@
     .clients .marks img{ max-width:150px; }
   }
 
-  /* ============================================================
-     ASSESSMENT — the qualifying quiz. Kept intact, restaged on the
-     grid: prompt on the left, answers on the right, so it reads as a
-     form being filled rather than a centered card.
-     ============================================================ */
-  /* Olive is mid-tone: even solid light text only reaches 5.0:1 on it,
-     so the usual 80% / 50% steps fail AA (3.9:1 and 2.5:1). On this sheet
-     body copy goes solid and meta text sits at 92% (4.6:1); hierarchy
-     comes from size and weight instead of fading. */
-  .assess{ background:var(--olive); color:var(--light); padding:var(--s8) 0;
-           --light-80:var(--light); --light-50:rgba(245,243,238,.92); }
-  .assess .head{ grid-column:1 / 7; }
-  .assess .head h2{ font-size:var(--t-h2); }
-  .assess .head p{ margin-top:var(--s3); font-size:var(--t-small); color:var(--light-80); max-width:36ch; }
-  .assess .head .count{ margin-top:var(--s6); font-size:var(--t-micro); color:var(--light-50); font-variant-numeric:tabular-nums; }
-  .assess .head .bar{ margin-top:var(--s2); width:120px; height:1px; background:var(--light-18); }
-  .assess .head .bar i{ display:block; height:100%; width:100%; background:var(--light); transform:scaleX(0); transform-origin:left; transition:transform var(--med) var(--ease); }
-
-  .assess .panelwrap{ grid-column:7 / 13; min-height:340px; position:relative; }
-  .qp{ opacity:0; visibility:hidden; position:absolute; inset:0;
-       transition:opacity 140ms ease-out, transform var(--ui) var(--ease); transform:translateY(8px); }
-  .qp.on{ opacity:1; visibility:visible; position:relative; transform:none; }
-  .qp .q{ font-size:var(--t-lead); font-weight:600; letter-spacing:-.02em; margin-bottom:var(--s5); max-width:34ch; line-height:1.3; }
-  .opt{
-    display:block; width:100%; text-align:left; background:none; color:inherit;
-    font-family:inherit; font-size:var(--t-small); padding:18px 0;
-    border:none; border-bottom:1px solid var(--light-18); cursor:pointer;
-    transition:border-color var(--fast) ease;
-  }
-  .opt span{ display:block; transition:transform var(--ui) var(--ease); }
-  .opt:active span{ transform:translateX(6px) scale(.99); }
-  .opt:first-of-type{ border-top:1px solid var(--light-18); }
-  .opt:focus-visible span{ transform:translateX(14px); }
-
   /* Hover only where hover exists. On touch it fires on tap and sticks. */
   @media (hover:hover) and (pointer:fine){
     .btn:hover{ background:var(--olive-deep); }
@@ -839,26 +805,50 @@
     .mh-cta:hover{ background:var(--olive-deep); }
     .link:hover{ opacity:1; }
     .row-btn:hover .row-name{ transform:translateX(10px); }
-    .opt:hover{ border-color:var(--light); }
-    .opt:hover span{ transform:translateX(14px); }
   }
 
-  .result{ display:none; }
+  /* ============================================================
+     GATE — copy left, form right. Not a centered 400px column.
+     The three qualifying questions sit in the form as dropdowns.
+     ============================================================ */
+  .gate{ background:var(--slate); color:var(--light); padding:var(--s8) 0; }
+  .gate .pitch{ grid-column:1 / 6; }
+  .gate .pitch h2{ font-size:var(--t-h2); margin-bottom:var(--s4); }
+  .gate .pitch p{ font-size:var(--t-body); color:var(--light-80); max-width:34ch; }
+  .gate .pitch ul{ list-style:none; margin-top:var(--s6); border-top:1px solid var(--light-18); }
+  .gate .pitch li{ padding:14px 0; border-bottom:1px solid var(--light-18); font-size:var(--t-small); color:var(--light-80); }
+  .gate .form{ grid-column:7 / 12; }
+  .hero-note{ font-size:var(--t-small); color:var(--light-80); }
+
+  .qs{ border:0; padding:0; margin:var(--s6) 0 0; min-width:0; }
+  .qs legend{ padding:0; font-size:var(--t-h3); font-weight:600; letter-spacing:-.015em; line-height:1.15; }
+  .qs .qs-note{ margin:var(--s2) 0 var(--s5); font-size:var(--t-small); color:var(--light-80); }
+  /* A question is a sentence, not a one-word field name: it gets body
+     size and near-full ink rather than the micro label. */
+  .field.fsel label{ font-size:var(--t-small); color:var(--light-80); line-height:1.35; margin-bottom:4px; }
+  .field select{
+    width:100%; -webkit-appearance:none; appearance:none; border-radius:0;
+    background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23f5f3ee' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 2px center;
+    border:none; border-bottom:1px solid var(--light-18);
+    color:var(--light); font-family:inherit; font-size:var(--t-lead); padding:8px 28px 8px 0; outline:none; cursor:pointer;
+    transition:border-color var(--fast) ease;
+  }
+  .field select:invalid{ color:var(--light-50); }      /* "Choose one" reads as a placeholder */
+  .field select:focus{ border-color:var(--light); }
+  .field select option{ color:var(--slate); background:var(--stone); }   /* Windows draws the list in page colours */
+  .field.bad select{ border-color:var(--terracotta-on-dark); }
+
+  /* RESULT — their readiness read, shown once the form has gone through */
+  .result{ display:none; margin-top:var(--s6); padding-top:var(--s5); border-top:1px solid var(--light-18); }
   .result.on{ display:block; animation:soft-from var(--ui) var(--ease) both; }
   .result.on .diag div{ animation:soft-from var(--ui) var(--ease) both; }
   .result.on .diag div:nth-child(1){ animation-delay:60ms; }
   .result.on .diag div:nth-child(2){ animation-delay:100ms; }
   .result.on .diag div:nth-child(3){ animation-delay:140ms; }
   .result.on .diag div:nth-child(4){ animation-delay:180ms; }
-  .result.on .diag div:nth-child(5){ animation-delay:220ms; }
   .result .verdict{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s3); }
   .result h3{ font-size:var(--t-h3); margin-bottom:var(--s3); }
   .result p{ font-size:var(--t-small); color:var(--light-80); max-width:44ch; margin-bottom:var(--s5); }
-  .result .scale{ display:flex; align-items:center; gap:var(--s3); margin-bottom:var(--s5); }
-  .result .scale .track2{ flex:1; height:1px; background:var(--light-18); position:relative; }
-  .result .scale .track2 i{ position:absolute; left:0; top:0; height:100%; width:100%; background:var(--light);
-                            transform:scaleX(0); transform-origin:left; transition:transform 700ms var(--ease); }
-  .result .scale b{ font-size:var(--t-micro); font-variant-numeric:tabular-nums; font-weight:600; }
   /* Per-dimension diagnostic. Computed from the actual answers, so it
      tells them something they didn't already type in. */
   .result .diag{ border-top:1px solid var(--light-18); margin-bottom:var(--s5); }
@@ -867,33 +857,13 @@
     padding:11px 0; border-bottom:1px solid var(--light-18); font-size:var(--t-small);
   }
   .result .diag .lbl{ color:var(--light-50); }
-  .result .diag .val{ font-weight:600; }
+  .result .diag .val{ font-weight:600; text-align:right; }
   .result .diag .val.weak{ color:var(--light); }
   .result .bench{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s5); display:none; }
   .result .bench.on{ display:block; }
-  .assess .link{ opacity:1; }   /* 65% link text is 3.1:1 on olive; the underline already marks it */
-  .qnav{ background:none; border:0; border-bottom:1px solid currentColor; font-family:inherit; cursor:pointer; }
-  .assess .head .qnav{ display:block; margin-top:var(--s4); }
-  .assess .head .qnav[hidden]{ display:none; }
   #callCta{ display:none; }
-  #callCta.on{ display:inline-block; }
-
-  /* ============================================================
-     GATE — copy left, form right. Not a centered 400px column.
-     ============================================================ */
-  /* The claim: the form, shown under the result on the olive sheet */
-  .claim{ display:none; margin-top:var(--s4); padding-top:var(--s5); border-top:1px solid var(--light-18); }
-  .claim.on{ display:block; animation:soft-from var(--ui) var(--ease) both; }
-  .claim-title{ font-size:var(--t-h3); margin-bottom:var(--s5); }
-  .claim .acts{ display:flex; align-items:center; gap:var(--s4); flex-wrap:wrap; margin-top:var(--s5); }
-  /* Terracotta is 2.2:1 on olive; errors here are light, bold, and the
-     underline thickens, so the field still reads as the one at fault. */
-  .assess .err,.assess .form-err{ color:var(--light); font-weight:600; }
-  .assess .field.bad input{ border-color:var(--light); border-bottom-width:2px; }
-  .hero-note{ font-size:var(--t-small); color:var(--light-80); }
-  /* Desktop: the heading and progress stay beside the result and form
-     as they scroll, instead of leaving an empty column */
-  @media (min-width:901px){ .assess .head{ position:sticky; top:calc(var(--frame) + 96px); align-self:start; } }
+  #callCta.on{ display:inline-flex; }
+  #sentTitle:focus{ outline:none; }
 
   .field{ margin-bottom:var(--s5); position:relative; }
   .field label{ display:block; font-size:var(--t-micro); color:var(--light-50); margin-bottom:6px; }
@@ -909,7 +879,9 @@
   .field.bad input{ border-color:var(--terracotta-on-dark); }
 
   @media (min-width:901px) and (max-height:860px){
+    .gate{ padding:var(--s7) 0; }
     .field{ margin-bottom:var(--s4); }
+    .gate .pitch ul{ margin-top:var(--s5); }
   }
   .submit{ width:100%; margin-top:var(--s3); }
   /* ADDED: button looks inactive while the form is sending */
@@ -989,8 +961,8 @@
      the screen is still fine: the stop's range carries on to the last
      control. Desktop only, phones scroll freely. */
   @media (min-width:901px){
-    .casenote,.assess{ min-height:100dvh; display:flex; align-items:center; }
-    .casenote > .grid,.assess > .grid{ width:100%; }
+    .casenote,.gate{ min-height:100dvh; display:flex; align-items:center; }
+    .casenote > .grid,.gate > .grid{ width:100%; }
   }
 
   /* Touch devices: grow the hit area to 44px without changing how
@@ -1014,7 +986,7 @@
     .conditions .head,.conditions .list,.conditions .turn,
     .casenote .body,
     .roadmap .head,.rows,
-    .assess .head,.assess .panelwrap,
+    .gate .pitch,.gate .form,
     .practice .lead,.practice .block,.practice .clients,.practice .portrait,
     .tail .msg,
     .plate .cap .grid > div,
@@ -1027,7 +999,7 @@
     .casenote .body{ margin-top:var(--s4); }
     .practice .block{ margin-top:var(--s6); }
     .practice .clients{ margin-top:var(--s6); }
-    .roadmap,.assess,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
+    .roadmap,.gate,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
     .tail{ padding-bottom:var(--s5); }
     .tail-foot{ margin-top:var(--s7); }
     .foot-logo{ padding:0 var(--s4); }
@@ -1035,7 +1007,7 @@
     .row-btn{ grid-template-columns:38px 1fr 22px; }
     .row-dim{ display:none; }
     .row-body p{ padding-left:calc(38px + var(--s3)); }
-    .assess .panelwrap{ margin-top:var(--s6); min-height:0; }
+    .gate .form{ margin-top:var(--s6); }
     .plumb{ display:none; }
     /* The venue's name is signed across the top of this photograph, and
        on a portrait screen cover-fit shows the whole height of it. Render
@@ -1071,16 +1043,14 @@
     section[data-fade]{ opacity:1 !important; }
     .hero-title .ln > span{ animation:none !important; transform:none !important; clip-path:none !important; }
     .hero-meta,.hero-cta{ animation:none !important; opacity:1 !important; transform:none !important; }
-    .result.on,.claim.on,.sent.on,.result.on .diag div{ animation:fade-only 180ms ease-out both !important; }
+    .result.on,.sent.on,.result.on .diag div{ animation:fade-only 180ms ease-out both !important; }
     .masthead .mh-label,.masthead .mh-cta{ transform:none !important; }
-    .qp{ transform:none !important; }
-    .btn:active,.mh-cta:active,.foot-social a:active,.opt:active span,.row-btn:active .row-name{ transform:none !important; }
-    .row-name,.opt span{ transition:none !important; }
-    .row-btn:hover .row-name,.opt:hover span,.opt:focus-visible span{ transform:none !important; }
+    .btn:active,.mh-cta:active,.foot-social a:active,.row-btn:active .row-name{ transform:none !important; }
+    .row-name{ transition:none !important; }
+    .row-btn:hover .row-name{ transform:none !important; }
     .row-plus::after{ transition:none !important; }
     .row-body{ transition:none !important; }
     .row-dim span{ transition:none !important; }
-    .assess .head .bar i,.result .scale .track2 i{ transition-duration:.01ms !important; }
   }
 </style>
 </head>
@@ -1094,7 +1064,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div id="bgLayer" aria-hidden="true"></div>
 
-<a class="skip" href="#s-assess">Skip to the readiness check</a>
+<a class="skip" href="#s-gate">Skip to the form</a>
 
 <div class="sheet" id="sheet" aria-hidden="true"></div>
 <div class="plumb" aria-hidden="true"><div class="plumb-fill" id="plumbFill"></div><div class="plumb-bead" id="plumbBead"></div></div>
@@ -1103,7 +1073,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <span class="mh-mark">INCO Studio</span>
   <span class="mh-right">
     <span class="mh-label">The Expansion Playbook</span>
-    <a class="mh-cta" href="#s-assess">Get the playbook</a>
+    <a class="mh-cta" href="#s-gate">Get the playbook</a>
   </span>
 </div>
 
@@ -1154,8 +1124,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p>A free 16-page guide for operators planning a second venue. What we'd want you to know before you sign.</p>
     </div>
     <div class="hero-cta">
-      <a href="#s-assess" class="btn">Get the playbook</a>
-      <span class="hero-note">Four quick questions, then it's yours.</span>
+      <a href="#s-gate" class="btn">Get the playbook</a>
+      <span class="hero-note">Free. Three quick questions and it's yours.</span>
     </div>
   </div>
 </section>
@@ -1377,71 +1347,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <!-- ============================================================
-     ASSESSMENT + DOWNLOAD — the only route to the playbook. Four
-     answers, then the result, then the details form directly under
-     it. Every lead arrives qualified: the quiz segment, score and
-     weakest area travel with the form. Ready-now scorers also get a
-     route to a conversation.
+     DOWNLOAD — the only route to the playbook. The qualifying
+     questions are part of the form: three required dropdowns
+     (systems, numbers, timing) under the contact details. Segment,
+     score, weakest area and the answers themselves travel with the
+     lead, and the visitor sees their readiness read once it's sent.
+     Brand was the fourth question; dropped to keep the form short.
      ============================================================ -->
-<section class="assess" id="s-assess" data-fade data-bg="olive" data-snap data-sheet="07" data-name="Readiness" data-dark>
+<section class="gate" id="s-gate" data-fade data-bg="slate" data-snap data-sheet="07" data-name="Download" data-dark>
   <div class="grid">
-    <div class="head">
-      <h2>Are you actually ready?</h2>
-      <p>Four questions, then the 16-page playbook is yours. Answer honestly. The flattering answer won't help you.</p>
-      <div class="count"><span id="qCount" aria-live="polite">Question 1 of 4</span></div>
-      <div class="bar"><i id="qBar"></i></div>
-      <button type="button" class="link qnav" id="qBack" hidden>Back to the previous question</button>
+    <div class="pitch">
+      <h2>Where should we send it?</h2>
+      <p>Sixteen pages, drawn from real projects, including the ones that didn't work.</p>
+      <ul>
+        <li>The five questions to answer before you sign</li>
+        <li>The site-fit checklist</li>
+        <li>The A-team roster and go-to contacts</li>
+      </ul>
     </div>
 
-    <div class="panelwrap">
-      <div class="qp on" data-q="1" role="group" aria-labelledby="q1">
-        <p class="q" id="q1">Does your first venue run profitably when you're not physically there?</p>
-        <button class="opt" data-score="2"><span>Yes, it holds up without me</span></button>
-        <button class="opt" data-score="1"><span>Mostly, with some hands-on days</span></button>
-        <button class="opt" data-score="0"><span>No, I'm still the glue</span></button>
-      </div>
-      <div class="qp" data-q="2" role="group" aria-labelledby="q2">
-        <p class="q" id="q2">Is your brand written down, or does it live in your head?</p>
-        <button class="opt" data-score="2"><span>Documented properly</span></button>
-        <button class="opt" data-score="1"><span>Partly, some of it</span></button>
-        <button class="opt" data-score="0"><span>In my head</span></button>
-      </div>
-      <div class="qp" data-q="3" role="group" aria-labelledby="q3">
-        <p class="q" id="q3">Have you scoped a real budget for site two, or is it still a guess?</p>
-        <button class="opt" data-score="2"><span>Quoted and scoped</span></button>
-        <button class="opt" data-score="1"><span>A rough range</span></button>
-        <button class="opt" data-score="0"><span>Not yet</span></button>
-      </div>
-      <div class="qp" data-q="4" role="group" aria-labelledby="q4">
-        <p class="q" id="q4">When would you want the next site open?</p>
-        <button class="opt" data-score="2"><span>Within six months</span></button>
-        <button class="opt" data-score="1"><span>Six to eighteen months</span></button>
-        <button class="opt" data-score="0"><span>No fixed timeline</span></button>
-      </div>
-
-      <div class="result" id="result">
-        <p class="verdict" id="verdict">Result</p>
-        <h3 id="rTitle" tabindex="-1"></h3>
-        <div class="scale">
-          <div class="track2"><i id="rFill"></i></div>
-          <b id="rScore">0/8</b>
-        </div>
-        <!-- Per-dimension breakdown, built from the four answers. This is
-             the part that makes the result worth reading: it tells them
-             which of the roadmap's dimensions is their weak one, which
-             they didn't explicitly type in. -->
-        <div class="diag" id="rDiag"></div>
-        <!-- Cohort benchmark. Stays hidden until COHORT_AVG is set to a
-             real number in the script below; nothing invented ships. -->
-        <p class="bench" id="rBench"></p>
-        <p id="rDesc"></p>
-      </div>
-
-      <!-- The claim: shown with the result. Same form, fields and CRM
-           hookup as the old standalone download sheet. -->
-      <div class="claim" id="claim">
-        <h3 class="claim-title">Where should we send it?</h3>
-        <div id="formWrap">
+    <div class="form">
+      <div id="formWrap">
         <form id="playbookForm" novalidate>
           <div class="field" id="fName">
             <label for="iName">Name</label>
@@ -1464,30 +1390,65 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <input id="iCo" type="text" name="company" autocomplete="organization" placeholder="Where you operate" required>
             <div class="err">Enter your venue or company.</div>
           </div>
+          <fieldset class="qs">
+            <legend>Three quick questions</legend>
+            <p class="qs-note">Answer honestly. The flattering answer won't help you.</p>
+            <div class="field fsel" id="fQ1">
+              <label for="iQ1">Does your first venue run profitably when you're not physically there?</label>
+              <select id="iQ1" name="q1" required>
+                <option value="" selected disabled>Choose one</option>
+                <option value="2">Yes, it holds up without me</option>
+                <option value="1">Mostly, with some hands-on days</option>
+                <option value="0">No, I'm still the glue</option>
+              </select>
+              <div class="err">Choose an answer.</div>
+            </div>
+            <div class="field fsel" id="fQ2">
+              <label for="iQ2">Have you scoped a real budget for site two, or is it still a guess?</label>
+              <select id="iQ2" name="q2" required>
+                <option value="" selected disabled>Choose one</option>
+                <option value="2">Quoted and scoped</option>
+                <option value="1">A rough range</option>
+                <option value="0">Not yet</option>
+              </select>
+              <div class="err">Choose an answer.</div>
+            </div>
+            <div class="field fsel" id="fQ3">
+              <label for="iQ3">When would you want the next site open?</label>
+              <select id="iQ3" name="q3" required>
+                <option value="" selected disabled>Choose one</option>
+                <option value="2">Within six months</option>
+                <option value="1">Six to eighteen months</option>
+                <option value="0">No fixed timeline</option>
+              </select>
+              <div class="err">Choose an answer.</div>
+            </div>
+          </fieldset>
           <!-- ADDED: honeypot field, hidden from people. If it comes back filled in, it's a bot. -->
           <div class="hp" aria-hidden="true">
             <label for="iWebsite">Website</label>
             <input id="iWebsite" type="text" name="website" tabindex="-1" autocomplete="off">
           </div>
-          <button type="submit" class="btn btn-pale submit" id="submitBtn">Email me the playbook</button>
+          <button type="submit" class="btn submit" id="submitBtn">Email me the playbook</button>
           <!-- ADDED: error message if sending fails -->
           <p class="form-err" id="formErr" role="alert"></p>
           <p class="fineprint">We'll email you the playbook and may follow up about it. Unsubscribe any time. Read our <a href="#" id="privacyLink" target="_blank" rel="noopener">privacy policy</a>.</p>
         </form>
-        <!-- Hidden: the quiz result travels with the lead to the CRM.
-             A visitor doesn't need to read their own scoring tag. -->
-        <p style="display:none;">Segment: <strong id="segTag">not-taken</strong></p>
       </div>
 
       <div class="sent" id="sent">
-        <h3>Sent.</h3>
+        <h3 id="sentTitle" tabindex="-1">Sent.</h3>
         <p>Check your inbox. The playbook is on its way.</p>
-        <!-- CHANGED: playbook is delivered by email only, so the download button is switched off.
-        <a class="btn btn-pale" id="pdfLink" href="#" target="_blank" rel="noopener">Download now</a>
-        -->
-        <div class="acts">
-          <a href="#" class="link" id="callCta" target="_blank" rel="noopener">Or book a call</a>
-          <button type="button" class="link qnav" id="qRetake">Retake the check</button>
+        <!-- Their readiness read, built from the three answers. -->
+        <div class="result" id="result">
+          <p class="verdict" id="verdict"></p>
+          <h3 id="rTitle"></h3>
+          <div class="diag" id="rDiag"></div>
+          <!-- Cohort benchmark. Stays hidden until COHORT_AVG is set to a
+               real number in the script below; nothing invented ships. -->
+          <p class="bench" id="rBench"></p>
+          <p id="rDesc"></p>
+          <a href="#" class="btn" id="callCta" target="_blank" rel="noopener">Book a call</a>
         </div>
       </div>
     </div>
@@ -1570,14 +1531,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   setLink("tailCall",    c.bookingUrl, bookClick);
   setLink("privacyLink", c.privacyUrl);
 
-  // Skip link: after the page glides to the check, put the keyboard on
-  // the current question's first answer (or the form, once it's showing)
+  // Skip link: after the page glides to the form, put the keyboard there too
   var skip = document.querySelector(".skip");
   if (skip) skip.addEventListener("click", function () {
-    setTimeout(function () {
-      var f = document.querySelector(".claim.on #iName") || document.querySelector(".qp.on .opt");
-      if (f) f.focus({ preventScroll: true });
-    }, 800);
+    setTimeout(function () { var f = document.getElementById("iName"); if (f) f.focus({ preventScroll: true }); }, 800);
   });
 
   // Send social clicks to GTM
@@ -1986,7 +1943,7 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     { sel: "#s-case",                align: "flush", end: ".casenote .sign" },     //  4 case note
     { sel: ".roadmap .head h2",      align: "top",   end: ".roadmap .rows" },      //  5 five questions
     { sel: ".practice .lead h2",     align: "top",   end: ".practice .clients" },  //  6 who's behind this
-    { sel: "#s-assess",              align: "flush", end: ".assess .panelwrap" },  //  7 readiness check + the form
+    { sel: "#s-gate",                align: "flush", end: ".gate .form" },         //  7 the form, with the three questions
     { sel: "#s-tail",                align: "flush", end: "footer .foot-logo" }    //  8 lease negotiation + footer
   ];
 
@@ -2236,173 +2193,89 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
    and the benchmark line turns itself on. */
 var COHORT_AVG = null;
 
-/* Each question maps to one of the roadmap dimensions, so the result
-   can name the weak spot instead of only returning a number. */
-var DIMENSIONS = {
-  1: { name: "Systems",  hint: "the business still leans on you being there" },
-  2: { name: "Brand",    hint: "what you stand for lives in your head, not on paper" },
-  3: { name: "Numbers",  hint: "the second site isn't costed yet" },
-  4: { name: "Timing",   hint: "the timeline is still open-ended" }
-};
+/* The three questions, in form order. Each maps to one roadmap
+   dimension, so the result can name the weak spot instead of only
+   returning a number. Brand was dropped to keep the form short. */
+var QUIZ = [
+  { id: "iQ1", name: "Systems", key: "answerSystems", hint: "the business still leans on you being there" },
+  { id: "iQ2", name: "Numbers", key: "answerNumbers", hint: "the second site isn't costed yet" },
+  { id: "iQ3", name: "Timing",  key: "answerTiming",  hint: "the timeline is still open-ended" }
+];
+var QUIZ_MAX = 6;
 
-var score = 0;
-var answers = {};
-var panels = document.querySelectorAll(".qp");
-var totalQ = panels.length;
-var qBar = document.getElementById("qBar");
-var qCount = document.getElementById("qCount");
-
-var qBack = document.getElementById("qBack");
-var qRetake = document.getElementById("qRetake");
-
-function sumScore() {
-  var t = 0;
-  for (var k in answers) t += answers[k];
-  return t;
-}
-// Show question n (1-based). Answers already given for later questions
-// are dropped, so going back and answering again can't double-count.
-function goTo(n, focus) {
-  Object.keys(answers).forEach(function (k) { if (+k >= n) delete answers[k]; });
-  score = sumScore();
-  panels.forEach(function (p) { p.classList.remove("on"); });
-  document.getElementById("result").classList.remove("on");
-  document.getElementById("claim").classList.remove("on");
-  var panel = document.querySelector('.qp[data-q="' + n + '"]');
-  panel.classList.add("on");
-  qCount.textContent = "Question " + n + " of " + totalQ;
-  qBar.style.transform = "scaleX(" + ((n - 1) / totalQ) + ")";
-  qBack.hidden = n === 1;
-  if (focus) panel.querySelector(".opt").focus({ preventScroll: true });
-}
-
-document.querySelectorAll(".opt").forEach(function (btn) {
-  btn.addEventListener("click", function () {
-    var panel = btn.closest(".qp");
-    var idx = parseInt(panel.dataset.q, 10);
-    // ADDED: first answer of the visit, so GTM can show start vs finish vs lead
+/* First answer of the visit, so GTM can compare starts with leads */
+QUIZ.forEach(function (q) {
+  var el = document.getElementById(q.id);
+  if (el) el.addEventListener("change", function () {
     if (!window.__quizStarted) { window.__quizStarted = true; window.trackEvent("quiz_start"); }
-    answers[idx] = parseInt(btn.dataset.score, 10);
-    score = sumScore();
-
-    qBar.style.transform = "scaleX(" + (idx / totalQ) + ")";
-    panel.classList.remove("on");
-
-    var next = document.querySelector('.qp[data-q="' + (idx + 1) + '"]');
-    if (next) {
-      qCount.textContent = "Question " + (idx + 1) + " of " + totalQ;
-      next.classList.add("on");
-      qBack.hidden = false;
-      // The answered button is now hidden; without this, keyboard focus
-      // falls back to the top of the document.
-      if (btn.matches(":focus-visible")) next.querySelector(".opt").focus({ preventScroll: true });
-    } else {
-      qCount.textContent = "Complete";
-      qBack.hidden = true;
-      showResult();
-      if (btn.matches(":focus-visible")) document.getElementById("rTitle").focus({ preventScroll: true });
-    }
   });
 });
 
-qBack.addEventListener("click", function () {
-  var on = document.querySelector(".qp.on");
-  if (on) goTo(parseInt(on.dataset.q, 10) - 1, qBack.matches(":focus-visible"));
-});
-qRetake.addEventListener("click", function () {
-  document.getElementById("rFill").style.transform = "scaleX(0)";
-  goTo(1, qRetake.matches(":focus-visible"));
-});
-
-function showResult() {
-  var max = 8;
-  var seg, verdict, title, desc;
-
-  if (score >= 6) {
-    seg = "ready-now"; verdict = "Ready now";
-    title = "You're further along than most operators who ask.";
-    desc = "The playbook goes further from here: the site-fit checklist, the numbers to run before committing, and who to call first. If you're weighing an actual site, a conversation will get you further than a PDF.";
-  } else if (score >= 3) {
-    seg = "getting-there"; verdict = "Getting there";
-    title = "The gaps are fixable, not fatal.";
-    desc = "The playbook has the pressure-test questions and the checklist to close those gaps before they turn into expensive problems on a site you've already signed for.";
+/* Score the three dropdowns. Segments, out of 6:
+     5-6 ready-now      at most one answer short of the top
+     2-4 getting-there
+     0-1 not-yet
+   Ties for the weak spot go to the earlier question (systems before
+   numbers before timing), which is deliberate ordering. */
+function readQuiz() {
+  var score = 0, answers = [], weakest = null;
+  QUIZ.forEach(function (q) {
+    var el = document.getElementById(q.id);
+    var v = parseInt(el.value, 10);
+    var text = el.selectedIndex > 0 ? el.options[el.selectedIndex].text : "";
+    answers.push({ q: q, v: v, text: text });
+    score += v;
+    if (v < 2 && (!weakest || v < weakest.v)) weakest = { q: q, v: v };
+  });
+  var r = { score: score, answers: answers, weakest: weakest ? weakest.q : null };
+  if (score >= 5) {
+    r.seg = "ready-now"; r.verdict = "Ready now";
+    r.title = "You're further along than most operators who ask.";
+    r.desc = "The playbook goes further from here: the site-fit checklist, the numbers to run before committing, and who to call first. If you're weighing an actual site, a conversation will get you further than a PDF.";
+  } else if (score >= 2) {
+    r.seg = "getting-there"; r.verdict = "Getting there";
+    r.title = "The gaps are fixable, not fatal.";
+    r.desc = "The playbook has the pressure-test questions and the checklist to close those gaps before they turn into expensive problems on a site you've already signed for.";
   } else {
-    seg = "not-yet"; verdict = "Not yet";
-    title = "Site one needs to stand on its own first.";
-    desc = "That's the common answer, not the embarrassing one. The playbook covers what to fix first, starting with the systems rather than the site search.";
+    r.seg = "not-yet"; r.verdict = "Not yet";
+    r.title = "Site one needs to stand on its own first.";
+    r.desc = "That's the common answer, not the embarrassing one. The playbook covers what to fix first, starting with the systems rather than the site search.";
   }
+  return r;
+}
 
-  document.getElementById("verdict").textContent = verdict;
-  document.getElementById("rTitle").textContent = title;
-  document.getElementById("rDesc").textContent = desc;
-  document.getElementById("rScore").textContent = score + "/" + max;
-  document.getElementById("segTag").textContent = seg;
-  document.getElementById("result").classList.add("on");
-  document.getElementById("claim").classList.add("on");
-
-  requestAnimationFrame(function () {
-    document.getElementById("rFill").style.transform = "scaleX(" + (score / max) + ")";
-  });
-
-  /* Per-dimension read. Lowest-scoring answer is the weak spot; ties
-     resolve to the earliest question, which is deliberate ordering
-     rather than an accident (systems before brand before numbers). */
-  var weakest = null, weakestVal = 99;
-  Object.keys(DIMENSIONS).forEach(function (k) {
-    var v = answers[k];
-    if (v === undefined) return;
-    if (v < weakestVal) { weakestVal = v; weakest = k; }
-  });
+/* Their readiness read, shown once the form has gone through */
+function showResult(r) {
+  document.getElementById("verdict").textContent = r.verdict;
+  document.getElementById("rTitle").textContent = r.title;
+  document.getElementById("rDesc").textContent = r.desc;
 
   var diag = document.getElementById("rDiag");
   diag.innerHTML = "";
-  Object.keys(DIMENSIONS).forEach(function (k) {
-    var v = answers[k];
-    if (v === undefined) return;
-    var label = v === 2 ? "Solid" : (v === 1 ? "Partly there" : "Needs work");
-    var isWeak = (k === weakest && weakestVal < 2);
-    var row = document.createElement("div");
-    var lbl = document.createElement("span");
-    lbl.className = "lbl";
-    lbl.textContent = DIMENSIONS[k].name;
-    var val = document.createElement("span");
-    val.className = "val" + (isWeak ? " weak" : "");
-    val.textContent = label;
-    row.appendChild(lbl); row.appendChild(val);
-    diag.appendChild(row);
-  });
-
-  if (weakest && weakestVal < 2) {
-    var line = document.createElement("div");
-    var l = document.createElement("span");
-    l.className = "lbl";
-    l.textContent = "Start with";
-    var r = document.createElement("span");
-    r.className = "val weak";
-    r.textContent = DIMENSIONS[weakest].name + ", " + DIMENSIONS[weakest].hint;
-    line.appendChild(l); line.appendChild(r);
-    diag.appendChild(line);
+  function row(label, value, weak) {
+    var d = document.createElement("div");
+    var l = document.createElement("span"); l.className = "lbl"; l.textContent = label;
+    var v = document.createElement("span"); v.className = "val" + (weak ? " weak" : ""); v.textContent = value;
+    d.appendChild(l); d.appendChild(v); diag.appendChild(d);
   }
+  r.answers.forEach(function (a) {
+    row(a.q.name, a.v === 2 ? "Solid" : (a.v === 1 ? "Partly there" : "Needs work"), r.weakest === a.q);
+  });
+  if (r.weakest) row("Start with", r.weakest.name + ", " + r.weakest.hint, true);
 
   // Benchmark only renders if a real cohort average has been set.
   var bench = document.getElementById("rBench");
   if (typeof COHORT_AVG === "number" && bench) {
-    var rel = score > COHORT_AVG ? "above" : (score < COHORT_AVG ? "below" : "level with");
+    var rel = r.score > COHORT_AVG ? "above" : (r.score < COHORT_AVG ? "below" : "level with");
     bench.textContent = "Operators who take this before signing average " +
-      COHORT_AVG + " out of " + max + ". You're " + rel + " that.";
+      COHORT_AVG + " out of " + QUIZ_MAX + ". You're " + rel + " that.";
     bench.classList.add("on");
   }
 
   // Hot leads get a route to a conversation as well as the download.
   var call = document.getElementById("callCta");
-  if (call) call.classList.toggle("on", seg === "ready-now");
-
-  window.__seg = seg;
-  window.__score = score;
-  window.__weak = weakest ? DIMENSIONS[weakest].name : null;
-
-  // ADDED: send quiz completions to GTM, with the result attached
-  window.trackEvent("quiz_complete", { quiz_segment: seg, quiz_score: score });
+  if (call) call.classList.toggle("on", r.seg === "ready-now");
+  document.getElementById("result").classList.add("on");
 }
 
 /* ============================================================
@@ -2416,7 +2289,7 @@ function showResult() {
   function mark(id, ok) {
     var f = document.getElementById(id);
     f.classList.toggle("bad", !ok);
-    var input = f.querySelector("input");
+    var input = f.querySelector("input, select");
     if (input) input.setAttribute("aria-invalid", ok ? "false" : "true");
     return ok;
   }
@@ -2435,10 +2308,10 @@ function showResult() {
 
   /* Clear a field's error the moment they start fixing it, rather than
      leaving it red until the next submit. */
-  ["fName", "fEmail", "fPhone", "fCo"].forEach(function (id) {
+  ["fName", "fEmail", "fPhone", "fCo", "fQ1", "fQ2", "fQ3"].forEach(function (id) {
     var f = document.getElementById(id); if (!f) return;
-    var input = f.querySelector("input"); if (!input) return;
-    input.addEventListener("input", function () {
+    var input = f.querySelector("input, select"); if (!input) return;
+    input.addEventListener(input.tagName === "SELECT" ? "change" : "input", function () {
       if (f.classList.contains("bad")) {
         f.classList.remove("bad");
         input.setAttribute("aria-invalid", "false");
@@ -2452,6 +2325,7 @@ function showResult() {
   var formErr = document.getElementById("formErr");
   var BTN_TEXT = submitBtn.textContent;   // original button text, restored after errors
   var eventId = null;                      // shared by GTM and GHL so Meta doesn't double count
+  var quiz = null;                         // scored answers for the lead being sent
 
   // Show or hide the error message under the button
   function showError(msg) { formErr.textContent = msg; formErr.classList.add("on"); }
@@ -2520,11 +2394,16 @@ function showResult() {
     var okEmail = mark("fEmail", /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
     var okPhone = mark("fPhone", validPhone(phone));
     var okCo = mark("fCo", company.length > 0);
+    // The three questions are required: every lead arrives qualified
+    var okQ = true;
+    QUIZ.forEach(function (q, i) {
+      if (!mark("fQ" + (i + 1), document.getElementById(q.id).value !== "")) okQ = false;
+    });
 
-    if (!okName || !okEmail || !okPhone || !okCo) {
+    if (!okName || !okEmail || !okPhone || !okCo || !okQ) {
       // Send focus to the first problem so keyboard users aren't left
       // hunting for which field went red.
-      var firstBad = form.querySelector(".field.bad input");
+      var firstBad = form.querySelector(".field.bad input, .field.bad select");
       // Focus without scrolling when the field is already on screen: a
       // nudge here would wake the snap logic and glide the sheet after a
       // failed submit. Off screen (phones), let the browser bring it in.
@@ -2544,14 +2423,16 @@ function showResult() {
     // ADDED: unique ID for this lead, sent to both GHL and GTM
     eventId = "lead-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
 
+    quiz = readQuiz();
     var payload = {
       name: name, email: email, phone: phone, company: company,
-      quizSegment: window.__seg || "not-taken",
-      quizScore: window.__score !== undefined ? window.__score : null,
+      quizSegment: quiz.seg,
+      quizScore: quiz.score,
+      quizScoreOutOf: QUIZ_MAX,   // 6 since the brand question was dropped (was 8)
       // The weak dimension travels too, so the first email can open on
       // the thing they're actually behind on rather than a generic
       // "thanks for downloading".
-      weakestArea: window.__weak || null,
+      weakestArea: quiz.weakest ? quiz.weakest.name : null,
       source: "expansion-playbook-v4",
       // ADDED: first and last name split out for GHL's contact fields
       firstName: name.split(/\s+/)[0],
@@ -2561,6 +2442,8 @@ function showResult() {
       pageUrl: location.href,
       submittedAt: new Date().toISOString()
     };
+    // The answers in words, for reading the lead in the CRM
+    quiz.answers.forEach(function (a) { payload[a.q.key] = a.text; });
     // ADDED: utm tags and fbclid from the ad, if present
     var ads = adParams();
     for (var k in ads) payload[k] = ads[k];
@@ -2607,14 +2490,18 @@ function showResult() {
   });
 
   function onSuccess() {
-    // ADDED: send the lead to GTM, only after a real send
+    // ADDED: send the quiz and the lead to GTM, only after a real send
+    window.trackEvent("quiz_complete", { quiz_segment: quiz.seg, quiz_score: quiz.score });
     window.trackEvent("generate_lead", {
       form_name: "expansion_playbook",
-      quiz_segment: window.__seg || "not-taken",
+      quiz_segment: quiz.seg,
       event_id: eventId   // used as the Meta "eventID" so Meta doesn't double count
     });
     document.getElementById("formWrap").style.display = "none";
+    showResult(quiz);
     document.getElementById("sent").classList.add("on");
+    // The form they were in has gone; keep their place on the new content
+    document.getElementById("sentTitle").focus({ preventScroll: true });
   }
 })();
 
@@ -2736,11 +2623,11 @@ function showResult() {
 
 <script>
 (function () {
-  // The readiness sheet grows when the result and form appear (and
-  // shrinks on a retake). Everything measured below it, the colour
+  // The download sheet changes height when errors show and when the
+  // form swaps for the result. Everything measured below it, the colour
   // stops, section fades and snap ranges, has to be measured again.
   if (window.ScrollTrigger && "ResizeObserver" in window) {
-    var assessT, assessH = 0, assess = document.getElementById("s-assess");
+    var assessT, assessH = 0, assess = document.getElementById("s-gate");
     new ResizeObserver(function () {
       if (assess.offsetHeight === assessH) return;
       assessH = assess.offsetHeight;

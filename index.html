@@ -820,23 +820,54 @@
   .gate .form{ grid-column:7 / 12; }
   .hero-note{ font-size:var(--t-small); color:var(--light-80); }
 
-  .qs{ border:0; padding:0; margin:var(--s6) 0 0; min-width:0; }
-  .qs legend{ padding:0; font-size:var(--t-h3); font-weight:600; letter-spacing:-.015em; line-height:1.15; }
-  .qs .qs-note{ margin:var(--s2) 0 var(--s5); font-size:var(--t-small); color:var(--light-80); }
-  /* A question is a sentence, not a one-word field name: it gets body
-     size and near-full ink rather than the micro label. */
-  .field.fsel label{ font-size:var(--t-small); color:var(--light-80); line-height:1.35; margin-bottom:4px; }
+  /* Qualifying questions. A custom dropdown so the open menu matches
+     the form; the native <select> underneath stays the source of the
+     value, and is what shows if the script never runs. The question is
+     the placeholder; once answered, the short label keeps the context. */
   .field select{
     width:100%; -webkit-appearance:none; appearance:none; border-radius:0;
     background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23f5f3ee' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 2px center;
     border:none; border-bottom:1px solid var(--light-18);
-    color:var(--light); font-family:inherit; font-size:var(--t-lead); padding:8px 28px 8px 0; outline:none; cursor:pointer;
+    color:var(--light); font-family:inherit; font-size:var(--t-body); padding:10px 28px 10px 0; outline:none; cursor:pointer;
+  }
+  .field select:invalid{ color:var(--light-50); }
+  .field select option{ color:var(--slate); background:var(--stone); }
+  .field.bad select{ border-color:var(--terracotta-on-dark); }
+  .fsel.dd-on select{ display:none; }
+
+  .dd{ position:relative; }
+  .dd-btn{
+    display:flex; align-items:center; justify-content:space-between; gap:var(--s3);
+    width:100%; padding:10px 0; border-bottom:1px solid var(--light-18);
+    font-size:var(--t-body); line-height:1.35; color:var(--light); cursor:pointer; outline:none;
     transition:border-color var(--fast) ease;
   }
-  .field select:invalid{ color:var(--light-50); }      /* "Choose one" reads as a placeholder */
-  .field select:focus{ border-color:var(--light); }
-  .field select option{ color:var(--slate); background:var(--stone); }   /* Windows draws the list in page colours */
-  .field.bad select{ border-color:var(--terracotta-on-dark); }
+  .dd-btn.ph .dd-val{ color:var(--light-50); }
+  .dd-btn:focus,.dd-btn[aria-expanded="true"]{ border-color:var(--light); }
+  .dd-btn::after{
+    content:""; flex:none; width:14px; height:9px;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23f5f3ee' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat center;
+    transition:transform var(--fast) var(--ease);
+  }
+  .dd-btn[aria-expanded="true"]::after{ transform:rotate(180deg); }
+  .field.bad .dd-btn{ border-color:var(--terracotta-on-dark); }
+  /* The open menu: the form's own vocabulary. Slate ground, hairline
+     border, ruled rows like the list beside it, light ink on focus. */
+  .dd-list{
+    position:absolute; left:0; right:0; top:100%; z-index:30; margin:0; padding:0; list-style:none;
+    background:var(--slate); border:1px solid var(--light-18); border-top:0;
+    animation:dd-in 140ms ease-out both;
+  }
+  .dd-list[hidden]{ display:none; }
+  .dd-list li{
+    padding:14px 16px; font-size:var(--t-small); line-height:1.35; color:var(--light-80);
+    border-bottom:1px solid var(--light-18); cursor:pointer;
+  }
+  .dd-list li:last-child{ border-bottom:0; }
+  .dd-list li.is-active{ color:var(--light); background:rgba(245,243,238,.06); }
+  .dd-list li[aria-selected="true"]{ color:var(--light); font-weight:600; }
+  @keyframes dd-in{ from{ opacity:0; transform:translateY(-4px); } to{ opacity:1; transform:none; } }
+  @media (prefers-reduced-motion:reduce){ .dd-list{ animation:none; } }
 
   /* RESULT — their readiness read, shown once the form has gone through */
   .result{ display:none; margin-top:var(--s6); padding-top:var(--s5); border-top:1px solid var(--light-18); }
@@ -1390,40 +1421,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <input id="iCo" type="text" name="company" autocomplete="organization" placeholder="Where you operate" required>
             <div class="err">Enter your venue or company.</div>
           </div>
-          <fieldset class="qs">
-            <legend>Three quick questions</legend>
-            <p class="qs-note">Answer honestly. The flattering answer won't help you.</p>
-            <div class="field fsel" id="fQ1">
-              <label for="iQ1">Does your first venue run profitably when you're not physically there?</label>
-              <select id="iQ1" name="q1" required>
-                <option value="" selected disabled>Choose one</option>
-                <option value="2">Yes, it holds up without me</option>
-                <option value="1">Mostly, with some hands-on days</option>
-                <option value="0">No, I'm still the glue</option>
-              </select>
-              <div class="err">Choose an answer.</div>
-            </div>
-            <div class="field fsel" id="fQ2">
-              <label for="iQ2">Have you scoped a real budget for site two, or is it still a guess?</label>
-              <select id="iQ2" name="q2" required>
-                <option value="" selected disabled>Choose one</option>
-                <option value="2">Quoted and scoped</option>
-                <option value="1">A rough range</option>
-                <option value="0">Not yet</option>
-              </select>
-              <div class="err">Choose an answer.</div>
-            </div>
-            <div class="field fsel" id="fQ3">
-              <label for="iQ3">When would you want the next site open?</label>
-              <select id="iQ3" name="q3" required>
-                <option value="" selected disabled>Choose one</option>
-                <option value="2">Within six months</option>
-                <option value="1">Six to eighteen months</option>
-                <option value="0">No fixed timeline</option>
-              </select>
-              <div class="err">Choose an answer.</div>
-            </div>
-          </fieldset>
+          <div class="field fsel" id="fQ1">
+            <label for="iQ1" id="lQ1">Running without you</label>
+            <select id="iQ1" name="q1" required>
+              <option value="" selected disabled>Does your first venue run profitably when you're not physically there?</option>
+              <option value="2">Yes, it holds up without me</option>
+              <option value="1">Mostly, with some hands-on days</option>
+              <option value="0">No, I'm still the glue</option>
+            </select>
+            <div class="err">Choose an answer.</div>
+          </div>
+          <div class="field fsel" id="fQ2">
+            <label for="iQ2" id="lQ2">Budget for site two</label>
+            <select id="iQ2" name="q2" required>
+              <option value="" selected disabled>Have you scoped a real budget for site two, or is it still a guess?</option>
+              <option value="2">Quoted and scoped</option>
+              <option value="1">A rough range</option>
+              <option value="0">Not yet</option>
+            </select>
+            <div class="err">Choose an answer.</div>
+          </div>
+          <div class="field fsel" id="fQ3">
+            <label for="iQ3" id="lQ3">Opening timeline</label>
+            <select id="iQ3" name="q3" required>
+              <option value="" selected disabled>When would you want the next site open?</option>
+              <option value="2">Within six months</option>
+              <option value="1">Six to eighteen months</option>
+              <option value="0">No fixed timeline</option>
+            </select>
+            <div class="err">Choose an answer.</div>
+          </div>
           <!-- ADDED: honeypot field, hidden from people. If it comes back filled in, it's a bot. -->
           <div class="hp" aria-hidden="true">
             <label for="iWebsite">Website</label>
@@ -2070,7 +2097,7 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     // scrollbar lands on <html>. Keys typed into a field aren't scrolling
     // either, and as errors clear the sheet changes height under them.
     if (e.type === "mousedown") return e.target === document.documentElement;
-    if (e.type === "keydown") return !(e.target.closest && e.target.closest("input, textarea, select, [contenteditable]"));
+    if (e.type === "keydown") return !(e.target.closest && e.target.closest("input, textarea, select, [contenteditable], .dd"));
     return true;
   }
   ["wheel", "touchstart", "touchmove", "keydown", "mousedown"].forEach(function (ev) {
@@ -2203,6 +2230,113 @@ var QUIZ = [
 ];
 var QUIZ_MAX = 6;
 
+/* ------------------------------------------------------------
+   DROPDOWN — a select-only combobox (WAI-ARIA pattern) built over
+   each native <select>. The select keeps the value; this only draws
+   it and the menu in the form's own style, since a native menu can't
+   be styled. Mouse, touch and keyboard: Enter, Space or the arrows
+   open; arrows, Home and End move; Enter or Space picks; Escape or
+   Tab closes. Picking fires "change" on the select, so validation
+   and tracking listen to the select as before.
+   ------------------------------------------------------------ */
+(function () {
+  var open = null;   // the one dropdown that is open, if any
+
+  QUIZ.forEach(function (q) {
+    var sel = document.getElementById(q.id);
+    if (!sel) return;
+    var field = sel.closest(".field"), label = field.querySelector("label");
+    var opts = Array.prototype.slice.call(sel.options, 1);   // [0] is the question
+    var base = q.id.replace(/^i/, "");
+
+    var wrap = document.createElement("div"); wrap.className = "dd";
+    var btn = document.createElement("div");
+    btn.className = "dd-btn ph"; btn.id = "dd" + base; btn.tabIndex = 0;
+    btn.setAttribute("role", "combobox");
+    btn.setAttribute("aria-haspopup", "listbox");
+    btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-controls", "lb" + base);
+    btn.setAttribute("aria-labelledby", label.id + " dv" + base);
+    var val = document.createElement("span"); val.className = "dd-val"; val.id = "dv" + base;
+    val.textContent = sel.options[0].text;
+    btn.appendChild(val);
+
+    var list = document.createElement("ul");
+    list.className = "dd-list"; list.id = "lb" + base; list.hidden = true;
+    list.setAttribute("role", "listbox"); list.setAttribute("aria-labelledby", label.id);
+    var items = opts.map(function (o, i) {
+      var li = document.createElement("li");
+      li.id = "op" + base + "-" + i; li.setAttribute("role", "option");
+      li.setAttribute("aria-selected", "false"); li.textContent = o.text;
+      li.addEventListener("mousedown", function (e) { e.preventDefault(); });   // keep focus on the button
+      li.addEventListener("click", function () { choose(i); close(); });
+      li.addEventListener("mousemove", function () { activate(i); });
+      list.appendChild(li);
+      return li;
+    });
+
+    wrap.appendChild(btn); wrap.appendChild(list);
+    sel.insertAdjacentElement("afterend", wrap);
+    field.classList.add("dd-on");
+    label.removeAttribute("for");
+    label.addEventListener("click", function () { btn.focus(); });
+
+    var active = -1;
+    function activate(i) {
+      active = Math.max(0, Math.min(items.length - 1, i));
+      items.forEach(function (li, k) { li.classList.toggle("is-active", k === active); });
+      btn.setAttribute("aria-activedescendant", items[active].id);
+    }
+    function choose(i) {
+      var o = opts[i];
+      if (sel.value !== o.value) {
+        sel.value = o.value;
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+      val.textContent = o.text;
+      btn.classList.remove("ph");
+      items.forEach(function (li, k) { li.setAttribute("aria-selected", k === i ? "true" : "false"); });
+    }
+    function show() {
+      if (open && open !== api) open.close();
+      list.hidden = false; btn.setAttribute("aria-expanded", "true"); open = api;
+      activate(sel.selectedIndex > 0 ? sel.selectedIndex - 1 : 0);
+      var r = list.getBoundingClientRect();   // a menu opened near the fold comes into view
+      if (r.bottom > window.innerHeight) list.scrollIntoView({ block: "nearest" });
+    }
+    function close() {
+      list.hidden = true; btn.setAttribute("aria-expanded", "false");
+      btn.removeAttribute("aria-activedescendant");
+      if (open === api) open = null;
+    }
+    var api = { close: close, wrap: wrap };
+
+    btn.addEventListener("click", function () { list.hidden ? show() : close(); });
+    btn.addEventListener("keydown", function (e) {
+      var k = e.key, isOpen = !list.hidden;
+      if (!isOpen) {
+        if (k === "Enter" || k === " " || k === "ArrowDown" || k === "ArrowUp") { e.preventDefault(); show(); }
+        else if (k === "Home") { e.preventDefault(); show(); activate(0); }
+        else if (k === "End") { e.preventDefault(); show(); activate(items.length - 1); }
+        return;
+      }
+      if (k === "ArrowDown") { e.preventDefault(); activate(active + 1); }
+      else if (k === "ArrowUp") { e.preventDefault(); activate(active - 1); }
+      else if (k === "Home") { e.preventDefault(); activate(0); }
+      else if (k === "End") { e.preventDefault(); activate(items.length - 1); }
+      else if (k === "Enter" || k === " ") { e.preventDefault(); choose(active); close(); }
+      else if (k === "Escape") { e.preventDefault(); close(); }
+      else if (k === "Tab") { close(); }
+    });
+    btn.addEventListener("blur", function () { close(); });
+  });
+
+  // a press anywhere else closes the open menu
+  document.addEventListener("pointerdown", function (e) {
+    if (open && !open.wrap.contains(e.target)) open.close();
+  });
+})();
+
 /* First answer of the visit, so GTM can compare starts with leads */
 QUIZ.forEach(function (q) {
   var el = document.getElementById(q.id);
@@ -2289,7 +2423,7 @@ function showResult(r) {
   function mark(id, ok) {
     var f = document.getElementById(id);
     f.classList.toggle("bad", !ok);
-    var input = f.querySelector("input, select");
+    var input = f.querySelector(".dd-btn") || f.querySelector("input, select");   // the visible control
     if (input) input.setAttribute("aria-invalid", ok ? "false" : "true");
     return ok;
   }
@@ -2310,11 +2444,12 @@ function showResult(r) {
      leaving it red until the next submit. */
   ["fName", "fEmail", "fPhone", "fCo", "fQ1", "fQ2", "fQ3"].forEach(function (id) {
     var f = document.getElementById(id); if (!f) return;
-    var input = f.querySelector("input, select"); if (!input) return;
+    var input = f.querySelector("input, select"); if (!input) return;   // the select hears the dropdown's change too
     input.addEventListener(input.tagName === "SELECT" ? "change" : "input", function () {
       if (f.classList.contains("bad")) {
         f.classList.remove("bad");
-        input.setAttribute("aria-invalid", "false");
+        var shown = f.querySelector(".dd-btn") || f.querySelector("input, select");
+        if (shown) shown.setAttribute("aria-invalid", "false");
       }
     });
   });
@@ -2403,7 +2538,7 @@ function showResult(r) {
     if (!okName || !okEmail || !okPhone || !okCo || !okQ) {
       // Send focus to the first problem so keyboard users aren't left
       // hunting for which field went red.
-      var firstBad = form.querySelector(".field.bad input, .field.bad select");
+      var firstBad = form.querySelector(".field.bad input, .field.bad .dd-btn, .fsel:not(.dd-on).bad select");
       // Focus without scrolling when the field is already on screen: a
       // nudge here would wake the snap logic and glide the sheet after a
       // failed submit. Off screen (phones), let the browser bring it in.

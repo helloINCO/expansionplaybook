@@ -948,11 +948,19 @@
   .tail-foot{ row-gap:0; }   /* spacing in this block is set explicitly, not by the grid gap */
   .tail-foot > div{ grid-column:1 / 13; }
   /* The Contact sheet is one full screen on desktop: message at the top,
-     icons and studio line at the bottom, all inside the border. */
+     icons and studio line at the bottom, all inside the border. Spare
+     height on a tall screen goes ABOVE the message, so message, studio
+     line and border stay one tight group at the bottom. Centred, the
+     spare height opened a 200-330px gap under the studio line, or
+     (split) under Book a call.
+     The gap under the line is now fixed (about 100px to the border,
+     enough to clear the sheet counter), and the footer's top padding is
+     set so the gap is the same at the snap stop and at the page end. */
   @media (min-width:901px){
-    .tail{ min-height:100dvh; display:flex; flex-direction:column; justify-content:center; }
-    .tail-foot{ margin-top:var(--s6); }
+    .tail{ min-height:100dvh; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:calc(var(--s6) + var(--s4)); }
     .tail > .grid{ width:100%; }
+    .tail-foot{ margin-top:var(--s6); }
+    footer{ padding-top:var(--s6); }
   }
   footer .grid > div{ grid-column:1 / 13; }
   .foot-social{ display:flex; justify-content:flex-end; margin-right:-8px; padding-bottom:var(--s1); }

@@ -78,9 +78,9 @@ Everything else is vanilla JS.
 
 ## Browser notes
 
-- Scroll snapping is JS-driven, not CSS `scroll-snap`. Wheel, touch and
-  keyboard input all cancel an in-flight glide.
+- No scroll snapping: the page scrolls freely. In-page links ease there
+  with native smooth scrolling (off under reduced motion).
 - `prefers-reduced-motion` is respected: parallax, scrub and magnetic
   buttons all switch off.
 - `html { overflow-x: clip }` is deliberate. `overflow-x: hidden` on
-  `body` makes body a scroll container and breaks the snap logic.
+  `body` makes body a scroll container.

@@ -229,30 +229,13 @@
 
   *{box-sizing:border-box; margin:0; padding:0;}
 
-  /* ============================================================
-     SNAP — driven in JS, not CSS. See the SNAP STOPS script.
-
-     CSS scroll-snap only offers start / center / end alignment on the
-     snap element itself, and proximity leaves the decision to the
-     browser. The stops this page needs are specific and mixed: some
-     headings at the top of the screen, one caption at the bottom, one
-     heading a third of the way down. CSS can't express that, so it's
-     a defined list of scroll positions instead.
-     ============================================================ */
-  /* overflow-x lives here as `clip`, NOT as `hidden` on body.
-     This was the bug: overflow-x:hidden on body makes body a scroll
-     container, and once it is one, scroll-snap-type declared on html
-     has nothing left to act on — the snap silently did nothing at all.
-     `clip` does the same visual job without creating a scroller.
-
-     It's also probably unnecessary now: the only thing that ever moved
-     horizontally off-screen was the hero title dispersal, which was
-     removed. Left in as a cheap guard. */
-  /* scroll-behavior is auto on purpose: the glide() in the snap script
-     animates scrollTop itself, and native smooth scrolling would run
-     on top of it and fight. Anchor links route through glide() too, so
-     they still ease. */
-  html{ overflow-x:clip; }
+  /* overflow-x lives here as `clip`, NOT as `hidden` on body:
+     hidden on body makes body a scroll container. `clip` does the same
+     visual job without creating a scroller. Left in as a cheap guard. */
+  /* No scroll snapping: the page scrolls freely. In-page links (Get the
+     playbook, skip link) ease there with native smooth scrolling;
+     reduced motion turns it off further down. */
+  html{ overflow-x:clip; scroll-behavior:smooth; }
 
   /* ============================================================
      BACKGROUND LAYER — one fixed plane behind everything, whose
@@ -947,18 +930,12 @@
   footer{ padding:var(--s7) 0 0; }
   .tail-foot{ row-gap:0; }   /* spacing in this block is set explicitly, not by the grid gap */
   .tail-foot > div{ grid-column:1 / 13; }
-  /* The Contact sheet is one full screen on desktop: message at the top,
-     icons and studio line at the bottom, all inside the border. Spare
-     height on a tall screen goes ABOVE the message, so message, studio
-     line and border stay one tight group at the bottom. Centred, the
-     spare height opened a 200-330px gap under the studio line, or
-     (split) under Book a call.
-     The gap under the line is now fixed (about 100px to the border,
-     enough to clear the sheet counter), and the footer's top padding is
-     set so the gap is the same at the snap stop and at the page end. */
+  /* Desktop Contact sheet: message, then icons and studio line, sized
+     to content. The gap from the studio line down to the border is a
+     fixed ~100px (enough to clear the sheet counter): bottom padding
+     plus footer padding, less the chrome shift's GAP. */
   @media (min-width:901px){
-    .tail{ min-height:100dvh; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:calc(var(--s6) + var(--s4)); }
-    .tail > .grid{ width:100%; }
+    .tail{ padding-bottom:calc(var(--s6) + var(--s4)); }
     .tail-foot{ margin-top:var(--s6); }
     footer{ padding-top:var(--s6); }
   }
@@ -993,18 +970,11 @@
   .foot-logo picture{ display:block; width:100%; }
   .foot-logo img{ display:block; width:100%; max-width:none; height:auto; aspect-ratio:1894 / 614; }
 
-  /* Short sheets fill the screen. A stop used to line the heading up
-     96px from the top and leave the sheet's own height to decide what
-     showed underneath, so a sheet shorter than the viewport let the NEXT
-     page bleed in along the bottom (37px to 270px depending on the
-     screen). Each of these is now at least one full screen with its
-     content centred, and its stop is the sheet's top edge. Taller than
-     the screen is still fine: the stop's range carries on to the last
-     control. Desktop only, phones scroll freely. */
-  @media (min-width:901px){
-    .casenote,.gate{ min-height:100dvh; display:flex; align-items:center; }
-    .casenote > .grid,.gate > .grid{ width:100%; }
-  }
+  /* Sheets size to their content. Case note, Download and Contact used
+     to be stretched to a full screen so the snap had a clean place to
+     stop; with the snap gone they take their own height and padding.
+     Cover, Conditions and the Reality check plate stay full screen:
+     those are full-bleed photographs, and the height is the design. */
 
   /* Touch devices: grow the hit area to 44px without changing how
      anything looks. Pseudo-elements extend the reach of text links;
@@ -1215,7 +1185,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      Photography is still a picsum placeholder pending real INCO
      project images (the book has usable shots).
      ============================================================ -->
-<section class="plate" id="s-plate" data-bg="slate" data-snap data-sheet="03" data-name="Reality check" data-dark data-photo>
+<section class="plate" id="s-plate" data-bg="slate" data-sheet="03" data-name="Reality check" data-dark data-photo>
   <picture>
     <source media="(max-width:900px)" srcset="media/plate-1000.webp" type="image/webp">
     <source media="(max-width:900px)" srcset="media/plate-1000.jpg">
@@ -1250,7 +1220,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      because it's a loss: proof INCO says the inconvenient thing, which
      no testimonial wall can imitate.
      ============================================================ -->
-<section class="casenote" id="s-case" data-fade data-bg="stone" data-snap data-sheet="04" data-name="Case note">
+<section class="casenote" id="s-case" data-fade data-bg="stone" data-sheet="04" data-name="Case note">
   <div class="grid">
     <div class="body">
       <h2 class="sr-only">Case note: the fifth venue</h2>
@@ -1268,7 +1238,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      rows. Opening a row is a user action, so the motion is answering
      input rather than performing on scroll.
      ============================================================ -->
-<section class="roadmap" id="s-roadmap" data-fade data-bg="slate" data-snap data-sheet="05" data-name="The roadmap" data-dark>
+<section class="roadmap" id="s-roadmap" data-fade data-bg="slate" data-sheet="05" data-name="The roadmap" data-dark>
   <div class="grid">
     <div class="head">
       <h2><span>Five questions worth answering</span><span>before you sign anything.</span></h2>
@@ -1345,7 +1315,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      statement of fact, the second asks the reader to feel something
      about it.
      ============================================================ -->
-<section class="practice" id="s-practice" data-fade data-bg="stone-dim" data-snap data-sheet="06" data-name="Practice">
+<section class="practice" id="s-practice" data-fade data-bg="stone-dim" data-sheet="06" data-name="Practice">
   <div class="grid">
     <div class="portrait">
       <picture>
@@ -1398,7 +1368,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      lead, and the visitor sees their readiness read once it's sent.
      Brand was the fourth question; dropped to keep the form short.
      ============================================================ -->
-<section class="gate" id="s-gate" data-fade data-bg="slate" data-snap data-sheet="07" data-name="Download" data-dark>
+<section class="gate" id="s-gate" data-fade data-bg="slate" data-sheet="07" data-name="Download" data-dark>
   <div class="grid">
     <div class="pitch">
       <h2>Where should we send it?</h2>
@@ -1499,7 +1469,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ============================================================
      TAILPIECE — the other readiness path.
      ============================================================ -->
-<section class="tail" id="s-tail" data-fade="in" data-bg="stone" data-snap data-sheet="08" data-name="Contact">
+<section class="tail" id="s-tail" data-fade="in" data-bg="stone" data-sheet="08" data-name="Contact">
   <div class="grid">
     <div class="msg">
       <h2>Already deep in a lease negotiation?</h2>
@@ -1542,8 +1512,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- ============================================================
      ADDED: LINKS. Fills in the booking, PDF and privacy links from the
-     settings block. Runs before the snap script on purpose, so real
-     links aren't picked up as on-page jumps.
+     settings block.
      ============================================================ -->
 <script>
 (function () {
@@ -1716,7 +1685,9 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 
       function measure() {
         total = window.innerHeight + sec.offsetHeight;
-        band = (window.innerHeight * 0.34) / total;   // fade distance as a fraction
+        // fade distance as a fraction. 22% of a screen: with no snap the page
+        // can rest anywhere, so a long fade would leave text half-faded at rest.
+        band = (window.innerHeight * 0.22) / total;
       }
 
       function apply(p) {
@@ -1807,7 +1778,9 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       for (var i = 0; i < stops.length - 1; i++) {
         smallest = Math.min(smallest, stops[i + 1].y - stops[i].y);
       }
-      band = Math.min(vh * 0.9, smallest * 0.9);
+      // Half a screen of scroll per blend. It was 90% when the snap carried
+      // you past the blends; scrolling freely, a long one rests mid-grey.
+      band = Math.min(vh * 0.45, smallest * 0.9);
     }
 
     function smooth(k) { return k * k * (3 - 2 * k); }
@@ -1894,17 +1867,30 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     });
   }
 
-  /* --- masthead: label becomes a CTA once the cover is behind you --- */
+})();
+
+/* ============================================================
+   MASTHEAD CTA — the label becomes "Get the playbook" once the two
+   photo pages (cover and conditions) are behind you. Read from the
+   live position on every scroll: an earlier version used a
+   ScrollTrigger measured in advance, and in some browsers that
+   measurement came out wrong and the button never appeared. Works
+   without GSAP too.
+   ============================================================ */
+(function () {
   var masthead = document.getElementById("masthead");
   var heroScroll = document.getElementById("heroScroll");
-  if (masthead && heroScroll) {
-    ScrollTrigger.create({
-      trigger: heroScroll,
-      start: "bottom 85%",
-      onEnter: function () { masthead.classList.add("past-cover"); },
-      onLeaveBack: function () { masthead.classList.remove("past-cover"); }
-    });
+  if (!masthead || !heroScroll) return;
+  var queued = false, last = null;
+  function update() {
+    queued = false;
+    var past = heroScroll.getBoundingClientRect().bottom < window.innerHeight * 0.85;
+    if (past !== last) { last = past; masthead.classList.toggle("past-cover", past); }
   }
+  function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+  window.addEventListener("scroll", queue, { passive: true });
+  window.addEventListener("resize", queue);
+  update();
 })();
 
 /* ============================================================
@@ -1938,212 +1924,6 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
   window.addEventListener("resize", queue);
   window.addEventListener("load", queue);
   update();
-})();
-
-/* ============================================================
-   SNAP STOPS — nine defined scroll positions, driven here rather
-   than by CSS.
-
-   CSS scroll-snap was the wrong tool and was replaced. It aligns a
-   snap element's start, centre or end to the container, and with
-   `proximity` the browser decides whether to act at all. The stops
-   below are specific and mixed: most headings sit at the top of the
-   screen, the plate caption sits at the bottom, and the readiness
-   heading sits a third of the way down. None of that is expressible
-   in scroll-snap-align.
-
-   Behaviour: after scrolling stops for 140ms, glide to the nearest
-   stop — but only if it's within 45% of a viewport. Past that you're
-   deliberately reading something (the roadmap runs taller than a
-   screen), so it leaves you alone. Any wheel, touch or key input
-   during a glide cancels it immediately; the page never fights you.
-   ============================================================ */
-(function () {
-  if (reduce) return;
-  if (window.matchMedia("(max-width:900px)").matches) return;
-
-  var TOP_PAD = 96;     // clears the fixed masthead
-  var BOT_PAD = 56;     // keeps the last control clear of the frame and readout
-  var SLACK = 140;      // extra rest room past a range's end: one wheel notch overshoots by up to ~100px,
-                        // and without this it jumps on to the next page instead of resting at the last control
-
-  // align: 'top'    element top sits just below the masthead
-  //        'bottom' element bottom sits just above the viewport floor
-  //        'third'  element top sits a third of the way down
-  // end:   the last thing on the sheet that has to be reachable. A stop
-  //        is a RANGE, not a point: it runs from the aligned position down
-  //        to the scroll where `end` clears the bottom of the screen.
-  //        Inside that range the page never pulls you back, so a sheet
-  //        taller than the viewport (roadmap rows, the quiz result, the
-  //        logos) can be read and clicked to the bottom.
-  var SPEC = [
-    { sel: null,                     align: "page",  end: null },                  //  1 cover
-    { sel: ".conditions .lede-line", align: "top",   end: ".conditions .turn" },   //  2 belief / proof
-    { sel: ".plate",                 align: "flush", end: null },                  //  3 it rarely fails loudly (caption sits at its base)
-    { sel: "#s-case",                align: "flush", end: ".casenote .sign" },     //  4 case note
-    { sel: ".roadmap .head h2",      align: "top",   end: ".roadmap .rows" },      //  5 five questions
-    { sel: ".practice .lead h2",     align: "top",   end: ".practice .clients" },  //  6 who's behind this
-    { sel: "#s-gate",                align: "flush", end: ".gate .form" },         //  7 the form, with the three questions
-    { sel: "#s-tail",                align: "flush", end: "footer .foot-logo" }    //  8 lease negotiation + footer
-  ];
-
-  var stops = [];   // [{ a: first scroll position, b: last }]
-  function build() {
-    var vh = window.innerHeight;
-    var max = document.documentElement.scrollHeight - vh;
-    stops = [];
-    SPEC.forEach(function (s) {
-      var y;
-      if (s.align === "page") { y = 0; }
-      else {
-        var el = document.querySelector(s.sel);
-        if (!el) return;
-        var r = el.getBoundingClientRect();
-        var top = r.top + window.scrollY;
-        if (s.align === "top")         y = top - TOP_PAD;
-        else if (s.align === "flush")  y = top;
-        else if (s.align === "bottom") y = top + r.height - vh + BOT_PAD;
-        else                           y = top - vh / 3;
-      }
-      y = Math.max(0, Math.min(Math.round(y), max));
-      var hold = 0, endEl = s.end && document.querySelector(s.end);
-      if (endEl) {
-        var bottom = endEl.getBoundingClientRect().bottom + window.scrollY;
-        hold = Math.max(0, Math.round(bottom - y - (vh - BOT_PAD)));
-      }
-      stops.push({ a: y, b: Math.min(y + hold + (hold ? SLACK : 0), max) });
-    });
-    stops.sort(function (m, n) { return m.a - n.a; });
-  }
-
-  var gliding = false, raf = null, idle = null;
-
-  function stop() {
-    if (raf) cancelAnimationFrame(raf);
-    raf = null; gliding = false;
-  }
-
-  function glide(to) {
-    var from = window.scrollY, delta = to - from;
-    if (Math.abs(delta) < 2) return;
-    var t0 = performance.now(), dur = Math.min(220 + Math.abs(delta) * 0.35, 720);
-    gliding = true;
-    (function step(now) {
-      if (!gliding) return;
-      var p = Math.min((now - t0) / dur, 1);
-      var e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
-      window.scrollTo(0, from + delta * e);
-      if (p < 1) raf = requestAnimationFrame(step);
-      else { raf = null; setTimeout(function () { gliding = false; }, 40); }
-    })(t0);
-  }
-
-  /* Direction-aware. Snapping to whichever stop is nearest means one
-     wheel notch (about 100px) from a stop is always nearer the stop it
-     left than the next one, so the page pulls you straight back and a
-     one-notch-at-a-time scroller can never leave a page. Instead:
-       - resting inside a sheet's own range: stay put
-       - between sheets: continue in the direction you were travelling,
-         to the next range start going down, or the previous range end
-         going up
-     lastRest is where the page last settled, which is what "direction"
-     is measured from. */
-  var lastRest = window.scrollY;
-
-  function settle() {
-    if (gliding || !stops.length) return;
-    var y = window.scrollY;
-    // already at the very bottom: leave the footer reachable
-    if (y >= document.documentElement.scrollHeight - window.innerHeight - 2) { lastRest = y; return; }
-
-    var i;
-    for (i = 0; i < stops.length; i++) {
-      if (y >= stops[i].a - 2 && y <= stops[i].b + 2) { lastRest = y; return; }   // inside a sheet's range
-    }
-
-    var dir = y > lastRest + 6 ? 1 : (y < lastRest - 6 ? -1 : 0);
-    var to = null, vh = window.innerHeight;
-    /* Next sheet in the direction of travel, counted from where the
-       visitor LEFT, not from where momentum dropped them. A trackpad
-       swipe off the cover can coast past the whole of sheet 02 before
-       scrolling stops; measured from the current position, the next
-       stop down is sheet 03 and 02 is skipped. Only when the scroll has
-       carried a full screen beyond that sheet is it a deliberate jump,
-       and then the nearest sheet ahead wins. */
-    if (dir === 1) {
-      for (i = 0; i < stops.length; i++) if (stops[i].a > lastRest + 2) { to = stops[i]; break; }
-      if (to && y - to.b > vh) { to = null; for (i = 0; i < stops.length; i++) if (stops[i].a > y) { to = stops[i]; break; } }
-      to = to ? to.a : null;
-    } else if (dir === -1) {
-      for (i = stops.length - 1; i >= 0; i--) if (stops[i].b < lastRest - 2) { to = stops[i]; break; }
-      if (to && to.a - y > vh) { to = null; for (i = stops.length - 1; i >= 0; i--) if (stops[i].b < y) { to = stops[i]; break; } }
-      to = to ? to.b : null;
-    } else {
-      var bestD = Infinity;
-      stops.forEach(function (st) {
-        var t = y < st.a ? st.a : st.b, d = Math.abs(t - y);
-        if (d < bestD) { bestD = d; to = t; }
-      });
-    }
-    if (to === null) { lastRest = y; return; }   // past the last sheet: leave it
-    lastRest = to;
-    glide(to);
-  }
-
-  /* Only scrolling the visitor caused may snap. The page also scrolls on
-     its own: scroll anchoring when form errors make a sheet taller, focus
-     bringing a field into view, a resize. Read as travel, those would
-     glide the visitor off the form they were fixing. Wheel, touch, keys
-     outside form fields and a scrollbar drag count as input; trackpad
-     momentum keeps firing wheel events, so it counts too. */
-  var lastInput = -Infinity;
-
-  window.addEventListener("scroll", function () {
-    if (gliding) return;
-    clearTimeout(idle);
-    if (performance.now() - lastInput > 900) { lastRest = window.scrollY; return; }
-    idle = setTimeout(settle, 140);
-  }, { passive: true });
-
-  function isScrollInput(e) {
-    // A press on a button or link isn't scrolling, but a press on the
-    // scrollbar lands on <html>. Keys typed into a field aren't scrolling
-    // either, and as errors clear the sheet changes height under them.
-    if (e.type === "mousedown") return e.target === document.documentElement;
-    if (e.type === "keydown") return !(e.target.closest && e.target.closest("input, textarea, select, [contenteditable], .dd"));
-    return true;
-  }
-  ["wheel", "touchstart", "touchmove", "keydown", "mousedown"].forEach(function (ev) {
-    window.addEventListener(ev, function (e) {
-      if (isScrollInput(e)) lastInput = performance.now();
-      stop();
-    }, { passive: true });
-  });
-
-  // Anchor links glide too, since native smooth scrolling is off.
-  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-    a.addEventListener("click", function (e) {
-      var id = a.getAttribute("href");
-      if (id === "#" || id.length < 2) return;
-      var el = document.querySelector(id);
-      if (!el) return;
-      e.preventDefault();
-      clearTimeout(idle);
-      // Full-screen sheets land flush; anything else clears the masthead.
-      var top = el.getBoundingClientRect().top + window.scrollY;
-      var full = el.offsetHeight >= window.innerHeight - 2 && el.matches("section");
-      glide(Math.max(0, full ? top : top - TOP_PAD));
-    });
-  });
-
-  build();
-  window.addEventListener("resize", function () { clearTimeout(idle); build(); });
-  if ("ResizeObserver" in window) {
-    var rebuildT = null;
-    new ResizeObserver(function () { clearTimeout(rebuildT); rebuildT = setTimeout(build, 60); }).observe(document.body);
-  }
-  window.addEventListener("load", build);
-  if (window.ScrollTrigger) ScrollTrigger.addEventListener("refresh", build);
 })();
 
 /* ============================================================
@@ -2552,9 +2332,9 @@ function showResult(r) {
       // Send focus to the first problem so keyboard users aren't left
       // hunting for which field went red.
       var firstBad = form.querySelector(".field.bad input, .field.bad .dd-btn, .fsel:not(.dd-on).bad select");
-      // Focus without scrolling when the field is already on screen: a
-      // nudge here would wake the snap logic and glide the sheet after a
-      // failed submit. Off screen (phones), let the browser bring it in.
+      // Focus without scrolling when the field is already on screen, so a
+      // failed submit doesn't jolt the page. Off screen (phones), let the
+      // browser bring it in.
       if (firstBad) {
         var fr = firstBad.getBoundingClientRect();
         firstBad.focus({ preventScroll: fr.top >= 0 && fr.bottom <= window.innerHeight });
@@ -2773,7 +2553,7 @@ function showResult(r) {
 (function () {
   // The download sheet changes height when errors show and when the
   // form swaps for the result. Everything measured below it, the colour
-  // stops, section fades and snap ranges, has to be measured again.
+  // stops and section fades, has to be measured again.
   if (window.ScrollTrigger && "ResizeObserver" in window) {
     var assessT, assessH = 0, assess = document.getElementById("s-gate");
     new ResizeObserver(function () {

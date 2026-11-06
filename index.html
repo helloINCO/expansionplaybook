@@ -294,39 +294,24 @@
   .masthead.past-cover .mh-cta{ opacity:1; transform:none; pointer-events:auto; }
 
   /* ============================================================
-     HERO — title sits low-left against the footage, not centered.
-
-     The background is now INCO's own cover video: the line drawing
-     building over the real venue, which is the same device the whole
-     page is built on. It replaces the WebGL gradient (still in v3/v4
-     if you want it back).
-
-     Poster frame carries the first frame, so a slow connection, a
-     blocked autoplay, or reduced-motion all land on a still image
-     rather than a grey box.
+     HERO — title sits low-left against the photograph, not centred.
      ============================================================ */
-  /* The footage is pinned as a background while two screens of text
-     travel up over it, then it releases. Structure is the standard
-     sticky-background pattern: the media layer sticks, and the text
-     panels are pulled back over it with a negative margin so they
-     scroll normally while it holds still.
-
-     That replaces the exit-dispersal the title used to do. The words
-     now simply leave upward with the scroll, which is what was asked
-     for and is also the quieter move: the dispersal was choreography
-     competing with footage that's already animating.
-
-     97 frames is a ceiling, not a choice. The source is 4.04s at
-     24fps, so there is nothing more to extract. */
-  .heroScroll{ position:relative; height:240vh; }
+  /* The photograph is pinned as a background while two pages of text
+     (cover, conditions) travel up over it, then it releases: the media
+     layer sticks, and the text panels are pulled back over it with a
+     negative margin so they scroll normally while it holds still.
+     The scroll region is as tall as its two panels, no taller, so the
+     photo releases a short beat after the last line instead of after a
+     fixed 240vh (which left up to 0.75 of a screen of empty photo on a
+     tall display, and could cut text off on a short one). */
+  .heroScroll{ position:relative; }
   .heroBg{
     position:sticky; top:0; height:100dvh; z-index:0; overflow:hidden;
   }
-  /* The still is portrait (693x987 native, rendered 1600x2278), so at
-     full-bleed it stands taller than any viewport. That surplus height
-     is the effect: scroll pans down the photograph, from the menu
-     being handed across at the top to the base of the fluted marble.
-     A single 142KB image doing what 3.7MB of frames was doing. */
+  /* The still is portrait (1600x2278), so at full-bleed it stands
+     taller than any viewport. That surplus height is the effect: scroll
+     pans down the photograph, from the menu being handed across at the
+     top to the base of the fluted marble. */
   .hero-media{ position:absolute; inset:0; background:#2a2a28; overflow:hidden; }
   .hero-media img{
     position:absolute; top:0; left:0;
@@ -357,14 +342,6 @@
     padding-bottom:var(--s7); color:var(--light);
   }
   .hpanel .grid{ width:100%; align-items:end; }
-  /* Final beat: the completed drawing with nothing over it. This is
-     the point of the whole arrangement, so it gets its own screen. */
-  /* Was 80vh. With the video this was the finished drawing getting a
-     screen to itself; with a still photograph there's nothing being
-     completed, so it was just 720px of image and no reason to keep
-     scrolling. Trimmed to a beat that lets the pan finish. */
-  .hpanel-hold{ min-height:40vh; pointer-events:none; }
-
   .hero-title{ grid-column:1 / 10; }
   /* Sized by the SHORTER of width and height. --t-display alone is a
      width-only clamp, so on a wide-but-short window (a laptop with the
@@ -399,12 +376,15 @@
   /* Bottom-aligned, matching the hero panel above it, so the two share
      a baseline and read as one composition scrolling past rather than
      two separate slides. */
-  /* Top-aligned, unlike the hero panel above it: a full screen over
-     the photograph with its first line near the top. */
+  /* Top-aligned, unlike the hero panel above it, and sized to its
+     text. The bottom padding is the beat of photograph on its own
+     before page 3: about a sixth of a screen, at least 104px. (It used
+     to be a full-screen panel plus a 40vh spacer: up to 0.75 of a
+     screen of empty photo on a tall display.) */
   .heroPanels .conditions{
     background:none; color:var(--light);
-    min-height:100dvh; display:flex; align-items:flex-start;
-    padding:calc(var(--frame) + 76px) 0 var(--s7);
+    display:flex; align-items:flex-start;
+    padding:calc(var(--frame) + 76px) 0 max(var(--s7), 16vh);
   }
   /* This is a full page over a photograph now, not a band between two
      grey sections, so it carries display weight rather than section
@@ -931,14 +911,9 @@
        on a portrait screen cover-fit shows the whole height of it. Render
        the image 30% taller than its box and anchor it to the floor so the
        top quarter, with the sign, sits above the visible area. */
-    /* No scrub on phones. 3.7MB of frames on mobile data for a
-       background, plus a pinned section fighting the address bar,
-       isn't a trade worth making. Mobile collapses the scroll region
-       and plays the 0.5MB looping cut instead. */
-    .heroScroll{ height:auto; }
+    /* No pan on phones: a pinned section fights the address bar. */
     .heroBg{ position:relative; height:100dvh; }
     .heroPanels{ margin-top:-100dvh; }
-    .hpanel-hold{ display:none; }
     /* Only the title panel still sits over the footage here. The two
        below it scroll past the video entirely, so they carry their own
        dark ground rather than leaving light type on a light page. */
@@ -1073,11 +1048,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-  <!-- Final beat: the finished drawing, alone, nothing over it.
-       This is what "utilise the full extent of the video" buys - the
-       completed linework gets a screen of its own before the pin
-       releases, instead of being covered by type the whole way. -->
-  <div class="hpanel hpanel-hold" aria-hidden="true"></div>
 </div>
 </div>
 

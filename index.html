@@ -61,105 +61,23 @@
 
 <!--
   ============================================================
-  DESIGN PLAN (frontend-design.md, two-pass process)
+  THE EXPANSION PLAYBOOK — INCO Studio lead-magnet page
   ============================================================
+  Audience: operators who run one venue and are weighing a second.
+  Job: get a qualified lead (contact details plus three readiness
+  questions), and route ready-now operators to a call.
 
-  SUBJECT: INCO Studio, Sydney hospitality + retail interior design.
-  Lead magnet page for "The Expansion Playbook". Audience: operators
-  who already run one successful venue and are weighing a second.
-  Primary job: get a qualified email, and route the genuinely-ready
-  ones to a conversation instead of another PDF.
+  The page is built as a drawing set: a fixed sheet frame, a live
+  sheet number bottom-left, a plumb line for scroll position, and a
+  12-column grid with asymmetric spans. Sheets: 01 Cover, 02
+  Conditions, 03 Reality check, 04 Case note, 05 Roadmap, 06 Practice,
+  07 Download (form + questions), 08 Contact.
 
-  THE IDEA: the page is built as a DRAWING SET, not a landing page.
-  INCO produces documentation sets for a living - site plans, lease
-  drawings, dimension strings, sheet numbers, revision tables. That
-  vernacular is specific to this studio and this audience (operators
-  read these documents during a fitout), and no previous version of
-  this page used it. Every structural device on the page is borrowed
-  from a drawing sheet and carries real information:
-    - the fixed sheet frame with corner registration ticks
-    - the live sheet readout, bottom-left, which reports which section
-      you are in (wayfinding, not decoration)
-    - dimension lines on the roadmap rows, which extend as a row opens
-    - the grid itself, visible in the gutters
-
-  Why not the previous versions: v1/v2 were a stack of centered
-  full-width bands with near-identical padding, which is the actual
-  reason they read as generated - not the button radius or the label
-  casing. This version composes on a strict 12-column grid with
-  deliberately asymmetric spans (5, 7, 8 columns; content pushed off
-  center) and dramatic spacing contrast (dense annotation clusters
-  against very large voids) instead of one uniform rhythm.
-
-  COLOR: INCO's own palette, brief-mandated, unchanged.
-    slate-black #1c1c1a   stone-grey #cac5bb   stone-dim #bdb7a8
-    olive #666b47         olive-deep #4c5036   terracotta (errors only)
-  Placeholder hexes pending real brand-deck values.
-
-  TYPE: Founders Grotesk alone (Klim, self-hosted), Regular 400 and
-  Semibold 600 only. Originally Archivo 400/500/700/900, with a
-  scale that actually jumps (13 / 15 / 17 / 21 / 30 / 68 / 190) rather
-  than clustering every headline around 40px like the last version.
-
-  MOTION: one orchestrated page-load moment (the hero), plus motion
-  that answers the user's own input - dragging the strip, opening a
-  roadmap row, answering the assessment. Scroll-linked motion is
-  limited to the hero exit and the sheet readout, both of which report
-  position rather than decorate it. No per-section fade-ups.
-
-  Deliberately avoided (frontend-design.md's tells): cream/terracotta
-  AI palette, single-word italic accents, all-caps micro-labels,
-  eyebrows above every heading, middle-dot meta strings, monospace
-  data labels, arrow glyphs on buttons, decorative 01/02/03 where the
-  content isn't sequential, identical rounded cards with matching
-  shadows.
-
-  ------------------------------------------------------------
-  V4 — CREDIBILITY PASS
-  ------------------------------------------------------------
-  Three additions, chosen because they apply Hormozi/Priestley
-  structure using material INCO already owns, without importing the
-  parts of those playbooks that would breach the studio's own
-  "never overselling" rule.
-
-  1. CONDITIONS (sheet 02) + CASE NOTE (sheet 04). The problem is now
-     told twice, deliberately, in two different grammatical persons.
-
-     Conditions is second person and present tense: three statements
-     the reader recognises as their own situation, with no exit. Then
-     the case note is third person and past tense: the Westfield venue
-     that closed after two years, in Jayson's own words from Chapter 2,
-     as evidence of what the recognition costs.
-
-     That order matters. A cautionary tale on its own lets the reader
-     off the hook, because the person in it is a stranger who made a
-     mistake they'd never make. Recognition first closes that exit.
-
-     Publishing a loss is also the one proof mechanism a competitor's
-     testimonial wall can't copy, and it sits inside the studio's
-     stated humility rather than fighting it.
-
-     Both sit directly under the plate's "It rarely fails loudly", so
-     the abstract warning is cashed out before the roadmap offers any
-     fixes. Problem, then the five questions, then the tools.
-
-  2. PRACTICE (sheet 07). The About section, composed as a drawing
-     title block, sitting immediately before the ask. Credentials are
-     tabulated as facts, not adjectives. Real client marks from page
-     15 of the playbook, presented silently with no "trusted by"
-     banner over them.
-
-  3. RESULT DIAGNOSTIC. The assessment now returns a per-dimension
-     read computed from the four answers, names the weak spot, and
-     passes it to the CRM so the first email can open on the thing
-     they're behind on. Priestley's point is that a scorecard should
-     know fit and readiness by the last question; previously this one
-     scored and then told everyone the same thing.
-
-  NOT added, deliberately: a fabricated cohort average. COHORT_AVG in
-  the script is null and the benchmark line stays hidden until a real
-  number replaces it. Also still absent: manufactured scarcity, value
-  stacking with invented dollar figures, and testimonial carousels.
+  Type: Founders Grotesk 400/600, self-hosted. Palette: slate, stone,
+  stone-dim, olive, terracotta for errors. Motion: the cover intro,
+  the photo pan, section crossfades, and input-driven UI only.
+  Not added on purpose: a made-up cohort average (COHORT_AVG stays
+  null), fake scarcity, testimonial carousels.
   ============================================================
 -->
 
@@ -372,8 +290,6 @@
     text-decoration:none; white-space:nowrap;
   }
   .mh-cta:active{ transform:scale(.97); }
-  /* An olive pill on the olive sheet would vanish; go slate there */
-  .masthead.on-olive .mh-cta{ background:var(--slate); }
   .masthead.past-cover .mh-label{ opacity:0; transform:translateY(-6px); }
   .masthead.past-cover .mh-cta{ opacity:1; transform:none; pointer-events:auto; }
 
@@ -483,13 +399,8 @@
   /* Bottom-aligned, matching the hero panel above it, so the two share
      a baseline and read as one composition scrolling past rather than
      two separate slides. */
-  /* Top-aligned, unlike the hero panel above it, and that asymmetry
-     is the point. Snap stop 2 brings this page's first line to the top
-     of the screen. While the content was bottom-aligned in its panel,
-     that scroll position landed 138px past the panel's own end, so the
-     next page bled into the bottom of the view. Content anchored to
-     the top means the snap and the layout agree and the panel fills
-     the screen exactly. */
+  /* Top-aligned, unlike the hero panel above it: a full screen over
+     the photograph with its first line near the top. */
   .heroPanels .conditions{
     background:none; color:var(--light);
     min-height:100dvh; display:flex; align-items:flex-start;
@@ -506,11 +417,8 @@
   .heroPanels .conditions .list{ border-top:1px solid var(--light-18); }
   .heroPanels .conditions .list p{ border-bottom:1px solid var(--light-18); }
 
-  /* The entrance self-clips via clip-path rather than relying on an
-     overflow:hidden ancestor. That matters: an overflow-hidden wrapper
-     here would clip the horizontal scroll-exit dispersal to the title
-     column instead of letting the words travel the full viewport
-     width. That exact bug bit the first build. */
+  /* The entrance self-clips via clip-path, so no overflow:hidden
+     wrapper is needed around the title lines. */
   @keyframes rise{
     from{ clip-path:inset(0 0 100% 0); transform:translateY(.12em); }
     to{ clip-path:inset(0 0 -20% 0); transform:translateY(0); }
@@ -538,7 +446,6 @@
   /* Hover steps DOWN to the dim tone. It used to step up to --light,
      which is now within two values of --stone, so the hover would have
      been invisible after the background change. */
-  .btn-pale{ background:var(--stone); color:var(--slate); }
   .link{
     font-size:var(--t-small); color:inherit; opacity:.65; text-decoration:none;
     padding-bottom:3px; border-bottom:1px solid currentColor;
@@ -560,9 +467,7 @@
   /* ============================================================
      PLATE — full-bleed image, caption hangs into the margin
      ============================================================ */
-  /* Full viewport. At 78vh this was a band, not a page: 198px of a
-     neighbouring section stayed on screen no matter where the snap
-     put it. */
+  /* Full viewport: a page of its own, not a band between sections. */
   .plate{ position:relative; height:100dvh; min-height:520px; overflow:hidden; background:var(--slate); }
   /* object-position pulls the crop down the frame. The venue's signage
      sits along the top edge of this photograph and this section is
@@ -784,7 +689,6 @@
   /* Hover only where hover exists. On touch it fires on tap and sticks. */
   @media (hover:hover) and (pointer:fine){
     .btn:hover{ background:var(--olive-deep); }
-    .btn-pale:hover{ background:var(--stone-dim); }
     .mh-cta:hover{ background:var(--olive-deep); }
     .link:hover{ opacity:1; }
     .row-btn:hover .row-name{ transform:translateX(10px); }
@@ -1107,16 +1011,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="heroScroll" id="heroScroll">
 
   <!-- Sticky media layer. One portrait still, taller than the
-       viewport, panned by scroll. Replaces the 97-frame AVIF sequence
-       and the video fallback that went with it; the frames and mp4s
-       are still on disk if you ever want them back. -->
+       viewport, panned by scroll. -->
   <div class="heroBg">
     <div class="hero-media">
       <picture>
         <source media="(max-width:900px)" srcset="media/hero-still-1000.webp" type="image/webp">
         <source media="(max-width:900px)" srcset="media/hero-still-1000.jpg">
         <source srcset="media/hero-still-1600.webp" type="image/webp">
-        <img id="heroStill" src="media/hero-still-1600.jpg" alt="" fetchpriority="high" decoding="async">
+        <img id="heroStill" src="media/hero-still-1600.jpg" width="1600" height="2278" alt="" fetchpriority="high" decoding="async">
       </picture>
     </div>
   </div>
@@ -1181,16 +1083,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <!-- ============================================================
-     PLATE — real agitation copy from Chapter 1, trimmed.
-     Photography is still a picsum placeholder pending real INCO
-     project images (the book has usable shots).
+     PLATE — real agitation copy from Chapter 1, trimmed, over a
+     completed INCO fitout.
      ============================================================ -->
 <section class="plate" id="s-plate" data-bg="slate" data-sheet="03" data-name="Reality check" data-dark data-photo>
   <picture>
     <source media="(max-width:900px)" srcset="media/plate-1000.webp" type="image/webp">
     <source media="(max-width:900px)" srcset="media/plate-1000.jpg">
     <source srcset="media/plate-1600.webp" type="image/webp">
-    <img src="media/plate-1600.jpg" alt="Interior of a completed INCO hospitality fitout" decoding="async">
+    <img src="media/plate-1600.jpg" width="1600" height="926" alt="Interior of a completed INCO hospitality fitout" loading="lazy" decoding="async">
   </picture>
   <div class="cap">
     <div class="grid">
@@ -1320,7 +1221,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="portrait">
       <picture>
         <source srcset="media/portrait-900.webp" type="image/webp">
-        <img src="media/portrait-900.jpg" alt="Jayson Lee, Director of INCO Studio" loading="lazy" decoding="async">
+        <img src="media/portrait-900.jpg" width="900" height="1200" alt="Jayson Lee, Director of INCO Studio" loading="lazy" decoding="async">
       </picture>
       <p class="cap">Jayson Lee, Director</p>
     </div>
@@ -1589,7 +1490,6 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       var dark = e.target.hasAttribute("data-dark");
       sheet.classList.toggle("sheet-dark", dark);
       masthead.classList.toggle("on-dark", dark);
-      masthead.classList.toggle("on-olive", e.target.dataset.bg === "olive");
       readout.classList.toggle("on-dark", dark);
     });
   }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
@@ -1637,9 +1537,9 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 })();
 
 /* ============================================================
-   BACKGROUND CROSSFADE + CONTENT FADE + MASTHEAD SWAP
+   BACKGROUND CROSSFADE + CONTENT FADE
 
-   Three effects that only work because they run together. The
+   Effects that only work because they run together. The
    background bleeds from one section's colour to the next over a
    band of scroll; the content of each section fades up as it arrives
    and back down as it leaves; and because the copy is at zero in the
@@ -1658,7 +1558,7 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
   }
   var COLORS = {
     "stone": hex("--stone"), "stone-dim": hex("--stone-dim"),
-    "slate": hex("--slate"), "olive": hex("--olive")
+    "slate": hex("--slate")
   };
 
   var bgLayer = document.getElementById("bgLayer");
@@ -1667,17 +1567,10 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
      CONTENT FADE
 
      One trigger per section spanning its whole passage through the
-     viewport, with opacity COMPUTED from progress rather than
-     animated toward a target.
-
-     The earlier version used two tweens per section, a fade-in and a
-     fade-out, both writing opacity on the same element. GSAP records
-     a tween's start value on first render and holds its end value
-     outside its own range, so going down worked and coming back up
-     the fade-out pinned the section at zero and the text vanished.
-     Two animations owning one property is the bug; a single pure
-     function of scroll position cannot have it, because up and down
-     are the same code path.
+     viewport, with opacity computed from progress rather than tweened:
+     a pure function of scroll position behaves the same going up and
+     down. (Separate fade-in and fade-out tweens on one element left
+     text stuck at zero on the way back up.)
      ------------------------------------------------------------ */
   if (!reduce) {
     document.querySelectorAll("[data-fade]").forEach(function (sec) {
@@ -1752,25 +1645,11 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       sizeBand();
     }
 
-    /* Fixed-length, eased crossfade STRADDLING each boundary.
-
-       Two earlier attempts at this were wrong in instructive ways.
-       First: blending over "the last 45% of the gap between sections"
-       — but the roadmap runs 160vh and the tail 70vh, so the same 45%
-       meant 72vh of blend in one place and 31vh in another, and the
-       short ones read as a snap. Second: a fixed band, but measured
-       only on the approach to the boundary, so the colour reached
-       halfway and then jumped the rest the instant the segment
-       lookup advanced.
-
-       This version centres the band on the boundary: the blend starts
-       half a band before it and finishes half a band after, so the
-       same curve covers both sides and there is no seam at the
-       crossing. Smoothstepped rather than linear, because a linear
-       ramp has hard corners at both ends and the eye catches them.
-
-       The band is also clamped below the shortest gap on the page, so
-       two transitions can never overlap and fight. */
+    /* Fixed-length, eased crossfade centred on each boundary: the blend
+       starts half a band before it and finishes half a band after, so
+       there is no seam at the crossing. Smoothstepped, since a linear
+       ramp has hard corners the eye catches. The band is clamped below
+       the shortest gap on the page so two blends never overlap. */
     var band = 0;
     function sizeBand() {
       var vh = window.innerHeight;
@@ -1953,16 +1832,6 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
   if ("ResizeObserver" in window) new ResizeObserver(queue).observe(document.body);
   paint();
 })();
-
-/* ============================================================
-   HERO EXIT — removed.
-
-   The title used to disperse sideways on scroll. It now simply
-   travels up and out with its panel, because the panels scroll
-   normally over a held background. Two pieces of choreography on the
-   same words, one of them fighting footage that is already animating,
-   was one too many.
-   ============================================================ */
 
 /* ============================================================
    DEPTH — one quiet move, off when motion is reduced. The portrait
@@ -2380,34 +2249,7 @@ function showResult(r) {
     submitBtn.textContent = "Sending...";
     submitBtn.disabled = true;   // ADDED: stop double clicks while sending
 
-    /* ============================================================
-       CRM INTEGRATION POINT — the only place a dev needs to touch.
-
-       OPTION A, native webhook: replace the setTimeout below with a
-       fetch() POST to the CRM's inbound webhook (GoHighLevel:
-       Settings > Webhooks, or a Workflow inbound trigger.
-       ClickFunnels: Funnel > Integrations, or a relay). Send the
-       payload built above as-is; quizSegment lets automation branch
-       immediately, so "ready-now" can notify sales while "not-yet"
-       drops into a longer nurture.
-
-       OPTION B, relay: POST to a Zapier or Make catch hook and map
-       the fields to a contact plus tag there instead.
-
-       The page owns the design, the CRM owns the pipeline. Only this
-       function changes depending on which CRM wins.
-       ============================================================ */
-    // fetch("https://your-crm-webhook-url", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(payload)
-    // }).then(onSuccess);
-
-    // Demo send from the prototype, turned off now the real send is below:
-    // console.log("Would POST to CRM webhook:", payload);
-    // setTimeout(onSuccess, 450);
-
-    // ADDED: real send to the GHL webhook
+    // Send to the GHL webhook (URL in window.INCO at the top of the page)
     sendLead(payload).then(onSuccess).catch(function (err) {
       console.error("Lead send failed:", err);
       submitBtn.disabled = false;
@@ -2471,13 +2313,6 @@ function showResult(r) {
 
 <!-- ============================================================
      HERO STILL — one photograph, panned by scroll.
-
-     Replaces the 97-frame AVIF scrub. That worked, but 3.7MB of
-     frames plus a preloading scheme plus a video fallback plus an
-     AVIF capability probe was a lot of machinery to keep alive for a
-     background. This is a single 142KB image and about twenty lines
-     of JS, and it does the same job: scroll moves you through the
-     picture rather than past it.
 
      The image is portrait, so at full-bleed width it stands roughly
      2278px tall against a viewport of 800-1000px. The surplus is the

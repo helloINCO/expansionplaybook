@@ -9,7 +9,7 @@
 <meta name="description" content="Thinking about a second venue? The Expansion Playbook from INCO Studio covers the questions, checklists and contacts worth working through before you sign a lease.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="The Expansion Playbook | INCO Studio">
-<meta property="og:description" content="What we'd want you to know before you sign for a second venue. A practical guide from INCO Studio.">
+<meta property="og:description" content="What you'd want to know before you sign for a second venue. A practical guide from INCO Studio.">
 <!-- Share image (1200 x 630). Swap to the full URL once the domain is live -->
 <meta property="og:image" content="media/share.jpg">
 <meta property="og:image:width" content="1200">
@@ -61,105 +61,23 @@
 
 <!--
   ============================================================
-  DESIGN PLAN (frontend-design.md, two-pass process)
+  THE EXPANSION PLAYBOOK — INCO Studio lead-magnet page
   ============================================================
+  Audience: operators who run one venue and are weighing a second.
+  Job: get a qualified lead (contact details plus three readiness
+  questions), and route ready-now operators to a call.
 
-  SUBJECT: INCO Studio, Sydney hospitality + retail interior design.
-  Lead magnet page for "The Expansion Playbook". Audience: operators
-  who already run one successful venue and are weighing a second.
-  Primary job: get a qualified email, and route the genuinely-ready
-  ones to a conversation instead of another PDF.
+  The page is built as a drawing set: a fixed sheet frame, a live
+  sheet number bottom-left, a plumb line for scroll position, and a
+  12-column grid with asymmetric spans. Sheets: 01 Cover, 02
+  Conditions, 03 Reality check, 04 Case note, 05 Roadmap, 06 Practice,
+  07 Download (form + questions), 08 Contact.
 
-  THE IDEA: the page is built as a DRAWING SET, not a landing page.
-  INCO produces documentation sets for a living - site plans, lease
-  drawings, dimension strings, sheet numbers, revision tables. That
-  vernacular is specific to this studio and this audience (operators
-  read these documents during a fitout), and no previous version of
-  this page used it. Every structural device on the page is borrowed
-  from a drawing sheet and carries real information:
-    - the fixed sheet frame with corner registration ticks
-    - the live sheet readout, bottom-left, which reports which section
-      you are in (wayfinding, not decoration)
-    - dimension lines on the roadmap rows, which extend as a row opens
-    - the grid itself, visible in the gutters
-
-  Why not the previous versions: v1/v2 were a stack of centered
-  full-width bands with near-identical padding, which is the actual
-  reason they read as generated - not the button radius or the label
-  casing. This version composes on a strict 12-column grid with
-  deliberately asymmetric spans (5, 7, 8 columns; content pushed off
-  center) and dramatic spacing contrast (dense annotation clusters
-  against very large voids) instead of one uniform rhythm.
-
-  COLOR: INCO's own palette, brief-mandated, unchanged.
-    slate-black #1c1c1a   stone-grey #cac5bb   stone-dim #bdb7a8
-    olive #666b47         olive-deep #4c5036   terracotta (errors only)
-  Placeholder hexes pending real brand-deck values.
-
-  TYPE: Founders Grotesk alone (Klim, self-hosted), Regular 400 and
-  Semibold 600 only. Originally Archivo 400/500/700/900, with a
-  scale that actually jumps (13 / 15 / 17 / 21 / 30 / 68 / 190) rather
-  than clustering every headline around 40px like the last version.
-
-  MOTION: one orchestrated page-load moment (the hero), plus motion
-  that answers the user's own input - dragging the strip, opening a
-  roadmap row, answering the assessment. Scroll-linked motion is
-  limited to the hero exit and the sheet readout, both of which report
-  position rather than decorate it. No per-section fade-ups.
-
-  Deliberately avoided (frontend-design.md's tells): cream/terracotta
-  AI palette, single-word italic accents, all-caps micro-labels,
-  eyebrows above every heading, middle-dot meta strings, monospace
-  data labels, arrow glyphs on buttons, decorative 01/02/03 where the
-  content isn't sequential, identical rounded cards with matching
-  shadows.
-
-  ------------------------------------------------------------
-  V4 — CREDIBILITY PASS
-  ------------------------------------------------------------
-  Three additions, chosen because they apply Hormozi/Priestley
-  structure using material INCO already owns, without importing the
-  parts of those playbooks that would breach the studio's own
-  "never overselling" rule.
-
-  1. CONDITIONS (sheet 02) + CASE NOTE (sheet 04). The problem is now
-     told twice, deliberately, in two different grammatical persons.
-
-     Conditions is second person and present tense: three statements
-     the reader recognises as their own situation, with no exit. Then
-     the case note is third person and past tense: the Westfield venue
-     that closed after two years, in Jayson's own words from Chapter 2,
-     as evidence of what the recognition costs.
-
-     That order matters. A cautionary tale on its own lets the reader
-     off the hook, because the person in it is a stranger who made a
-     mistake they'd never make. Recognition first closes that exit.
-
-     Publishing a loss is also the one proof mechanism a competitor's
-     testimonial wall can't copy, and it sits inside the studio's
-     stated humility rather than fighting it.
-
-     Both sit directly under the plate's "It rarely fails loudly", so
-     the abstract warning is cashed out before the roadmap offers any
-     fixes. Problem, then the five questions, then the tools.
-
-  2. PRACTICE (sheet 07). The About section, composed as a drawing
-     title block, sitting immediately before the ask. Credentials are
-     tabulated as facts, not adjectives. Real client marks from page
-     15 of the playbook, presented silently with no "trusted by"
-     banner over them.
-
-  3. RESULT DIAGNOSTIC. The assessment now returns a per-dimension
-     read computed from the four answers, names the weak spot, and
-     passes it to the CRM so the first email can open on the thing
-     they're behind on. Priestley's point is that a scorecard should
-     know fit and readiness by the last question; previously this one
-     scored and then told everyone the same thing.
-
-  NOT added, deliberately: a fabricated cohort average. COHORT_AVG in
-  the script is null and the benchmark line stays hidden until a real
-  number replaces it. Also still absent: manufactured scarcity, value
-  stacking with invented dollar figures, and testimonial carousels.
+  Type: Founders Grotesk 400/600, self-hosted. Palette: slate, stone,
+  stone-dim, olive, terracotta for errors. Motion: the cover intro,
+  the photo pan, section crossfades, and input-driven UI only.
+  Not added on purpose: a made-up cohort average (COHORT_AVG stays
+  null), fake scarcity, testimonial carousels.
   ============================================================
 -->
 
@@ -229,30 +147,13 @@
 
   *{box-sizing:border-box; margin:0; padding:0;}
 
-  /* ============================================================
-     SNAP — driven in JS, not CSS. See the SNAP STOPS script.
-
-     CSS scroll-snap only offers start / center / end alignment on the
-     snap element itself, and proximity leaves the decision to the
-     browser. The stops this page needs are specific and mixed: some
-     headings at the top of the screen, one caption at the bottom, one
-     heading a third of the way down. CSS can't express that, so it's
-     a defined list of scroll positions instead.
-     ============================================================ */
-  /* overflow-x lives here as `clip`, NOT as `hidden` on body.
-     This was the bug: overflow-x:hidden on body makes body a scroll
-     container, and once it is one, scroll-snap-type declared on html
-     has nothing left to act on — the snap silently did nothing at all.
-     `clip` does the same visual job without creating a scroller.
-
-     It's also probably unnecessary now: the only thing that ever moved
-     horizontally off-screen was the hero title dispersal, which was
-     removed. Left in as a cheap guard. */
-  /* scroll-behavior is auto on purpose: the glide() in the snap script
-     animates scrollTop itself, and native smooth scrolling would run
-     on top of it and fight. Anchor links route through glide() too, so
-     they still ease. */
-  html{ overflow-x:clip; }
+  /* overflow-x lives here as `clip`, NOT as `hidden` on body:
+     hidden on body makes body a scroll container. `clip` does the same
+     visual job without creating a scroller. Left in as a cheap guard. */
+  /* No scroll snapping: the page scrolls freely. In-page links (Get the
+     playbook, skip link) ease there with native smooth scrolling;
+     reduced motion turns it off further down. */
+  html{ overflow-x:clip; scroll-behavior:smooth; }
 
   /* ============================================================
      BACKGROUND LAYER — one fixed plane behind everything, whose
@@ -336,11 +237,12 @@
   }
   .plumb{ transition:opacity 300ms ease; }
   .plumb.done{ opacity:0; }
+  /* --p (0 to 1) is set from the scroll position by the script below */
   .plumb-fill{ width:100%; height:100%; background:var(--olive);
-               transform-origin:top; transform:scaleY(0); }
+               transform-origin:top; transform:scaleY(var(--p,0)); }
   .plumb-bead{
     position:absolute; left:-3px; width:7px; height:7px; background:var(--olive);
-    top:0; transform:translateY(-50%);
+    top:calc(var(--p,0) * 100%); transform:translateY(-50%);
   }
 
   /* ============================================================
@@ -392,39 +294,24 @@
   .masthead.past-cover .mh-cta{ opacity:1; transform:none; pointer-events:auto; }
 
   /* ============================================================
-     HERO — title sits low-left against the footage, not centered.
-
-     The background is now INCO's own cover video: the line drawing
-     building over the real venue, which is the same device the whole
-     page is built on. It replaces the WebGL gradient (still in v3/v4
-     if you want it back).
-
-     Poster frame carries the first frame, so a slow connection, a
-     blocked autoplay, or reduced-motion all land on a still image
-     rather than a grey box.
+     HERO — title sits low-left against the photograph, not centred.
      ============================================================ */
-  /* The footage is pinned as a background while two screens of text
-     travel up over it, then it releases. Structure is the standard
-     sticky-background pattern: the media layer sticks, and the text
-     panels are pulled back over it with a negative margin so they
-     scroll normally while it holds still.
-
-     That replaces the exit-dispersal the title used to do. The words
-     now simply leave upward with the scroll, which is what was asked
-     for and is also the quieter move: the dispersal was choreography
-     competing with footage that's already animating.
-
-     97 frames is a ceiling, not a choice. The source is 4.04s at
-     24fps, so there is nothing more to extract. */
-  .heroScroll{ position:relative; height:240vh; }
+  /* The photograph is pinned as a background while two pages of text
+     (cover, conditions) travel up over it, then it releases: the media
+     layer sticks, and the text panels are pulled back over it with a
+     negative margin so they scroll normally while it holds still.
+     The scroll region is as tall as its two panels, no taller, so the
+     photo releases a short beat after the last line instead of after a
+     fixed 240vh (which left up to 0.75 of a screen of empty photo on a
+     tall display, and could cut text off on a short one). */
+  .heroScroll{ position:relative; }
   .heroBg{
     position:sticky; top:0; height:100dvh; z-index:0; overflow:hidden;
   }
-  /* The still is portrait (693x987 native, rendered 1600x2278), so at
-     full-bleed it stands taller than any viewport. That surplus height
-     is the effect: scroll pans down the photograph, from the menu
-     being handed across at the top to the base of the fluted marble.
-     A single 142KB image doing what 3.7MB of frames was doing. */
+  /* The still is portrait (1600x2278), so at full-bleed it stands
+     taller than any viewport. That surplus height is the effect: scroll
+     pans down the photograph, from the menu being handed across at the
+     top to the base of the fluted marble. */
   .hero-media{ position:absolute; inset:0; background:#2a2a28; overflow:hidden; }
   .hero-media img{
     position:absolute; top:0; left:0;
@@ -455,14 +342,6 @@
     padding-bottom:var(--s7); color:var(--light);
   }
   .hpanel .grid{ width:100%; align-items:end; }
-  /* Final beat: the completed drawing with nothing over it. This is
-     the point of the whole arrangement, so it gets its own screen. */
-  /* Was 80vh. With the video this was the finished drawing getting a
-     screen to itself; with a still photograph there's nothing being
-     completed, so it was just 720px of image and no reason to keep
-     scrolling. Trimmed to a beat that lets the pan finish. */
-  .hpanel-hold{ min-height:40vh; pointer-events:none; }
-
   .hero-title{ grid-column:1 / 10; }
   /* Sized by the SHORTER of width and height. --t-display alone is a
      width-only clamp, so on a wide-but-short window (a laptop with the
@@ -497,17 +376,15 @@
   /* Bottom-aligned, matching the hero panel above it, so the two share
      a baseline and read as one composition scrolling past rather than
      two separate slides. */
-  /* Top-aligned, unlike the hero panel above it, and that asymmetry
-     is the point. Snap stop 2 brings this page's first line to the top
-     of the screen. While the content was bottom-aligned in its panel,
-     that scroll position landed 138px past the panel's own end, so the
-     next page bled into the bottom of the view. Content anchored to
-     the top means the snap and the layout agree and the panel fills
-     the screen exactly. */
+  /* Top-aligned, unlike the hero panel above it, and sized to its
+     text. The bottom padding is the beat of photograph on its own
+     before page 3: about a sixth of a screen, at least 104px. (It used
+     to be a full-screen panel plus a 40vh spacer: up to 0.75 of a
+     screen of empty photo on a tall display.) */
   .heroPanels .conditions{
     background:none; color:var(--light);
-    min-height:100dvh; display:flex; align-items:flex-start;
-    padding:calc(var(--frame) + 76px) 0 var(--s7);
+    display:flex; align-items:flex-start;
+    padding:calc(var(--frame) + 76px) 0 max(var(--s7), 16vh);
   }
   /* This is a full page over a photograph now, not a band between two
      grey sections, so it carries display weight rather than section
@@ -520,11 +397,8 @@
   .heroPanels .conditions .list{ border-top:1px solid var(--light-18); }
   .heroPanels .conditions .list p{ border-bottom:1px solid var(--light-18); }
 
-  /* The entrance self-clips via clip-path rather than relying on an
-     overflow:hidden ancestor. That matters: an overflow-hidden wrapper
-     here would clip the horizontal scroll-exit dispersal to the title
-     column instead of letting the words travel the full viewport
-     width. That exact bug bit the first build. */
+  /* The entrance self-clips via clip-path, so no overflow:hidden
+     wrapper is needed around the title lines. */
   @keyframes rise{
     from{ clip-path:inset(0 0 100% 0); transform:translateY(.12em); }
     to{ clip-path:inset(0 0 -20% 0); transform:translateY(0); }
@@ -552,7 +426,6 @@
   /* Hover steps DOWN to the dim tone. It used to step up to --light,
      which is now within two values of --stone, so the hover would have
      been invisible after the background change. */
-  .btn-pale{ background:var(--stone); color:var(--slate); }
   .link{
     font-size:var(--t-small); color:inherit; opacity:.65; text-decoration:none;
     padding-bottom:3px; border-bottom:1px solid currentColor;
@@ -563,7 +436,7 @@
   /* Olive on olive is 1.0:1 and olive on slate barely 3:1, so every dark
      sheet switches the ring to light. */
   .hero :focus-visible,.heroPanels :focus-visible,.plate :focus-visible,
-  .roadmap :focus-visible,.assess :focus-visible,.gate :focus-visible{ outline-color:var(--light); }
+  .roadmap :focus-visible,.gate :focus-visible{ outline-color:var(--light); }
   .skip{ position:fixed; left:calc(var(--frame) + 14px); top:-80px; z-index:100;
          background:var(--olive); color:var(--light); padding:12px 20px; border-radius:999px;
          font-size:var(--t-small); font-weight:600; text-decoration:none; }
@@ -574,9 +447,7 @@
   /* ============================================================
      PLATE — full-bleed image, caption hangs into the margin
      ============================================================ */
-  /* Full viewport. At 78vh this was a band, not a page: 198px of a
-     neighbouring section stayed on screen no matter where the snap
-     put it. */
+  /* Full viewport: a page of its own, not a band between sections. */
   .plate{ position:relative; height:100dvh; min-height:520px; overflow:hidden; background:var(--slate); }
   /* object-position pulls the crop down the frame. The venue's signage
      sits along the top edge of this photograph and this section is
@@ -795,89 +666,17 @@
     .clients .marks img{ max-width:150px; }
   }
 
-  /* ============================================================
-     ASSESSMENT — the qualifying quiz. Kept intact, restaged on the
-     grid: prompt on the left, answers on the right, so it reads as a
-     form being filled rather than a centered card.
-     ============================================================ */
-  /* Olive is mid-tone: even solid light text only reaches 5.0:1 on it,
-     so the usual 80% / 50% steps fail AA (3.9:1 and 2.5:1). On this sheet
-     body copy goes solid and meta text sits at 92% (4.6:1); hierarchy
-     comes from size and weight instead of fading. */
-  .assess{ background:var(--olive); color:var(--light); padding:var(--s8) 0;
-           --light-80:var(--light); --light-50:rgba(245,243,238,.92); }
-  .assess .head{ grid-column:1 / 7; }
-  .assess .head h2{ font-size:var(--t-h2); }
-  .assess .head p{ margin-top:var(--s3); font-size:var(--t-small); color:var(--light-80); max-width:36ch; }
-  .assess .head .count{ margin-top:var(--s6); font-size:var(--t-micro); color:var(--light-50); font-variant-numeric:tabular-nums; }
-  .assess .head .bar{ margin-top:var(--s2); width:120px; height:1px; background:var(--light-18); }
-  .assess .head .bar i{ display:block; height:100%; width:100%; background:var(--light); transform:scaleX(0); transform-origin:left; transition:transform var(--med) var(--ease); }
-
-  .assess .panelwrap{ grid-column:7 / 13; min-height:340px; position:relative; }
-  .qp{ opacity:0; visibility:hidden; position:absolute; inset:0;
-       transition:opacity 140ms ease-out, transform var(--ui) var(--ease); transform:translateY(8px); }
-  .qp.on{ opacity:1; visibility:visible; position:relative; transform:none; }
-  .qp .q{ font-size:var(--t-lead); font-weight:600; letter-spacing:-.02em; margin-bottom:var(--s5); max-width:34ch; line-height:1.3; }
-  .opt{
-    display:block; width:100%; text-align:left; background:none; color:inherit;
-    font-family:inherit; font-size:var(--t-small); padding:18px 0;
-    border:none; border-bottom:1px solid var(--light-18); cursor:pointer;
-    transition:border-color var(--fast) ease;
-  }
-  .opt span{ display:block; transition:transform var(--ui) var(--ease); }
-  .opt:active span{ transform:translateX(6px) scale(.99); }
-  .opt:first-of-type{ border-top:1px solid var(--light-18); }
-  .opt:focus-visible span{ transform:translateX(14px); }
-
   /* Hover only where hover exists. On touch it fires on tap and sticks. */
   @media (hover:hover) and (pointer:fine){
     .btn:hover{ background:var(--olive-deep); }
-    .btn-pale:hover{ background:var(--stone-dim); }
     .mh-cta:hover{ background:var(--olive-deep); }
     .link:hover{ opacity:1; }
     .row-btn:hover .row-name{ transform:translateX(10px); }
-    .opt:hover{ border-color:var(--light); }
-    .opt:hover span{ transform:translateX(14px); }
   }
-
-  .result{ display:none; }
-  .result.on{ display:block; animation:soft-from var(--ui) var(--ease) both; }
-  .result.on .diag div{ animation:soft-from var(--ui) var(--ease) both; }
-  .result.on .diag div:nth-child(1){ animation-delay:60ms; }
-  .result.on .diag div:nth-child(2){ animation-delay:100ms; }
-  .result.on .diag div:nth-child(3){ animation-delay:140ms; }
-  .result.on .diag div:nth-child(4){ animation-delay:180ms; }
-  .result.on .diag div:nth-child(5){ animation-delay:220ms; }
-  .result .verdict{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s3); }
-  .result h3{ font-size:var(--t-h3); margin-bottom:var(--s3); }
-  .result p{ font-size:var(--t-small); color:var(--light-80); max-width:44ch; margin-bottom:var(--s5); }
-  .result .scale{ display:flex; align-items:center; gap:var(--s3); margin-bottom:var(--s5); }
-  .result .scale .track2{ flex:1; height:1px; background:var(--light-18); position:relative; }
-  .result .scale .track2 i{ position:absolute; left:0; top:0; height:100%; width:100%; background:var(--light);
-                            transform:scaleX(0); transform-origin:left; transition:transform 700ms var(--ease); }
-  .result .scale b{ font-size:var(--t-micro); font-variant-numeric:tabular-nums; font-weight:600; }
-  /* Per-dimension diagnostic. Computed from the actual answers, so it
-     tells them something they didn't already type in. */
-  .result .diag{ border-top:1px solid var(--light-18); margin-bottom:var(--s5); }
-  .result .diag div{
-    display:flex; justify-content:space-between; align-items:baseline; gap:var(--s3);
-    padding:11px 0; border-bottom:1px solid var(--light-18); font-size:var(--t-small);
-  }
-  .result .diag .lbl{ color:var(--light-50); }
-  .result .diag .val{ font-weight:600; }
-  .result .diag .val.weak{ color:var(--light); }
-  .result .bench{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s5); display:none; }
-  .result .bench.on{ display:block; }
-  .result .acts{ display:flex; align-items:center; gap:var(--s4); flex-wrap:wrap; }
-  .assess .link{ opacity:1; }   /* 65% link text is 3.1:1 on olive; the underline already marks it */
-  .qnav{ background:none; border:0; border-bottom:1px solid currentColor; font-family:inherit; cursor:pointer; }
-  .assess .head .qnav{ display:block; margin-top:var(--s4); }
-  .assess .head .qnav[hidden]{ display:none; }
-  #callCta{ display:none; }
-  #callCta.on{ display:inline-block; }
 
   /* ============================================================
      GATE — copy left, form right. Not a centered 400px column.
+     The three qualifying questions sit in the form as dropdowns.
      ============================================================ */
   .gate{ background:var(--slate); color:var(--light); padding:var(--s8) 0; }
   .gate .pitch{ grid-column:1 / 6; }
@@ -887,11 +686,89 @@
   .gate .pitch li{ padding:14px 0; border-bottom:1px solid var(--light-18); font-size:var(--t-small); color:var(--light-80); }
   .gate .form{ grid-column:7 / 12; }
 
-  .field{ margin-bottom:var(--s5); position:relative; }
-  .field label{ display:block; font-size:var(--t-micro); color:var(--light-50); margin-bottom:6px; }
+  /* Qualifying questions. A custom dropdown so the open menu matches
+     the form; the native <select> underneath stays the source of the
+     value, and is what shows if the script never runs. The question is
+     the placeholder; once answered, the short label keeps the context. */
+  .field select{
+    width:100%; -webkit-appearance:none; appearance:none; border-radius:0;
+    background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23f5f3ee' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 2px center;
+    border:none; border-bottom:1px solid var(--light-18);
+    color:var(--light); font-family:inherit; font-size:var(--t-body); padding:2px 28px 10px 0; outline:none; cursor:pointer;
+  }
+  .field select:invalid{ color:var(--light-50); }
+  .field select option{ color:var(--slate); background:var(--stone); }
+  .field.bad select{ border-color:var(--terracotta-on-dark); }
+  .fsel.dd-on select{ display:none; }
+
+  .dd{ position:relative; }
+  .dd-btn{
+    display:flex; align-items:center; justify-content:space-between; gap:var(--s3);
+    width:100%; padding:2px 0 10px; border-bottom:1px solid var(--light-18);
+    font-size:var(--t-body); line-height:1.35; color:var(--light); cursor:pointer; outline:none;
+    transition:border-color var(--fast) ease;
+  }
+  .dd-btn.ph .dd-val{ color:var(--light-50); }
+  .dd-btn:focus,.dd-btn[aria-expanded="true"]{ border-color:var(--light); }
+  .dd-btn::after{
+    content:""; flex:none; width:14px; height:9px;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23f5f3ee' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat center;
+    transition:transform var(--fast) var(--ease);
+  }
+  .dd-btn[aria-expanded="true"]::after{ transform:rotate(180deg); }
+  .field.bad .dd-btn{ border-color:var(--terracotta-on-dark); }
+  /* The open menu: the form's own vocabulary. Slate ground, hairline
+     border, ruled rows like the list beside it, light ink on focus. */
+  .dd-list{
+    position:absolute; left:0; right:0; top:100%; z-index:30; margin:0; padding:0; list-style:none;
+    background:var(--slate); border:1px solid var(--light-18); border-top:0;
+    animation:dd-in 140ms ease-out both;
+  }
+  .dd-list[hidden]{ display:none; }
+  .dd-list li{
+    padding:14px 16px; font-size:var(--t-small); line-height:1.35; color:var(--light-80);
+    border-bottom:1px solid var(--light-18); cursor:pointer;
+  }
+  .dd-list li:last-child{ border-bottom:0; }
+  .dd-list li.is-active{ color:var(--light); background:rgba(245,243,238,.06); }
+  .dd-list li[aria-selected="true"]{ color:var(--light); font-weight:600; }
+  @keyframes dd-in{ from{ opacity:0; transform:translateY(-4px); } to{ opacity:1; transform:none; } }
+  @media (prefers-reduced-motion:reduce){ .dd-list{ animation:none; } }
+
+  /* RESULT — their readiness read, shown once the form has gone through */
+  .result{ display:none; margin-top:var(--s6); padding-top:var(--s5); border-top:1px solid var(--light-18); }
+  .result.on{ display:block; animation:soft-from var(--ui) var(--ease) both; }
+  .result.on .diag div{ animation:soft-from var(--ui) var(--ease) both; }
+  .result.on .diag div:nth-child(1){ animation-delay:60ms; }
+  .result.on .diag div:nth-child(2){ animation-delay:100ms; }
+  .result.on .diag div:nth-child(3){ animation-delay:140ms; }
+  .result.on .diag div:nth-child(4){ animation-delay:180ms; }
+  .result .verdict{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s3); }
+  .result h3{ font-size:var(--t-h3); margin-bottom:var(--s3); }
+  .result p{ font-size:var(--t-small); color:var(--light-80); max-width:44ch; margin-bottom:var(--s5); }
+  /* Per-dimension diagnostic. Computed from the actual answers, so it
+     tells them something they didn't already type in. */
+  .result .diag{ border-top:1px solid var(--light-18); margin-bottom:var(--s5); }
+  .result .diag div{
+    display:flex; justify-content:space-between; align-items:baseline; gap:var(--s3);
+    padding:11px 0; border-bottom:1px solid var(--light-18); font-size:var(--t-small);
+  }
+  .result .diag .lbl{ color:var(--light-50); }
+  .result .diag .val{ font-weight:600; text-align:right; }
+  .result .diag .val.weak{ color:var(--light); }
+  .result .bench{ font-size:var(--t-micro); color:var(--light-50); margin-bottom:var(--s5); display:none; }
+  .result .bench.on{ display:block; }
+  #callCta{ display:none; }
+  #callCta.on{ display:inline-flex; }
+  #sentTitle:focus{ outline:none; }
+
+  /* Tight label-to-field, looser field-to-field: each label reads as
+     belonging to the line under it, not the one above. */
+  .field{ margin-bottom:32px; position:relative; }
+  .field label{ display:block; font-size:var(--t-micro); color:var(--light-50); margin-bottom:2px; }
   .field input{
     width:100%; background:none; border:none; border-bottom:1px solid var(--light-18);
-    color:var(--light); caret-color:var(--light); font-family:inherit; font-size:var(--t-lead); padding:8px 0; outline:none;
+    color:var(--light); caret-color:var(--light); font-family:inherit; font-size:var(--t-lead); padding:0 0 8px; outline:none;
     transition:border-color var(--fast) ease;
   }
   .field input::placeholder{ color:var(--light-50); }
@@ -900,10 +777,6 @@
   .field.bad .err{ display:block; }
   .field.bad input{ border-color:var(--terracotta-on-dark); }
 
-  /* Four fields plus the s8 gutters run the gate sheet to roughly 830px.
-     That clears a 900px viewport but overflows a 768-800px laptop, and
-     this sheet is a snap stop - an overflowing stop scrolls to the wrong
-     place. Tighten the rhythm rather than let the stop drift. */
   @media (min-width:901px) and (max-height:860px){
     .gate{ padding:var(--s7) 0; }
     .field{ margin-bottom:var(--s4); }
@@ -940,12 +813,14 @@
   footer{ padding:var(--s7) 0 0; }
   .tail-foot{ row-gap:0; }   /* spacing in this block is set explicitly, not by the grid gap */
   .tail-foot > div{ grid-column:1 / 13; }
-  /* The Contact sheet is one full screen on desktop: message at the top,
-     icons and studio line at the bottom, all inside the border. */
+  /* Desktop Contact sheet: message, then icons and studio line, sized
+     to content. The gap from the studio line down to the border is a
+     fixed ~100px (enough to clear the sheet counter): bottom padding
+     plus footer padding, less the chrome shift's GAP. */
   @media (min-width:901px){
-    .tail{ min-height:100dvh; display:flex; flex-direction:column; justify-content:center; }
+    .tail{ padding-bottom:calc(var(--s6) + var(--s4)); }
     .tail-foot{ margin-top:var(--s6); }
-    .tail > .grid{ width:100%; }
+    footer{ padding-top:var(--s6); }
   }
   footer .grid > div{ grid-column:1 / 13; }
   .foot-social{ display:flex; justify-content:flex-end; margin-right:-8px; padding-bottom:var(--s1); }
@@ -978,18 +853,11 @@
   .foot-logo picture{ display:block; width:100%; }
   .foot-logo img{ display:block; width:100%; max-width:none; height:auto; aspect-ratio:1894 / 614; }
 
-  /* Short sheets fill the screen. A stop used to line the heading up
-     96px from the top and leave the sheet's own height to decide what
-     showed underneath, so a sheet shorter than the viewport let the NEXT
-     page bleed in along the bottom (37px to 270px depending on the
-     screen). Each of these is now at least one full screen with its
-     content centred, and its stop is the sheet's top edge. Taller than
-     the screen is still fine: the stop's range carries on to the last
-     control. Desktop only, phones scroll freely. */
-  @media (min-width:901px){
-    .casenote,.assess,.gate{ min-height:100dvh; display:flex; align-items:center; }
-    .casenote > .grid,.assess > .grid,.gate > .grid{ width:100%; }
-  }
+  /* Sheets size to their content. Case note, Download and Contact used
+     to be stretched to a full screen so the snap had a clean place to
+     stop; with the snap gone they take their own height and padding.
+     Cover, Conditions and the Reality check plate stay full screen:
+     those are full-bleed photographs, and the height is the design. */
 
   /* Touch devices: grow the hit area to 44px without changing how
      anything looks. Pseudo-elements extend the reach of text links;
@@ -998,7 +866,10 @@
     .mh-cta{ display:inline-flex; align-items:center; min-height:44px; padding-top:0; padding-bottom:0; }
     .link,.fineprint a,.foot-line a{ position:relative; }
     .link::before,.fineprint a::before,.foot-line a::before{ content:""; position:absolute; inset:-15px -8px; }
-    .field input{ min-height:44px; }
+    /* No 44px floor here: it centres the text and reopens the label gap.
+       Tapping the label focuses the field, so label plus field is the
+       target (about 58px). */
+    .field input{ padding-top:4px; }
     .foot-social a{ width:44px; height:44px; }
   }
 
@@ -1012,9 +883,8 @@
     .conditions .head,.conditions .list,.conditions .turn,
     .casenote .body,
     .roadmap .head,.rows,
-    .assess .head,.assess .panelwrap,
-    .practice .lead,.practice .block,.practice .clients,.practice .portrait,
     .gate .pitch,.gate .form,
+    .practice .lead,.practice .block,.practice .clients,.practice .portrait,
     .tail .msg,
     .plate .cap .grid > div,
     footer .grid > div{ grid-column:1 / 13; }
@@ -1026,7 +896,7 @@
     .casenote .body{ margin-top:var(--s4); }
     .practice .block{ margin-top:var(--s6); }
     .practice .clients{ margin-top:var(--s6); }
-    .roadmap,.assess,.gate,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
+    .roadmap,.gate,.tail{ padding-top:var(--s7); padding-bottom:var(--s6); }
     .tail{ padding-bottom:var(--s5); }
     .tail-foot{ margin-top:var(--s7); }
     .foot-logo{ padding:0 var(--s4); }
@@ -1034,21 +904,15 @@
     .row-btn{ grid-template-columns:38px 1fr 22px; }
     .row-dim{ display:none; }
     .row-body p{ padding-left:calc(38px + var(--s3)); }
-    .assess .panelwrap{ margin-top:var(--s6); min-height:0; }
     .gate .form{ margin-top:var(--s6); }
     .plumb{ display:none; }
     /* The venue's name is signed across the top of this photograph, and
        on a portrait screen cover-fit shows the whole height of it. Render
        the image 30% taller than its box and anchor it to the floor so the
        top quarter, with the sign, sits above the visible area. */
-    /* No scrub on phones. 3.7MB of frames on mobile data for a
-       background, plus a pinned section fighting the address bar,
-       isn't a trade worth making. Mobile collapses the scroll region
-       and plays the 0.5MB looping cut instead. */
-    .heroScroll{ height:auto; }
+    /* No pan on phones: a pinned section fights the address bar. */
     .heroBg{ position:relative; height:100dvh; }
     .heroPanels{ margin-top:-100dvh; }
-    .hpanel-hold{ display:none; }
     /* Only the title panel still sits over the footage here. The two
        below it scroll past the video entirely, so they carry their own
        dark ground rather than leaving light type on a light page. */
@@ -1073,15 +937,12 @@
     .hero-meta,.hero-cta{ animation:none !important; opacity:1 !important; transform:none !important; }
     .result.on,.sent.on,.result.on .diag div{ animation:fade-only 180ms ease-out both !important; }
     .masthead .mh-label,.masthead .mh-cta{ transform:none !important; }
-    .qp{ transform:none !important; }
-    .btn:active,.mh-cta:active,.foot-social a:active,.opt:active span,.row-btn:active .row-name{ transform:none !important; }
-    .row-name,.opt span{ transition:none !important; }
-    .row-btn:hover .row-name,.opt:hover span,.opt:focus-visible span{ transform:none !important; }
+    .btn:active,.mh-cta:active,.foot-social a:active,.row-btn:active .row-name{ transform:none !important; }
+    .row-name{ transition:none !important; }
+    .row-btn:hover .row-name{ transform:none !important; }
     .row-plus::after{ transition:none !important; }
     .row-body{ transition:none !important; }
     .row-dim span{ transition:none !important; }
-    .assess .head .bar i,.result .scale .track2 i{ transition-duration:.01ms !important; }
-    .plumb-fill{ transform:scaleY(1); }
   }
 </style>
 </head>
@@ -1124,16 +985,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="heroScroll" id="heroScroll">
 
   <!-- Sticky media layer. One portrait still, taller than the
-       viewport, panned by scroll. Replaces the 97-frame AVIF sequence
-       and the video fallback that went with it; the frames and mp4s
-       are still on disk if you ever want them back. -->
+       viewport, panned by scroll. -->
   <div class="heroBg">
     <div class="hero-media">
       <picture>
         <source media="(max-width:900px)" srcset="media/hero-still-1000.webp" type="image/webp">
         <source media="(max-width:900px)" srcset="media/hero-still-1000.jpg">
         <source srcset="media/hero-still-1600.webp" type="image/webp">
-        <img id="heroStill" src="media/hero-still-1600.jpg" alt="" fetchpriority="high" decoding="async">
+        <img id="heroStill" src="media/hero-still-1600.jpg" width="1600" height="2278" alt="" fetchpriority="high" decoding="async">
       </picture>
     </div>
   </div>
@@ -1152,11 +1011,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </h1>
     </div>
     <div class="hero-meta">
-      <p>A free 16-page guide for operators planning a second venue. What we'd want you to know before you sign.</p>
+      <p>A 16-page guide for operators planning a second venue. What you'd want to know before you sign.</p>
     </div>
     <div class="hero-cta">
-      <a href="#s-assess" class="btn">Take the readiness check</a>
-      <a href="#s-gate" class="link">Just send me the playbook</a>
+      <a href="#s-gate" class="btn">Get the playbook</a>
     </div>
   </div>
 </section>
@@ -1188,26 +1046,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-  <!-- Final beat: the finished drawing, alone, nothing over it.
-       This is what "utilise the full extent of the video" buys - the
-       completed linework gets a screen of its own before the pin
-       releases, instead of being covered by type the whole way. -->
-  <div class="hpanel hpanel-hold" aria-hidden="true"></div>
 </div>
 </div>
 
 
 <!-- ============================================================
-     PLATE — real agitation copy from Chapter 1, trimmed.
-     Photography is still a picsum placeholder pending real INCO
-     project images (the book has usable shots).
+     PLATE — real agitation copy from Chapter 1, trimmed, over a
+     completed INCO fitout.
      ============================================================ -->
-<section class="plate" id="s-plate" data-bg="slate" data-snap data-sheet="03" data-name="Reality check" data-dark data-photo>
+<section class="plate" id="s-plate" data-bg="slate" data-sheet="03" data-name="Reality check" data-dark data-photo>
   <picture>
     <source media="(max-width:900px)" srcset="media/plate-1000.webp" type="image/webp">
     <source media="(max-width:900px)" srcset="media/plate-1000.jpg">
     <source srcset="media/plate-1600.webp" type="image/webp">
-    <img src="media/plate-1600.jpg" alt="Interior of a completed INCO hospitality fitout" decoding="async">
+    <img src="media/plate-1600.jpg" width="1600" height="926" alt="Interior of a completed INCO hospitality fitout" loading="lazy" decoding="async">
   </picture>
   <div class="cap">
     <div class="grid">
@@ -1237,7 +1089,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      because it's a loss: proof INCO says the inconvenient thing, which
      no testimonial wall can imitate.
      ============================================================ -->
-<section class="casenote" id="s-case" data-fade data-bg="stone" data-snap data-sheet="04" data-name="Case note">
+<section class="casenote" id="s-case" data-fade data-bg="stone" data-sheet="04" data-name="Case note">
   <div class="grid">
     <div class="body">
       <h2 class="sr-only">Case note: the fifth venue</h2>
@@ -1245,6 +1097,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="after">He wasn't guessing. Seven years of trading, four profitable sites, a product people already queued for, and the best address he'd ever signed for. None of that was enough.</p>
       <p class="after">The tenancy inside the centre was tucked away, and the foot traffic that walked past it was not the traffic his product was built for. The address looked impressive on paper and did nothing at the till. By the time that was obvious, the fitout was spent, two years of trading had gone, and the lease didn't end just because the doors did.</p>
       <p class="after">Status is not a strategy. Working out why a site is the right one is a cheap question to answer before you sign, and an expensive one afterwards.</p>
+      <p class="after">The ones who get it right are boring about it. They do this work before starting to search for sites. They are selective and picky, and the one they sign makes the first venue stronger instead of putting it at risk.</p>
       <p class="sign">Jayson Lee, Director</p>
     </div>
   </div>
@@ -1255,7 +1108,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      rows. Opening a row is a user action, so the motion is answering
      input rather than performing on scroll.
      ============================================================ -->
-<section class="roadmap" id="s-roadmap" data-fade data-bg="slate" data-snap data-sheet="05" data-name="The roadmap" data-dark>
+<section class="roadmap" id="s-roadmap" data-fade data-bg="slate" data-sheet="05" data-name="The roadmap" data-dark>
   <div class="grid">
     <div class="head">
       <h2><span>Five questions worth answering</span><span>before you sign anything.</span></h2>
@@ -1317,76 +1170,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<!-- ============================================================
-     ASSESSMENT — the qualifying quiz, logic unchanged from the
-     previous build, restaged across the grid. Ready-now scorers get
-     a route to a conversation as well as the download.
-     ============================================================ -->
-<section class="assess" id="s-assess" data-fade data-bg="olive" data-snap data-sheet="06" data-name="Readiness" data-dark>
-  <div class="grid">
-    <div class="head">
-      <h2>Are you actually ready?</h2>
-      <p>Four questions, no email until the end. Answer honestly. The flattering answer won't help you.</p>
-      <div class="count"><span id="qCount" aria-live="polite">Question 1 of 4</span></div>
-      <div class="bar"><i id="qBar"></i></div>
-      <button type="button" class="link qnav" id="qBack" hidden>Back to the previous question</button>
-    </div>
-
-    <div class="panelwrap">
-      <div class="qp on" data-q="1" role="group" aria-labelledby="q1">
-        <p class="q" id="q1">Does your first venue run profitably when you're not physically there?</p>
-        <button class="opt" data-score="2"><span>Yes, it holds up without me</span></button>
-        <button class="opt" data-score="1"><span>Mostly, with some hands-on days</span></button>
-        <button class="opt" data-score="0"><span>No, I'm still the glue</span></button>
-      </div>
-      <div class="qp" data-q="2" role="group" aria-labelledby="q2">
-        <p class="q" id="q2">Is your brand written down, or does it live in your head?</p>
-        <button class="opt" data-score="2"><span>Documented properly</span></button>
-        <button class="opt" data-score="1"><span>Partly, some of it</span></button>
-        <button class="opt" data-score="0"><span>In my head</span></button>
-      </div>
-      <div class="qp" data-q="3" role="group" aria-labelledby="q3">
-        <p class="q" id="q3">Have you scoped a real budget for site two, or is it still a guess?</p>
-        <button class="opt" data-score="2"><span>Quoted and scoped</span></button>
-        <button class="opt" data-score="1"><span>A rough range</span></button>
-        <button class="opt" data-score="0"><span>Not yet</span></button>
-      </div>
-      <div class="qp" data-q="4" role="group" aria-labelledby="q4">
-        <p class="q" id="q4">When would you want the next site open?</p>
-        <button class="opt" data-score="2"><span>Within six months</span></button>
-        <button class="opt" data-score="1"><span>Six to eighteen months</span></button>
-        <button class="opt" data-score="0"><span>No fixed timeline</span></button>
-      </div>
-
-      <div class="result" id="result">
-        <p class="verdict" id="verdict">Result</p>
-        <h3 id="rTitle" tabindex="-1"></h3>
-        <div class="scale">
-          <div class="track2"><i id="rFill"></i></div>
-          <b id="rScore">0/8</b>
-        </div>
-        <!-- Per-dimension breakdown, built from the four answers. This is
-             the part that makes the result worth reading: it tells them
-             which of the roadmap's dimensions is their weak one, which
-             they didn't explicitly type in. -->
-        <div class="diag" id="rDiag"></div>
-        <!-- Cohort benchmark. Stays hidden until COHORT_AVG is set to a
-             real number in the script below; nothing invented ships. -->
-        <p class="bench" id="rBench"></p>
-        <p id="rDesc"></p>
-        <div class="acts">
-          <a href="#s-gate" class="btn btn-pale">Get the playbook</a>
-          <a href="#" class="link" id="callCta" target="_blank" rel="noopener">Book a call</a>
-          <button type="button" class="link qnav" id="qRetake">Retake the check</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ============================================================
      PRACTICE — the About section, as a drawing title block. Sits
-     immediately before the ask, which is where proof does the most
+     immediately before the readiness check and the ask, which is where proof does the most
      work. Credentials are tabulated as facts (founded, based,
      recognition) rather than written as claims: "two Better Future
      Australia design awards" carries more than "award-winning", and
@@ -1398,21 +1185,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      statement of fact, the second asks the reader to feel something
      about it.
      ============================================================ -->
-<section class="practice" id="s-practice" data-fade data-bg="stone-dim" data-snap data-sheet="07" data-name="Practice">
+<section class="practice" id="s-practice" data-fade data-bg="stone-dim" data-sheet="06" data-name="Practice">
   <div class="grid">
     <div class="portrait">
       <picture>
         <source srcset="media/portrait-900.webp" type="image/webp">
-        <img src="media/portrait-900.jpg" alt="Jayson Lee, Director of INCO Studio" loading="lazy" decoding="async">
+        <img src="media/portrait-900.jpg" width="900" height="1200" alt="Jayson Lee, Director of INCO Studio" loading="lazy" decoding="async">
       </picture>
       <p class="cap">Jayson Lee, Director</p>
     </div>
 
     <div class="lead">
-      <h2>Who you'd be working with.</h2>
+      <h2>The practice behind the playbook</h2>
       <p>Founder and Design Leader of INCO Studio, Jayson draws from his diverse background and years of experience in Europe, Asia and Australia. His projects stretch across multiple sectors.</p>
-      <p>Over the past 15 years, Jayson has honed his craft across Sydney and London, specialising in multi-faceted design disciplines including branding, hospitality, retail, and residential projects.</p>
-      <p>His dedication to understanding the interplay between design and human behaviour has guided his projects towards fostering meaningful connections and creating spaces where individual stories can unfold.</p>
+      <p>Over the past 15 years, Jayson has honed his craft across Sydney and London, specialising in multi-faceted design disciplines including branding, hospitality, retail, and residential projects. Through the years, he has helped many clients create successful venues that resonate with their customers.</p>
+      <p>His dedication to understanding the interplay between design and human behaviour has guided his projects towards fostering meaningful connections and creating spaces where individual stories can thrive.</p>
     </div>
 
     <div class="block">
@@ -1444,9 +1231,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <!-- ============================================================
-     GATE — copy left, form right.
+     DOWNLOAD — the only route to the playbook. The qualifying
+     questions are part of the form: three required dropdowns
+     (systems, numbers, timing) under the contact details. Segment,
+     score, weakest area and the answers themselves travel with the
+     lead, and the visitor sees their readiness read once it's sent.
+     Brand was the fourth question; dropped to keep the form short.
      ============================================================ -->
-<section class="gate" id="s-gate" data-fade data-bg="slate" data-snap data-sheet="08" data-name="Download" data-dark>
+<section class="gate" id="s-gate" data-fade data-bg="slate" data-sheet="07" data-name="Download" data-dark>
   <div class="grid">
     <div class="pitch">
       <h2>Where should we send it?</h2>
@@ -1482,6 +1274,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <input id="iCo" type="text" name="company" autocomplete="organization" placeholder="Where you operate" required>
             <div class="err">Enter your venue or company.</div>
           </div>
+          <div class="field fsel" id="fQ1">
+            <label for="iQ1" id="lQ1">Running without you</label>
+            <select id="iQ1" name="q1" required>
+              <option value="" selected disabled>Does your first venue run profitably when you're not physically there?</option>
+              <option value="2">Yes, it holds up without me</option>
+              <option value="1">Mostly, with some hands-on days</option>
+              <option value="0">No, I'm still the glue</option>
+            </select>
+            <div class="err">Choose an answer.</div>
+          </div>
+          <div class="field fsel" id="fQ2">
+            <label for="iQ2" id="lQ2">Budget for site two</label>
+            <select id="iQ2" name="q2" required>
+              <option value="" selected disabled>Have you scoped a real budget for site two, or is it still a guess?</option>
+              <option value="2">Quoted and scoped</option>
+              <option value="1">A rough range</option>
+              <option value="0">Not yet</option>
+            </select>
+            <div class="err">Choose an answer.</div>
+          </div>
+          <div class="field fsel" id="fQ3">
+            <label for="iQ3" id="lQ3">Opening timeline</label>
+            <select id="iQ3" name="q3" required>
+              <option value="" selected disabled>When would you want the next site open?</option>
+              <option value="2">Within six months</option>
+              <option value="1">Six to eighteen months</option>
+              <option value="0">No fixed timeline</option>
+            </select>
+            <div class="err">Choose an answer.</div>
+          </div>
           <!-- ADDED: honeypot field, hidden from people. If it comes back filled in, it's a bot. -->
           <div class="hp" aria-hidden="true">
             <label for="iWebsite">Website</label>
@@ -1492,26 +1314,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <p class="form-err" id="formErr" role="alert"></p>
           <p class="fineprint">We'll email you the playbook and may follow up about it. Unsubscribe any time. Read our <a href="#" id="privacyLink" target="_blank" rel="noopener">privacy policy</a>.</p>
         </form>
-        <!-- Hidden: the quiz result travels with the lead to the CRM.
-             A visitor doesn't need to read their own scoring tag. -->
-        <p style="display:none;">Segment: <strong id="segTag">not-taken</strong></p>
       </div>
 
       <div class="sent" id="sent">
-        <h3>Sent.</h3>
+        <h3 id="sentTitle" tabindex="-1">Sent.</h3>
         <p>Check your inbox. The playbook is on its way.</p>
-        <!-- CHANGED: playbook is delivered by email only, so the download button is switched off.
-        <a class="btn btn-pale" id="pdfLink" href="#" target="_blank" rel="noopener">Download now</a>
-        -->
+        <!-- Their readiness read, built from the three answers. -->
+        <div class="result" id="result">
+          <p class="verdict" id="verdict"></p>
+          <h3 id="rTitle"></h3>
+          <div class="diag" id="rDiag"></div>
+          <!-- Cohort benchmark. Stays hidden until COHORT_AVG is set to a
+               real number in the script below; nothing invented ships. -->
+          <p class="bench" id="rBench"></p>
+          <p id="rDesc"></p>
+          <a href="#" class="btn" id="callCta" target="_blank" rel="noopener">Book a call</a>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+
 <!-- ============================================================
      TAILPIECE — the other readiness path.
      ============================================================ -->
-<section class="tail" id="s-tail" data-fade="in" data-bg="stone" data-snap data-sheet="09" data-name="Contact">
+<section class="tail" id="s-tail" data-fade="in" data-bg="stone" data-sheet="08" data-name="Contact">
   <div class="grid">
     <div class="msg">
       <h2>Already deep in a lease negotiation?</h2>
@@ -1540,7 +1368,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 </main>
 
-<footer data-sheet="09" data-name="Contact">
+<footer data-sheet="08" data-name="Contact">
   <!-- Edge to edge: outside the grid on purpose, so the wordmark spans the
        whole browser width at any size. The asset is trimmed to its ink, so
        the letters themselves meet both edges. -->
@@ -1554,8 +1382,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- ============================================================
      ADDED: LINKS. Fills in the booking, PDF and privacy links from the
-     settings block. Runs before the snap script on purpose, so real
-     links aren't picked up as on-page jumps.
+     settings block.
      ============================================================ -->
 <script>
 (function () {
@@ -1627,7 +1454,7 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       if (current === e.target) return;
       current = e.target;
       rdNum.textContent = e.target.dataset.sheet;
-      plumb.classList.toggle("done", e.target.dataset.sheet === "09");
+      plumb.classList.toggle("done", e.target.dataset.sheet === "08");
       rdName.textContent = e.target.dataset.name;
       var dark = e.target.hasAttribute("data-dark");
       sheet.classList.toggle("sheet-dark", dark);
@@ -1679,9 +1506,9 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 })();
 
 /* ============================================================
-   BACKGROUND CROSSFADE + CONTENT FADE + MASTHEAD SWAP
+   BACKGROUND CROSSFADE + CONTENT FADE
 
-   Three effects that only work because they run together. The
+   Effects that only work because they run together. The
    background bleeds from one section's colour to the next over a
    band of scroll; the content of each section fades up as it arrives
    and back down as it leaves; and because the copy is at zero in the
@@ -1700,7 +1527,7 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
   }
   var COLORS = {
     "stone": hex("--stone"), "stone-dim": hex("--stone-dim"),
-    "slate": hex("--slate"), "olive": hex("--olive")
+    "slate": hex("--slate")
   };
 
   var bgLayer = document.getElementById("bgLayer");
@@ -1709,17 +1536,10 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
      CONTENT FADE
 
      One trigger per section spanning its whole passage through the
-     viewport, with opacity COMPUTED from progress rather than
-     animated toward a target.
-
-     The earlier version used two tweens per section, a fade-in and a
-     fade-out, both writing opacity on the same element. GSAP records
-     a tween's start value on first render and holds its end value
-     outside its own range, so going down worked and coming back up
-     the fade-out pinned the section at zero and the text vanished.
-     Two animations owning one property is the bug; a single pure
-     function of scroll position cannot have it, because up and down
-     are the same code path.
+     viewport, with opacity computed from progress rather than tweened:
+     a pure function of scroll position behaves the same going up and
+     down. (Separate fade-in and fade-out tweens on one element left
+     text stuck at zero on the way back up.)
      ------------------------------------------------------------ */
   if (!reduce) {
     document.querySelectorAll("[data-fade]").forEach(function (sec) {
@@ -1727,7 +1547,9 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 
       function measure() {
         total = window.innerHeight + sec.offsetHeight;
-        band = (window.innerHeight * 0.34) / total;   // fade distance as a fraction
+        // fade distance as a fraction. 22% of a screen: with no snap the page
+        // can rest anywhere, so a long fade would leave text half-faded at rest.
+        band = (window.innerHeight * 0.22) / total;
       }
 
       function apply(p) {
@@ -1792,25 +1614,11 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       sizeBand();
     }
 
-    /* Fixed-length, eased crossfade STRADDLING each boundary.
-
-       Two earlier attempts at this were wrong in instructive ways.
-       First: blending over "the last 45% of the gap between sections"
-       — but the roadmap runs 160vh and the tail 70vh, so the same 45%
-       meant 72vh of blend in one place and 31vh in another, and the
-       short ones read as a snap. Second: a fixed band, but measured
-       only on the approach to the boundary, so the colour reached
-       halfway and then jumped the rest the instant the segment
-       lookup advanced.
-
-       This version centres the band on the boundary: the blend starts
-       half a band before it and finishes half a band after, so the
-       same curve covers both sides and there is no seam at the
-       crossing. Smoothstepped rather than linear, because a linear
-       ramp has hard corners at both ends and the eye catches them.
-
-       The band is also clamped below the shortest gap on the page, so
-       two transitions can never overlap and fight. */
+    /* Fixed-length, eased crossfade centred on each boundary: the blend
+       starts half a band before it and finishes half a band after, so
+       there is no seam at the crossing. Smoothstepped, since a linear
+       ramp has hard corners the eye catches. The band is clamped below
+       the shortest gap on the page so two blends never overlap. */
     var band = 0;
     function sizeBand() {
       var vh = window.innerHeight;
@@ -1818,7 +1626,9 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       for (var i = 0; i < stops.length - 1; i++) {
         smallest = Math.min(smallest, stops[i + 1].y - stops[i].y);
       }
-      band = Math.min(vh * 0.9, smallest * 0.9);
+      // Half a screen of scroll per blend. It was 90% when the snap carried
+      // you past the blends; scrolling freely, a long one rests mid-grey.
+      band = Math.min(vh * 0.45, smallest * 0.9);
     }
 
     function smooth(k) { return k * k * (3 - 2 * k); }
@@ -1905,17 +1715,30 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     });
   }
 
-  /* --- masthead: label becomes a CTA once the cover is behind you --- */
+})();
+
+/* ============================================================
+   MASTHEAD CTA — the label becomes "Get the playbook" once the two
+   photo pages (cover and conditions) are behind you. Read from the
+   live position on every scroll: an earlier version used a
+   ScrollTrigger measured in advance, and in some browsers that
+   measurement came out wrong and the button never appeared. Works
+   without GSAP too.
+   ============================================================ */
+(function () {
   var masthead = document.getElementById("masthead");
   var heroScroll = document.getElementById("heroScroll");
-  if (masthead && heroScroll) {
-    ScrollTrigger.create({
-      trigger: heroScroll,
-      start: "bottom 85%",
-      onEnter: function () { masthead.classList.add("past-cover"); },
-      onLeaveBack: function () { masthead.classList.remove("past-cover"); }
-    });
+  if (!masthead || !heroScroll) return;
+  var queued = false, last = null;
+  function update() {
+    queued = false;
+    var past = heroScroll.getBoundingClientRect().bottom < window.innerHeight * 0.85;
+    if (past !== last) { last = past; masthead.classList.toggle("past-cover", past); }
   }
+  function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+  window.addEventListener("scroll", queue, { passive: true });
+  window.addEventListener("resize", queue);
+  update();
 })();
 
 /* ============================================================
@@ -1952,242 +1775,32 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 })();
 
 /* ============================================================
-   SNAP STOPS — nine defined scroll positions, driven here rather
-   than by CSS.
-
-   CSS scroll-snap was the wrong tool and was replaced. It aligns a
-   snap element's start, centre or end to the container, and with
-   `proximity` the browser decides whether to act at all. The stops
-   below are specific and mixed: most headings sit at the top of the
-   screen, the plate caption sits at the bottom, and the readiness
-   heading sits a third of the way down. None of that is expressible
-   in scroll-snap-align.
-
-   Behaviour: after scrolling stops for 140ms, glide to the nearest
-   stop — but only if it's within 45% of a viewport. Past that you're
-   deliberately reading something (the roadmap runs taller than a
-   screen), so it leaves you alone. Any wheel, touch or key input
-   during a glide cancels it immediately; the page never fights you.
-   ============================================================ */
-(function () {
-  if (reduce) return;
-  if (window.matchMedia("(max-width:900px)").matches) return;
-
-  var TOP_PAD = 96;     // clears the fixed masthead
-  var BOT_PAD = 56;     // keeps the last control clear of the frame and readout
-  var SLACK = 140;      // extra rest room past a range's end: one wheel notch overshoots by up to ~100px,
-                        // and without this it jumps on to the next page instead of resting at the last control
-
-  // align: 'top'    element top sits just below the masthead
-  //        'bottom' element bottom sits just above the viewport floor
-  //        'third'  element top sits a third of the way down
-  // end:   the last thing on the sheet that has to be reachable. A stop
-  //        is a RANGE, not a point: it runs from the aligned position down
-  //        to the scroll where `end` clears the bottom of the screen.
-  //        Inside that range the page never pulls you back, so a sheet
-  //        taller than the viewport (roadmap rows, the quiz result, the
-  //        logos) can be read and clicked to the bottom.
-  var SPEC = [
-    { sel: null,                     align: "page",  end: null },                  //  1 cover
-    { sel: ".conditions .lede-line", align: "top",   end: ".conditions .turn" },   //  2 belief / proof
-    { sel: ".plate",                 align: "flush", end: null },                  //  3 it rarely fails loudly (caption sits at its base)
-    { sel: "#s-case",                align: "flush", end: ".casenote .sign" },     //  4 case note
-    { sel: ".roadmap .head h2",      align: "top",   end: ".roadmap .rows" },      //  5 five questions
-    { sel: "#s-assess",              align: "flush", end: ".assess .panelwrap" },  //  6 are you actually ready
-    { sel: ".practice .lead h2",     align: "top",   end: ".practice .clients" },  //  7 who's behind this
-    { sel: "#s-gate",                align: "flush", end: ".gate .form" },         //  8 unlock your copy
-    { sel: "#s-tail",                align: "flush", end: "footer .foot-logo" }    //  9 lease negotiation + footer
-  ];
-
-  var stops = [];   // [{ a: first scroll position, b: last }]
-  function build() {
-    var vh = window.innerHeight;
-    var max = document.documentElement.scrollHeight - vh;
-    stops = [];
-    SPEC.forEach(function (s) {
-      var y;
-      if (s.align === "page") { y = 0; }
-      else {
-        var el = document.querySelector(s.sel);
-        if (!el) return;
-        var r = el.getBoundingClientRect();
-        var top = r.top + window.scrollY;
-        if (s.align === "top")         y = top - TOP_PAD;
-        else if (s.align === "flush")  y = top;
-        else if (s.align === "bottom") y = top + r.height - vh + BOT_PAD;
-        else                           y = top - vh / 3;
-      }
-      y = Math.max(0, Math.min(Math.round(y), max));
-      var hold = 0, endEl = s.end && document.querySelector(s.end);
-      if (endEl) {
-        var bottom = endEl.getBoundingClientRect().bottom + window.scrollY;
-        hold = Math.max(0, Math.round(bottom - y - (vh - BOT_PAD)));
-      }
-      stops.push({ a: y, b: Math.min(y + hold + (hold ? SLACK : 0), max) });
-    });
-    stops.sort(function (m, n) { return m.a - n.a; });
-  }
-
-  var gliding = false, raf = null, idle = null;
-
-  function stop() {
-    if (raf) cancelAnimationFrame(raf);
-    raf = null; gliding = false;
-  }
-
-  function glide(to) {
-    var from = window.scrollY, delta = to - from;
-    if (Math.abs(delta) < 2) return;
-    var t0 = performance.now(), dur = Math.min(220 + Math.abs(delta) * 0.35, 720);
-    gliding = true;
-    (function step(now) {
-      if (!gliding) return;
-      var p = Math.min((now - t0) / dur, 1);
-      var e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
-      window.scrollTo(0, from + delta * e);
-      if (p < 1) raf = requestAnimationFrame(step);
-      else { raf = null; setTimeout(function () { gliding = false; }, 40); }
-    })(t0);
-  }
-
-  /* Direction-aware. Snapping to whichever stop is nearest means one
-     wheel notch (about 100px) from a stop is always nearer the stop it
-     left than the next one, so the page pulls you straight back and a
-     one-notch-at-a-time scroller can never leave a page. Instead:
-       - resting inside a sheet's own range: stay put
-       - between sheets: continue in the direction you were travelling,
-         to the next range start going down, or the previous range end
-         going up
-     lastRest is where the page last settled, which is what "direction"
-     is measured from. */
-  var lastRest = window.scrollY;
-
-  function settle() {
-    if (gliding || !stops.length) return;
-    var y = window.scrollY;
-    // already at the very bottom: leave the footer reachable
-    if (y >= document.documentElement.scrollHeight - window.innerHeight - 2) { lastRest = y; return; }
-
-    var i;
-    for (i = 0; i < stops.length; i++) {
-      if (y >= stops[i].a - 2 && y <= stops[i].b + 2) { lastRest = y; return; }   // inside a sheet's range
-    }
-
-    var dir = y > lastRest + 6 ? 1 : (y < lastRest - 6 ? -1 : 0);
-    var to = null, vh = window.innerHeight;
-    /* Next sheet in the direction of travel, counted from where the
-       visitor LEFT, not from where momentum dropped them. A trackpad
-       swipe off the cover can coast past the whole of sheet 02 before
-       scrolling stops; measured from the current position, the next
-       stop down is sheet 03 and 02 is skipped. Only when the scroll has
-       carried a full screen beyond that sheet is it a deliberate jump,
-       and then the nearest sheet ahead wins. */
-    if (dir === 1) {
-      for (i = 0; i < stops.length; i++) if (stops[i].a > lastRest + 2) { to = stops[i]; break; }
-      if (to && y - to.b > vh) { to = null; for (i = 0; i < stops.length; i++) if (stops[i].a > y) { to = stops[i]; break; } }
-      to = to ? to.a : null;
-    } else if (dir === -1) {
-      for (i = stops.length - 1; i >= 0; i--) if (stops[i].b < lastRest - 2) { to = stops[i]; break; }
-      if (to && to.a - y > vh) { to = null; for (i = stops.length - 1; i >= 0; i--) if (stops[i].b < y) { to = stops[i]; break; } }
-      to = to ? to.b : null;
-    } else {
-      var bestD = Infinity;
-      stops.forEach(function (st) {
-        var t = y < st.a ? st.a : st.b, d = Math.abs(t - y);
-        if (d < bestD) { bestD = d; to = t; }
-      });
-    }
-    if (to === null) { lastRest = y; return; }   // past the last sheet: leave it
-    lastRest = to;
-    glide(to);
-  }
-
-  /* Only scrolling the visitor caused may snap. The page also scrolls on
-     its own: scroll anchoring when form errors make a sheet taller, focus
-     bringing a field into view, a resize. Read as travel, those would
-     glide the visitor off the form they were fixing. Wheel, touch, keys
-     outside form fields and a scrollbar drag count as input; trackpad
-     momentum keeps firing wheel events, so it counts too. */
-  var lastInput = -Infinity;
-
-  window.addEventListener("scroll", function () {
-    if (gliding) return;
-    clearTimeout(idle);
-    if (performance.now() - lastInput > 900) { lastRest = window.scrollY; return; }
-    idle = setTimeout(settle, 140);
-  }, { passive: true });
-
-  function isScrollInput(e) {
-    // A press on a button or link isn't scrolling, but a press on the
-    // scrollbar lands on <html>. Keys typed into a field aren't scrolling
-    // either, and as errors clear the sheet changes height under them.
-    if (e.type === "mousedown") return e.target === document.documentElement;
-    if (e.type === "keydown") return !(e.target.closest && e.target.closest("input, textarea, select, [contenteditable]"));
-    return true;
-  }
-  ["wheel", "touchstart", "touchmove", "keydown", "mousedown"].forEach(function (ev) {
-    window.addEventListener(ev, function (e) {
-      if (isScrollInput(e)) lastInput = performance.now();
-      stop();
-    }, { passive: true });
-  });
-
-  // Anchor links glide too, since native smooth scrolling is off.
-  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-    a.addEventListener("click", function (e) {
-      var id = a.getAttribute("href");
-      if (id === "#" || id.length < 2) return;
-      var el = document.querySelector(id);
-      if (!el) return;
-      e.preventDefault();
-      clearTimeout(idle);
-      // Full-screen sheets land flush; anything else clears the masthead.
-      var top = el.getBoundingClientRect().top + window.scrollY;
-      var full = el.offsetHeight >= window.innerHeight - 2 && el.matches("section");
-      glide(Math.max(0, full ? top : top - TOP_PAD));
-    });
-  });
-
-  build();
-  window.addEventListener("resize", function () { clearTimeout(idle); build(); });
-  if ("ResizeObserver" in window) {
-    var rebuildT = null;
-    new ResizeObserver(function () { clearTimeout(rebuildT); rebuildT = setTimeout(build, 60); }).observe(document.body);
-  }
-  window.addEventListener("load", build);
-  if (window.ScrollTrigger) ScrollTrigger.addEventListener("refresh", build);
-})();
-
-/* ============================================================
    PLUMB LINE — scroll position as a dimension string down the right
    edge, with a bead that travels it. Reports position; it isn't a
    decorative progress bar at the top of the page.
    ============================================================ */
 (function () {
-  if (reduce || !window.gsap || !window.ScrollTrigger) return;
-  var fill = document.getElementById("plumbFill");
-  var bead = document.getElementById("plumbBead");
-  if (!fill || !bead) return;
-  gsap.to(fill, {
-    scaleY: 1, ease: "none",
-    scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: true }
-  });
-  var plumb = bead.parentNode;
-  gsap.to(bead, {
-    y: function () { return plumb.offsetHeight; }, ease: "none",
-    scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: true, invalidateOnRefresh: true }
-  });
+  /* Read straight from the scroll position on every scroll, with the
+     page length taken fresh each time. An earlier version used a
+     ScrollTrigger measured in advance; in some browsers that
+     measurement came out far too long and the bead sat near the top
+     however far you scrolled. Nothing here can go stale. */
+  var plumb = document.querySelector(".plumb");
+  if (!plumb) return;
+  var queued = false, last = -1;
+  function paint() {
+    queued = false;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    p = Math.round(p * 1000) / 1000;
+    if (p !== last) { last = p; plumb.style.setProperty("--p", p); }
+  }
+  function queue() { if (!queued) { queued = true; requestAnimationFrame(paint); } }
+  window.addEventListener("scroll", queue, { passive: true });
+  window.addEventListener("resize", queue);
+  if ("ResizeObserver" in window) new ResizeObserver(queue).observe(document.body);
+  paint();
 })();
-
-/* ============================================================
-   HERO EXIT — removed.
-
-   The title used to disperse sideways on scroll. It now simply
-   travels up and out with its panel, because the panels scroll
-   normally over a held background. Two pieces of choreography on the
-   same words, one of them fighting footage that is already animating,
-   was one too many.
-   ============================================================ */
 
 /* ============================================================
    DEPTH — one quiet move, off when motion is reduced. The portrait
@@ -2238,169 +1851,196 @@ if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
    and the benchmark line turns itself on. */
 var COHORT_AVG = null;
 
-/* Each question maps to one of the roadmap dimensions, so the result
-   can name the weak spot instead of only returning a number. */
-var DIMENSIONS = {
-  1: { name: "Systems",  hint: "the business still leans on you being there" },
-  2: { name: "Brand",    hint: "what you stand for lives in your head, not on paper" },
-  3: { name: "Numbers",  hint: "the second site isn't costed yet" },
-  4: { name: "Timing",   hint: "the timeline is still open-ended" }
-};
+/* The three questions, in form order. Each maps to one roadmap
+   dimension, so the result can name the weak spot instead of only
+   returning a number. Brand was dropped to keep the form short. */
+var QUIZ = [
+  { id: "iQ1", name: "Systems", key: "answerSystems", hint: "the business still leans on you being there" },
+  { id: "iQ2", name: "Numbers", key: "answerNumbers", hint: "the second site isn't costed yet" },
+  { id: "iQ3", name: "Timing",  key: "answerTiming",  hint: "the timeline is still open-ended" }
+];
+var QUIZ_MAX = 6;
 
-var score = 0;
-var answers = {};
-var panels = document.querySelectorAll(".qp");
-var totalQ = panels.length;
-var qBar = document.getElementById("qBar");
-var qCount = document.getElementById("qCount");
+/* ------------------------------------------------------------
+   DROPDOWN — a select-only combobox (WAI-ARIA pattern) built over
+   each native <select>. The select keeps the value; this only draws
+   it and the menu in the form's own style, since a native menu can't
+   be styled. Mouse, touch and keyboard: Enter, Space or the arrows
+   open; arrows, Home and End move; Enter or Space picks; Escape or
+   Tab closes. Picking fires "change" on the select, so validation
+   and tracking listen to the select as before.
+   ------------------------------------------------------------ */
+(function () {
+  var open = null;   // the one dropdown that is open, if any
 
-var qBack = document.getElementById("qBack");
-var qRetake = document.getElementById("qRetake");
+  QUIZ.forEach(function (q) {
+    var sel = document.getElementById(q.id);
+    if (!sel) return;
+    var field = sel.closest(".field"), label = field.querySelector("label");
+    var opts = Array.prototype.slice.call(sel.options, 1);   // [0] is the question
+    var base = q.id.replace(/^i/, "");
 
-function sumScore() {
-  var t = 0;
-  for (var k in answers) t += answers[k];
-  return t;
-}
-// Show question n (1-based). Answers already given for later questions
-// are dropped, so going back and answering again can't double-count.
-function goTo(n, focus) {
-  Object.keys(answers).forEach(function (k) { if (+k >= n) delete answers[k]; });
-  score = sumScore();
-  panels.forEach(function (p) { p.classList.remove("on"); });
-  document.getElementById("result").classList.remove("on");
-  var panel = document.querySelector('.qp[data-q="' + n + '"]');
-  panel.classList.add("on");
-  qCount.textContent = "Question " + n + " of " + totalQ;
-  qBar.style.transform = "scaleX(" + ((n - 1) / totalQ) + ")";
-  qBack.hidden = n === 1;
-  if (focus) panel.querySelector(".opt").focus({ preventScroll: true });
-}
+    var wrap = document.createElement("div"); wrap.className = "dd";
+    var btn = document.createElement("div");
+    btn.className = "dd-btn ph"; btn.id = "dd" + base; btn.tabIndex = 0;
+    btn.setAttribute("role", "combobox");
+    btn.setAttribute("aria-haspopup", "listbox");
+    btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-controls", "lb" + base);
+    btn.setAttribute("aria-labelledby", label.id + " dv" + base);
+    var val = document.createElement("span"); val.className = "dd-val"; val.id = "dv" + base;
+    val.textContent = sel.options[0].text;
+    btn.appendChild(val);
 
-document.querySelectorAll(".opt").forEach(function (btn) {
-  btn.addEventListener("click", function () {
-    var panel = btn.closest(".qp");
-    var idx = parseInt(panel.dataset.q, 10);
-    answers[idx] = parseInt(btn.dataset.score, 10);
-    score = sumScore();
+    var list = document.createElement("ul");
+    list.className = "dd-list"; list.id = "lb" + base; list.hidden = true;
+    list.setAttribute("role", "listbox"); list.setAttribute("aria-labelledby", label.id);
+    var items = opts.map(function (o, i) {
+      var li = document.createElement("li");
+      li.id = "op" + base + "-" + i; li.setAttribute("role", "option");
+      li.setAttribute("aria-selected", "false"); li.textContent = o.text;
+      li.addEventListener("mousedown", function (e) { e.preventDefault(); });   // keep focus on the button
+      li.addEventListener("click", function () { choose(i); close(); });
+      li.addEventListener("mousemove", function () { activate(i); });
+      list.appendChild(li);
+      return li;
+    });
 
-    qBar.style.transform = "scaleX(" + (idx / totalQ) + ")";
-    panel.classList.remove("on");
+    wrap.appendChild(btn); wrap.appendChild(list);
+    sel.insertAdjacentElement("afterend", wrap);
+    field.classList.add("dd-on");
+    label.removeAttribute("for");
+    label.addEventListener("click", function () { btn.focus(); });
 
-    var next = document.querySelector('.qp[data-q="' + (idx + 1) + '"]');
-    if (next) {
-      qCount.textContent = "Question " + (idx + 1) + " of " + totalQ;
-      next.classList.add("on");
-      qBack.hidden = false;
-      // The answered button is now hidden; without this, keyboard focus
-      // falls back to the top of the document.
-      if (btn.matches(":focus-visible")) next.querySelector(".opt").focus({ preventScroll: true });
-    } else {
-      qCount.textContent = "Complete";
-      qBack.hidden = true;
-      showResult();
-      if (btn.matches(":focus-visible")) document.getElementById("rTitle").focus({ preventScroll: true });
+    var active = -1;
+    function activate(i) {
+      active = Math.max(0, Math.min(items.length - 1, i));
+      items.forEach(function (li, k) { li.classList.toggle("is-active", k === active); });
+      btn.setAttribute("aria-activedescendant", items[active].id);
     }
+    function choose(i) {
+      var o = opts[i];
+      if (sel.value !== o.value) {
+        sel.value = o.value;
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+      val.textContent = o.text;
+      btn.classList.remove("ph");
+      items.forEach(function (li, k) { li.setAttribute("aria-selected", k === i ? "true" : "false"); });
+    }
+    function show() {
+      if (open && open !== api) open.close();
+      list.hidden = false; btn.setAttribute("aria-expanded", "true"); open = api;
+      activate(sel.selectedIndex > 0 ? sel.selectedIndex - 1 : 0);
+      var r = list.getBoundingClientRect();   // a menu opened near the fold comes into view
+      if (r.bottom > window.innerHeight) list.scrollIntoView({ block: "nearest" });
+    }
+    function close() {
+      list.hidden = true; btn.setAttribute("aria-expanded", "false");
+      btn.removeAttribute("aria-activedescendant");
+      if (open === api) open = null;
+    }
+    var api = { close: close, wrap: wrap };
+
+    btn.addEventListener("click", function () { list.hidden ? show() : close(); });
+    btn.addEventListener("keydown", function (e) {
+      var k = e.key, isOpen = !list.hidden;
+      if (!isOpen) {
+        if (k === "Enter" || k === " " || k === "ArrowDown" || k === "ArrowUp") { e.preventDefault(); show(); }
+        else if (k === "Home") { e.preventDefault(); show(); activate(0); }
+        else if (k === "End") { e.preventDefault(); show(); activate(items.length - 1); }
+        return;
+      }
+      if (k === "ArrowDown") { e.preventDefault(); activate(active + 1); }
+      else if (k === "ArrowUp") { e.preventDefault(); activate(active - 1); }
+      else if (k === "Home") { e.preventDefault(); activate(0); }
+      else if (k === "End") { e.preventDefault(); activate(items.length - 1); }
+      else if (k === "Enter" || k === " ") { e.preventDefault(); choose(active); close(); }
+      else if (k === "Escape") { e.preventDefault(); close(); }
+      else if (k === "Tab") { close(); }
+    });
+    btn.addEventListener("blur", function () { close(); });
+  });
+
+  // a press anywhere else closes the open menu
+  document.addEventListener("pointerdown", function (e) {
+    if (open && !open.wrap.contains(e.target)) open.close();
+  });
+})();
+
+/* First answer of the visit, so GTM can compare starts with leads */
+QUIZ.forEach(function (q) {
+  var el = document.getElementById(q.id);
+  if (el) el.addEventListener("change", function () {
+    if (!window.__quizStarted) { window.__quizStarted = true; window.trackEvent("quiz_start"); }
   });
 });
 
-qBack.addEventListener("click", function () {
-  var on = document.querySelector(".qp.on");
-  if (on) goTo(parseInt(on.dataset.q, 10) - 1, qBack.matches(":focus-visible"));
-});
-qRetake.addEventListener("click", function () {
-  document.getElementById("rFill").style.transform = "scaleX(0)";
-  goTo(1, qRetake.matches(":focus-visible"));
-});
-
-function showResult() {
-  var max = 8;
-  var seg, verdict, title, desc;
-
-  if (score >= 6) {
-    seg = "ready-now"; verdict = "Ready now";
-    title = "You're further along than most operators who ask.";
-    desc = "The playbook goes further from here: the site-fit checklist, the numbers to run before committing, and who to call first. If you're weighing an actual site, a conversation will get you further than a PDF.";
-  } else if (score >= 3) {
-    seg = "getting-there"; verdict = "Getting there";
-    title = "The gaps are fixable, not fatal.";
-    desc = "The playbook has the pressure-test questions and the checklist to close those gaps before they turn into expensive problems on a site you've already signed for.";
+/* Score the three dropdowns. Segments, out of 6:
+     5-6 ready-now      at most one answer short of the top
+     2-4 getting-there
+     0-1 not-yet
+   Ties for the weak spot go to the earlier question (systems before
+   numbers before timing), which is deliberate ordering. */
+function readQuiz() {
+  var score = 0, answers = [], weakest = null;
+  QUIZ.forEach(function (q) {
+    var el = document.getElementById(q.id);
+    var v = parseInt(el.value, 10);
+    var text = el.selectedIndex > 0 ? el.options[el.selectedIndex].text : "";
+    answers.push({ q: q, v: v, text: text });
+    score += v;
+    if (v < 2 && (!weakest || v < weakest.v)) weakest = { q: q, v: v };
+  });
+  var r = { score: score, answers: answers, weakest: weakest ? weakest.q : null };
+  if (score >= 5) {
+    r.seg = "ready-now"; r.verdict = "Ready now";
+    r.title = "You're further along than most operators who ask.";
+    r.desc = "The playbook goes further from here: the site-fit checklist, the numbers to run before committing, and who to call first. If you're weighing an actual site, a conversation will get you further than a PDF.";
+  } else if (score >= 2) {
+    r.seg = "getting-there"; r.verdict = "Getting there";
+    r.title = "The gaps are fixable, not fatal.";
+    r.desc = "The playbook has the pressure-test questions and the checklist to close those gaps before they turn into expensive problems on a site you've already signed for.";
   } else {
-    seg = "not-yet"; verdict = "Not yet";
-    title = "Site one needs to stand on its own first.";
-    desc = "That's the common answer, not the embarrassing one. The playbook covers what to fix first, starting with the systems rather than the site search.";
+    r.seg = "not-yet"; r.verdict = "Not yet";
+    r.title = "Site one needs to stand on its own first.";
+    r.desc = "That's the common answer, not the embarrassing one. The playbook covers what to fix first, starting with the systems rather than the site search.";
   }
+  return r;
+}
 
-  document.getElementById("verdict").textContent = verdict;
-  document.getElementById("rTitle").textContent = title;
-  document.getElementById("rDesc").textContent = desc;
-  document.getElementById("rScore").textContent = score + "/" + max;
-  document.getElementById("segTag").textContent = seg;
-  document.getElementById("result").classList.add("on");
-
-  requestAnimationFrame(function () {
-    document.getElementById("rFill").style.transform = "scaleX(" + (score / max) + ")";
-  });
-
-  /* Per-dimension read. Lowest-scoring answer is the weak spot; ties
-     resolve to the earliest question, which is deliberate ordering
-     rather than an accident (systems before brand before numbers). */
-  var weakest = null, weakestVal = 99;
-  Object.keys(DIMENSIONS).forEach(function (k) {
-    var v = answers[k];
-    if (v === undefined) return;
-    if (v < weakestVal) { weakestVal = v; weakest = k; }
-  });
+/* Their readiness read, shown once the form has gone through */
+function showResult(r) {
+  document.getElementById("verdict").textContent = r.verdict;
+  document.getElementById("rTitle").textContent = r.title;
+  document.getElementById("rDesc").textContent = r.desc;
 
   var diag = document.getElementById("rDiag");
   diag.innerHTML = "";
-  Object.keys(DIMENSIONS).forEach(function (k) {
-    var v = answers[k];
-    if (v === undefined) return;
-    var label = v === 2 ? "Solid" : (v === 1 ? "Partly there" : "Needs work");
-    var isWeak = (k === weakest && weakestVal < 2);
-    var row = document.createElement("div");
-    var lbl = document.createElement("span");
-    lbl.className = "lbl";
-    lbl.textContent = DIMENSIONS[k].name;
-    var val = document.createElement("span");
-    val.className = "val" + (isWeak ? " weak" : "");
-    val.textContent = label;
-    row.appendChild(lbl); row.appendChild(val);
-    diag.appendChild(row);
-  });
-
-  if (weakest && weakestVal < 2) {
-    var line = document.createElement("div");
-    var l = document.createElement("span");
-    l.className = "lbl";
-    l.textContent = "Start with";
-    var r = document.createElement("span");
-    r.className = "val weak";
-    r.textContent = DIMENSIONS[weakest].name + ", " + DIMENSIONS[weakest].hint;
-    line.appendChild(l); line.appendChild(r);
-    diag.appendChild(line);
+  function row(label, value, weak) {
+    var d = document.createElement("div");
+    var l = document.createElement("span"); l.className = "lbl"; l.textContent = label;
+    var v = document.createElement("span"); v.className = "val" + (weak ? " weak" : ""); v.textContent = value;
+    d.appendChild(l); d.appendChild(v); diag.appendChild(d);
   }
+  r.answers.forEach(function (a) {
+    row(a.q.name, a.v === 2 ? "Solid" : (a.v === 1 ? "Partly there" : "Needs work"), r.weakest === a.q);
+  });
+  if (r.weakest) row("Start with", r.weakest.name + ", " + r.weakest.hint, true);
 
   // Benchmark only renders if a real cohort average has been set.
   var bench = document.getElementById("rBench");
   if (typeof COHORT_AVG === "number" && bench) {
-    var rel = score > COHORT_AVG ? "above" : (score < COHORT_AVG ? "below" : "level with");
+    var rel = r.score > COHORT_AVG ? "above" : (r.score < COHORT_AVG ? "below" : "level with");
     bench.textContent = "Operators who take this before signing average " +
-      COHORT_AVG + " out of " + max + ". You're " + rel + " that.";
+      COHORT_AVG + " out of " + QUIZ_MAX + ". You're " + rel + " that.";
     bench.classList.add("on");
   }
 
   // Hot leads get a route to a conversation as well as the download.
   var call = document.getElementById("callCta");
-  if (call) call.classList.toggle("on", seg === "ready-now");
-
-  window.__seg = seg;
-  window.__score = score;
-  window.__weak = weakest ? DIMENSIONS[weakest].name : null;
-
-  // ADDED: send quiz completions to GTM, with the result attached
-  window.trackEvent("quiz_complete", { quiz_segment: seg, quiz_score: score });
+  if (call) call.classList.toggle("on", r.seg === "ready-now");
+  document.getElementById("result").classList.add("on");
 }
 
 /* ============================================================
@@ -2414,7 +2054,7 @@ function showResult() {
   function mark(id, ok) {
     var f = document.getElementById(id);
     f.classList.toggle("bad", !ok);
-    var input = f.querySelector("input");
+    var input = f.querySelector(".dd-btn") || f.querySelector("input, select");   // the visible control
     if (input) input.setAttribute("aria-invalid", ok ? "false" : "true");
     return ok;
   }
@@ -2433,13 +2073,14 @@ function showResult() {
 
   /* Clear a field's error the moment they start fixing it, rather than
      leaving it red until the next submit. */
-  ["fName", "fEmail", "fPhone", "fCo"].forEach(function (id) {
+  ["fName", "fEmail", "fPhone", "fCo", "fQ1", "fQ2", "fQ3"].forEach(function (id) {
     var f = document.getElementById(id); if (!f) return;
-    var input = f.querySelector("input"); if (!input) return;
-    input.addEventListener("input", function () {
+    var input = f.querySelector("input, select"); if (!input) return;   // the select hears the dropdown's change too
+    input.addEventListener(input.tagName === "SELECT" ? "change" : "input", function () {
       if (f.classList.contains("bad")) {
         f.classList.remove("bad");
-        input.setAttribute("aria-invalid", "false");
+        var shown = f.querySelector(".dd-btn") || f.querySelector("input, select");
+        if (shown) shown.setAttribute("aria-invalid", "false");
       }
     });
   });
@@ -2450,6 +2091,7 @@ function showResult() {
   var formErr = document.getElementById("formErr");
   var BTN_TEXT = submitBtn.textContent;   // original button text, restored after errors
   var eventId = null;                      // shared by GTM and GHL so Meta doesn't double count
+  var quiz = null;                         // scored answers for the lead being sent
 
   // Show or hide the error message under the button
   function showError(msg) { formErr.textContent = msg; formErr.classList.add("on"); }
@@ -2518,14 +2160,19 @@ function showResult() {
     var okEmail = mark("fEmail", /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
     var okPhone = mark("fPhone", validPhone(phone));
     var okCo = mark("fCo", company.length > 0);
+    // The three questions are required: every lead arrives qualified
+    var okQ = true;
+    QUIZ.forEach(function (q, i) {
+      if (!mark("fQ" + (i + 1), document.getElementById(q.id).value !== "")) okQ = false;
+    });
 
-    if (!okName || !okEmail || !okPhone || !okCo) {
+    if (!okName || !okEmail || !okPhone || !okCo || !okQ) {
       // Send focus to the first problem so keyboard users aren't left
       // hunting for which field went red.
-      var firstBad = form.querySelector(".field.bad input");
-      // Focus without scrolling when the field is already on screen: a
-      // nudge here would wake the snap logic and glide the sheet after a
-      // failed submit. Off screen (phones), let the browser bring it in.
+      var firstBad = form.querySelector(".field.bad input, .field.bad .dd-btn, .fsel:not(.dd-on).bad select");
+      // Focus without scrolling when the field is already on screen, so a
+      // failed submit doesn't jolt the page. Off screen (phones), let the
+      // browser bring it in.
       if (firstBad) {
         var fr = firstBad.getBoundingClientRect();
         firstBad.focus({ preventScroll: fr.top >= 0 && fr.bottom <= window.innerHeight });
@@ -2542,14 +2189,16 @@ function showResult() {
     // ADDED: unique ID for this lead, sent to both GHL and GTM
     eventId = "lead-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
 
+    quiz = readQuiz();
     var payload = {
       name: name, email: email, phone: phone, company: company,
-      quizSegment: window.__seg || "not-taken",
-      quizScore: window.__score !== undefined ? window.__score : null,
+      quizSegment: quiz.seg,
+      quizScore: quiz.score,
+      quizScoreOutOf: QUIZ_MAX,   // 6 since the brand question was dropped (was 8)
       // The weak dimension travels too, so the first email can open on
       // the thing they're actually behind on rather than a generic
       // "thanks for downloading".
-      weakestArea: window.__weak || null,
+      weakestArea: quiz.weakest ? quiz.weakest.name : null,
       source: "expansion-playbook-v4",
       // ADDED: first and last name split out for GHL's contact fields
       firstName: name.split(/\s+/)[0],
@@ -2559,6 +2208,8 @@ function showResult() {
       pageUrl: location.href,
       submittedAt: new Date().toISOString()
     };
+    // The answers in words, for reading the lead in the CRM
+    quiz.answers.forEach(function (a) { payload[a.q.key] = a.text; });
     // ADDED: utm tags and fbclid from the ad, if present
     var ads = adParams();
     for (var k in ads) payload[k] = ads[k];
@@ -2567,34 +2218,7 @@ function showResult() {
     submitBtn.textContent = "Sending...";
     submitBtn.disabled = true;   // ADDED: stop double clicks while sending
 
-    /* ============================================================
-       CRM INTEGRATION POINT — the only place a dev needs to touch.
-
-       OPTION A, native webhook: replace the setTimeout below with a
-       fetch() POST to the CRM's inbound webhook (GoHighLevel:
-       Settings > Webhooks, or a Workflow inbound trigger.
-       ClickFunnels: Funnel > Integrations, or a relay). Send the
-       payload built above as-is; quizSegment lets automation branch
-       immediately, so "ready-now" can notify sales while "not-yet"
-       drops into a longer nurture.
-
-       OPTION B, relay: POST to a Zapier or Make catch hook and map
-       the fields to a contact plus tag there instead.
-
-       The page owns the design, the CRM owns the pipeline. Only this
-       function changes depending on which CRM wins.
-       ============================================================ */
-    // fetch("https://your-crm-webhook-url", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(payload)
-    // }).then(onSuccess);
-
-    // Demo send from the prototype, turned off now the real send is below:
-    // console.log("Would POST to CRM webhook:", payload);
-    // setTimeout(onSuccess, 450);
-
-    // ADDED: real send to the GHL webhook
+    // Send to the GHL webhook (URL in window.INCO at the top of the page)
     sendLead(payload).then(onSuccess).catch(function (err) {
       console.error("Lead send failed:", err);
       submitBtn.disabled = false;
@@ -2605,14 +2229,18 @@ function showResult() {
   });
 
   function onSuccess() {
-    // ADDED: send the lead to GTM, only after a real send
+    // ADDED: send the quiz and the lead to GTM, only after a real send
+    window.trackEvent("quiz_complete", { quiz_segment: quiz.seg, quiz_score: quiz.score });
     window.trackEvent("generate_lead", {
       form_name: "expansion_playbook",
-      quiz_segment: window.__seg || "not-taken",
+      quiz_segment: quiz.seg,
       event_id: eventId   // used as the Meta "eventID" so Meta doesn't double count
     });
     document.getElementById("formWrap").style.display = "none";
+    showResult(quiz);
     document.getElementById("sent").classList.add("on");
+    // The form they were in has gone; keep their place on the new content
+    document.getElementById("sentTitle").focus({ preventScroll: true });
   }
 })();
 
@@ -2654,13 +2282,6 @@ function showResult() {
 
 <!-- ============================================================
      HERO STILL — one photograph, panned by scroll.
-
-     Replaces the 97-frame AVIF scrub. That worked, but 3.7MB of
-     frames plus a preloading scheme plus a video fallback plus an
-     AVIF capability probe was a lot of machinery to keep alive for a
-     background. This is a single 142KB image and about twenty lines
-     of JS, and it does the same job: scroll moves you through the
-     picture rather than past it.
 
      The image is portrait, so at full-bleed width it stands roughly
      2278px tall against a viewport of 800-1000px. The surplus is the
@@ -2728,8 +2349,25 @@ function showResult() {
     measure();
     ScrollTrigger.refresh();
   });
+
 })();
 </script>
 
+<script>
+(function () {
+  // The download sheet changes height when errors show and when the
+  // form swaps for the result. Everything measured below it, the colour
+  // stops and section fades, has to be measured again.
+  if (window.ScrollTrigger && "ResizeObserver" in window) {
+    var assessT, assessH = 0, assess = document.getElementById("s-gate");
+    new ResizeObserver(function () {
+      if (assess.offsetHeight === assessH) return;
+      assessH = assess.offsetHeight;
+      clearTimeout(assessT);
+      assessT = setTimeout(function () { ScrollTrigger.refresh(); }, 80);
+    }).observe(assess);
+  }
+})();
+</script>
 </body>
 </html>
